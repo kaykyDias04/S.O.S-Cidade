@@ -6,7 +6,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useState } from "react";
 
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/src/contexts/auth-context";
 import { useDenuncia } from "@/src/hooks/useDenuncias";
 
@@ -88,9 +88,9 @@ export function FormDenuncias() {
   const router = useRouter();
   const { user } = useAuth();
   const { create } = useDenuncia();
-  
+
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [isProtocolModalOpen, setIsProtocolModalOpen] = useState(false); 
+  const [isProtocolModalOpen, setIsProtocolModalOpen] = useState(false);
   const [dataToSubmit, setDataToSubmit] = useState<DenunciaFormData | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [generatedProtocol, setGeneratedProtocol] = useState("");
@@ -118,16 +118,27 @@ export function FormDenuncias() {
 
       const result = await create(denunciaData);
 
-      if (result) {
-        toast.success("Denúncia registrada com sucesso!");
+      if (result && result.protocolo) {
         setGeneratedProtocol(result.protocolo);
-        form.reset();
-        setDataToSubmit(null);
-        setIsConfirmModalOpen(false); 
-        setIsProtocolModalOpen(true);
-      } else {
-        toast.error("Houve um erro ao enviar a denúncia.");
+
         setIsConfirmModalOpen(false);
+        setDataToSubmit(null);
+
+        form.reset({
+          tipoDenuncia: "" as any,
+          isAnonima: true,
+          bairro: "",
+          descricao: "",
+          consentimento: false,
+        });
+
+        setTimeout(() => {
+          setIsProtocolModalOpen(true);
+        }, 100);
+
+        toast.success("Denúncia registrada com sucesso!");
+      } else {
+        throw new Error("Falha ao obter protocolo");
       }
     } catch (error) {
       toast.error("Houve um erro ao enviar a denúncia.");
@@ -146,7 +157,7 @@ export function FormDenuncias() {
   function handleCloseProtocolModal() {
     setIsProtocolModalOpen(false);
     setGeneratedProtocol("");
-    router.push("/homepage-denunciante"); 
+    router.push("/homepage-denunciante");
   }
 
   return (
@@ -288,7 +299,7 @@ export function FormDenuncias() {
                 </div>
               )}
             />
-            
+
             <Button
               type="submit"
               size="lg"
@@ -314,7 +325,7 @@ export function FormDenuncias() {
       <ProtocolModal
         isOpen={isProtocolModalOpen}
         onClose={handleCloseProtocolModal}
-        onConfirm={handleCloseProtocolModal} 
+        onConfirm={handleCloseProtocolModal}
         title="Denúncia Registrada com Sucesso!"
         description={`Sua denúncia foi encaminhada. Anote o número de protocolo para acompanhamento: ${generatedProtocol}`}
       />

@@ -4,7 +4,7 @@
   "description": "Fake API RESTful com arquitetura limpa e separação de responsabilidades",
   "repository": "https://github.com/samuelikz/fakeapi",
   "author": "Samuel (github.com/samuelikz)",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "type": "commonjs",
   "license": "MIT",
   "scripts": {

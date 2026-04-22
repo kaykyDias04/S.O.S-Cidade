@@ -127,13 +127,4 @@ app.use('*', (req, res) => {
   });
 });
 
-// Inicialização do servidor
-app.listen(port, () => {
-  console.log(`🚀 Fake API Server running on http://localhost:${port}`);
-  console.log(`📚 Documentation available at http://localhost:${port}/_docs`);
-  console.log(`🌐 Web interface available at http://localhost:${port}`);
-  console.log(`💚 Health checks available at http://localhost:${port}/health`);
-  console.log(`⚙️  Environment: ${APP_CONFIG.environment}`);
-});
-
 module.exports = app;

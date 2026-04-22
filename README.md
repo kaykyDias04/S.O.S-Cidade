@@ -69,6 +69,9 @@ Crie `sos-cidade2/.env.local`:
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
+### Deploy
+
+https://sos-cidade-front.vercel.app/
 
 ---
 

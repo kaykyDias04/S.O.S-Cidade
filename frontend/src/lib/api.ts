@@ -1,4 +1,3 @@
-// API Configuration and utility functions
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface ApiResponse<T> {
@@ -16,16 +15,16 @@ export interface PaginatedResponse<T> {
   };
 }
 
-// Generic fetch function with error handling
 export async function apiCall<T>(
   endpoint: string,
   options?: RequestInit
 ): Promise<ApiResponse<T>> {
   try {
     const token = localStorage.getItem('authToken');
-    const headers: HeadersInit = {
+
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options?.headers,
+      ...(options?.headers as Record<string, string>),
     };
 
     if (token) {
@@ -58,7 +57,6 @@ export async function apiCall<T>(
   }
 }
 
-// Authentication API calls
 export const authAPI = {
   login: async (email: string, password: string) => {
     return apiCall<{
@@ -76,7 +74,6 @@ export const authAPI = {
   },
 };
 
-// Denúncias API calls
 export interface Denuncia {
   id: number;
   tipoDenuncia: string;
@@ -127,7 +124,6 @@ export const denunciasAPI = {
   },
 };
 
-// Users API calls
 export interface User {
   id: number;
   email: string;

@@ -1,0 +1,113 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Gestor Recife",
+      "email": "gestor@recife.pe.gov.br",
+      "password": "123456",
+      "role": "PROFESSOR",
+      "scopes": ["read:*", "write:*"]
+    },
+    {
+      "id": 2,
+      "name": "João Silva",
+      "email": "joao.silva@gmail.com",
+      "password": "123456",
+      "role": "ALUNO",
+      "scopes": ["read:*", "write:*"]
+    }
+  ],
+  "denuncias": [
+    {
+      "id": 1,
+      "tipoDenuncia": "Buraco na Via",
+      "identificacao": true,
+      "nomeDenunciante": "João Silva",
+      "bairroOcorrencia": "Boa Viagem",
+      "descricaoOcorrencia": "Buraco de grande porte na Av. Engenheiro Domingos Ferreira, próximo ao número 1200. Risco de acidente para motociclistas.",
+      "dataOcorrencia": "20/04/2025",
+      "protocolo": "SOS-2025-0001",
+      "situacao": "Em andamento",
+      "createdAt": "2025-04-20T10:00:00.000Z",
+      "updatedAt": "2025-04-20T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "tipoDenuncia": "Iluminação Pública",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Casa Amarela",
+      "descricaoOcorrencia": "Três postes apagados na Rua Padre Lemos há mais de duas semanas, trecho perigoso à noite.",
+      "dataOcorrencia": "19/04/2025",
+      "protocolo": "SOS-2025-0002",
+      "situacao": "Em andamento",
+      "createdAt": "2025-04-19T14:30:00.000Z",
+      "updatedAt": "2025-04-19T14:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "tipoDenuncia": "Assalto / Violência",
+      "identificacao": true,
+      "nomeDenunciante": "Maria Souza",
+      "bairroOcorrencia": "Encruzilhada",
+      "descricaoOcorrencia": "Assalto a pedestres no final da tarde na Rua da Harmonia. Dois indivíduos em moto.",
+      "dataOcorrencia": "18/04/2025",
+      "protocolo": "SOS-2025-0003",
+      "situacao": "Em andamento",
+      "createdAt": "2025-04-18T09:15:00.000Z",
+      "updatedAt": "2025-04-18T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "tipoDenuncia": "Descarte Irregular de Lixo",
+      "identificacao": true,
+      "nomeDenunciante": "Carlos Ferreira",
+      "bairroOcorrencia": "Afogados",
+      "descricaoOcorrencia": "Ponto irregular de descarte de lixo e entulho na Rua do Cupim, gerando mau cheiro e risco à saúde.",
+      "dataOcorrencia": "17/04/2025",
+      "protocolo": "SOS-2025-0004",
+      "situacao": "Finalizada",
+      "createdAt": "2025-04-17T11:00:00.000Z",
+      "updatedAt": "2025-04-17T11:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "tipoDenuncia": "Alagamento / Esgoto",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Imbiribeira",
+      "descricaoOcorrencia": "Bueiro entupido na Av. Sul causando alagamento a cada chuva. Situação persiste há meses.",
+      "dataOcorrencia": "16/04/2025",
+      "protocolo": "SOS-2025-0005",
+      "situacao": "Em andamento",
+      "createdAt": "2025-04-16T15:45:00.000Z",
+      "updatedAt": "2025-04-16T15:45:00.000Z"
+    },
+    {
+      "id": 6,
+      "tipoDenuncia": "Vandalismo",
+      "identificacao": true,
+      "nomeDenunciante": "Ana Lima",
+      "bairroOcorrencia": "Espinheiro",
+      "descricaoOcorrencia": "Ponto de ônibus depredado na Rua Benfica — banco quebrado e painel de horários destruído.",
+      "dataOcorrencia": "15/04/2025",
+      "protocolo": "SOS-2025-0006",
+      "situacao": "Finalizada",
+      "createdAt": "2025-04-15T13:20:00.000Z",
+      "updatedAt": "2025-04-15T13:20:00.000Z"
+    },
+    {
+      "id": 7,
+      "tipoDenuncia": "Problema de Trânsito",
+      "identificacao": true,
+      "nomeDenunciante": "Roberto Neto",
+      "bairroOcorrencia": "Boa Vista",
+      "descricaoOcorrencia": "Semáforo com defeito na cruzamento da Av. Dantas Barreto com Rua do Riachuelo. Risco de acidentes.",
+      "dataOcorrencia": "14/04/2025",
+      "protocolo": "SOS-2025-0007",
+      "situacao": "Em andamento",
+      "createdAt": "2025-04-14T08:00:00.000Z",
+      "updatedAt": "2025-04-14T08:00:00.000Z"
+    }
+  ]
+}

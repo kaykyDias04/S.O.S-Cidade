@@ -44,7 +44,7 @@ S.O.S-Cidade/
 | Email                        | Senha  | Perfil      |
 |------------------------------|--------|-------------|
 | gestor@recife.pe.gov.br      | 123456 | Gestor      |
-| joao.silva@email.com         | 123456 | Denunciante |
+| joao.silva@gmail.com         | 123456 | Denunciante |
 
 ---
 
@@ -69,6 +69,9 @@ Crie `sos-cidade2/.env.local`:
 ```
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
+### Deploy
+
+https://sos-cidade-front.vercel.app/
 
 ---
 

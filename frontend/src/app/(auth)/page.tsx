@@ -15,6 +15,7 @@ const AuthPage = () => {
             viewBox="0 0 950 300"
             preserveAspectRatio="none"
           >
+            
             <path
               d="M0,0 L1300,0 L1100,5 L500,200 L0,200 Z"
               className="fill-stone-50"

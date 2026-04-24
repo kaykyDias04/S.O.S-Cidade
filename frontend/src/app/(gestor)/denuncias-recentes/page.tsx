@@ -13,9 +13,7 @@ export default function DenunciasRecentesPage() {
       const converted = denuncias.map((d) => ({
         tipoDenuncia: d.tipoDenuncia,
         identificacao: d.identificacao,
-        // Support both old field (nomeAluno) and new field (nomeDenunciante) for backwards compat
         nomeDenunciante: (d as any).nomeDenunciante || (d as any).nomeAluno || "Anônimo",
-        // Support both old field (localOcorrencia) and new field (bairroOcorrencia)
         bairroOcorrencia: (d as any).bairroOcorrencia || (d as any).localOcorrencia || "",
         descricaoOcorrencia: d.descricaoOcorrencia,
         dataOcorrencia: d.dataOcorrencia,

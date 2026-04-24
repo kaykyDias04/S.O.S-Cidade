@@ -196,7 +196,7 @@ export function DenunciasDataTable({ data }: { readonly data: DenunciaRow[] }) {
           <div className="relative w-full max-w-md mt-[10px]">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              className="w-full md:w-64 pl-10"
+              className="w-full md:w-74 pl-10"
               placeholder="Pesquise por bairro, tipo, protocolo..."
               value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}

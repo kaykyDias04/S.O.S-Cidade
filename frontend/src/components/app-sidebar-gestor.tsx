@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation"; 
 import { useMemo } from "react";
 import { useDenuncias } from "@/src/hooks/useDenuncias";
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 
 const items = [
   { title: "Denúncias Recentes", url: "/denuncias-recentes" },
@@ -25,7 +25,7 @@ const parseDate = (dateString: string) => {
 
 export function AppSidebarGestor() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { logout, user } = useAuthStore();
   const { denuncias, loading } = useDenuncias(1, 100);
 
   const casosPrioritarios = useMemo(() => {

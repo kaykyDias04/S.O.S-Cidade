@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 import { useDenuncia } from "@/src/hooks/useDenuncias";
 
 import { Button } from "@/src/components/ui/button";
@@ -86,7 +86,7 @@ export function FormDenuncias() {
   });
 
   const router = useRouter();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { create } = useDenuncia();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);

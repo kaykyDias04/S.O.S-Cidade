@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { AlertTriangle, Check } from "lucide-react";
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 
 export default function HomepageDenunciante() {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const nomeExibicao = user?.name?.split(' ')[0] || "Cidadão";
 
   return (

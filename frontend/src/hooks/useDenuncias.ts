@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { denunciasAPI, Denuncia, PaginatedResponse } from '@/src/lib/api';
+import { useDenunciasStore } from '@/src/store/useDenunciasStore';
 
 export interface UseDenunciasReturn {
   denuncias: Denuncia[];
@@ -16,57 +17,26 @@ export function useDenuncias(
   initialPage = 1,
   initialLimit = 50
 ): UseDenunciasReturn {
-  const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(initialPage);
-  const [limit] = useState(initialLimit);
-  const [total, setTotal] = useState<number | undefined>();
-
-  const refetch = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await denunciasAPI.list(page, limit);
-
-      if (response.success && response.data) {
-        const paginatedData = response.data as PaginatedResponse<Denuncia>;
-        // Handle both paginated and direct array responses
-        const items = Array.isArray(paginatedData) 
-          ? paginatedData 
-          : (paginatedData.data || []);
-        setDenuncias(items);
-
-        if (!Array.isArray(paginatedData) && paginatedData.meta) {
-          setTotal(paginatedData.meta.total);
-        }
-      } else {
-        setError(response.error || 'Falha ao buscar denúncias');
-        setDenuncias([]);
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro desconhecido';
-      setError(message);
-      setDenuncias([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const store = useDenunciasStore();
 
   useEffect(() => {
-    refetch();
+    if (store.page !== initialPage) {
+      store.setPage(initialPage);
+    } else {
+      store.fetchDenuncias();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, limit]);
+  }, [initialPage, initialLimit]);
 
   return {
-    denuncias,
-    loading,
-    error,
-    refetch,
-    page,
-    setPage,
-    limit,
-    total,
+    denuncias: store.denuncias,
+    loading: store.loading,
+    error: store.error,
+    refetch: store.fetchDenuncias,
+    page: store.page,
+    setPage: store.setPage,
+    limit: store.limit,
+    total: store.total,
   };
 }
 

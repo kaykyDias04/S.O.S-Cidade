@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { useAuth, User } from './auth-context';
+import { useAuthStore, User } from '@/src/store/useAuthStore';
 
 interface RoleProtectedRouteProps {
   allowedRoles: User['role'][];
@@ -9,7 +9,7 @@ interface RoleProtectedRouteProps {
 }
 
 export function RoleProtectedRoute({ allowedRoles, children }: RoleProtectedRouteProps) {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {

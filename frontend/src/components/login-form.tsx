@@ -16,7 +16,7 @@ import {
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Por favor, insira um email válido." }),
@@ -31,7 +31,7 @@ export const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const { login } = useAuth();
+  const { login } = useAuthStore();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

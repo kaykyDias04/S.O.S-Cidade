@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/src/contexts/auth-context";
 import "@/src/app/globals.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
@@ -19,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={cn("font-sans", geist.variable)}>
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
       </body>
     </html>
   );

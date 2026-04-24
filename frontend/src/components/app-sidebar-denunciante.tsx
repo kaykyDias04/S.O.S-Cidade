@@ -11,7 +11,7 @@ import {
 import Link from "next/link"; 
 import { usePathname } from "next/navigation";
 import { useDenuncias } from "@/src/hooks/useDenuncias";
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 import { useMemo } from "react";
 
 const items = [
@@ -28,7 +28,7 @@ const getStatusColor = (situacao: string) => {
 
 export function AppSidebarDenunciante() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { denuncias, loading } = useDenuncias(1, 50);
 
   const denunciasRecentes = useMemo(() => {

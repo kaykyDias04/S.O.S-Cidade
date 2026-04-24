@@ -15,14 +15,14 @@ import { HouseIcon } from "lucide-react";
 import Link from "next/link"; 
 import { usePathname } from "next/navigation"; 
 
-import { useAuth } from "@/src/contexts/auth-context";
+import { useAuthStore } from "@/src/store/useAuthStore";
 
 const formatPathname = (path: string) => {
   return path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, " ");
 };
 
 export function SiteHeader() {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   
   const homepath = user
     ? user.role === "GESTOR"

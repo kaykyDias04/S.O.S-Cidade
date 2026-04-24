@@ -1,5 +1,5 @@
 import { AuthProvider } from "@/src/contexts/auth-context";
-import "@/app/globals.css";
+import "@/src/app/globals.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { cn } from "@/src/lib/utils";

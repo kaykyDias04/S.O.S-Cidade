@@ -165,7 +165,7 @@ export function FormDenuncias() {
       <div className="bg-white p-8 rounded-2xl shadow-md max-w-4xl mx-auto">
         <div className="mb-4 text-center">
           <h1 className="md:text-3xl font-bold text-gray-800">Nova Denúncia Urbana</h1>
-          <p className="text-gray-500 text-lg md:text-lg">
+          <p className="text-gray-500 text-lg md:text-md mt-2">
             Preencha os campos abaixo para registrar um problema na cidade de Recife
           </p>
         </div>
@@ -181,10 +181,10 @@ export function FormDenuncias() {
               name="tipoDenuncia"
               render={({ field }) => (
                 <FormItem className="w-full relative pb-6">
-                  <FormLabel className="text-lg">Tipo do Problema:</FormLabel>
+                  <FormLabel className="text-sm">Tipo do Problema:</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="text-lg cursor-pointer">
+                      <SelectTrigger className="text-sm cursor-pointer">
                         <SelectValue placeholder="Selecione a categoria" />
                       </SelectTrigger>
                     </FormControl>
@@ -211,8 +211,8 @@ export function FormDenuncias() {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 w-full">
                   <div className="space-y-1">
-                    <FormLabel className="text-lg">Denúncia Anônima</FormLabel>
-                    <FormDescription className="text-lg">
+                    <FormLabel className="text-sm">Denúncia Anônima</FormLabel>
+                    <FormDescription className="text-sm">
                       {field.value
                         ? "Sua identidade não será revelada."
                         : "Sua denúncia será identificada com seu nome."}
@@ -235,16 +235,16 @@ export function FormDenuncias() {
               name="bairro"
               render={({ field }) => (
                 <FormItem className="w-full relative pb-6">
-                  <FormLabel className="text-lg">Bairro / Região (Recife):</FormLabel>
+                  <FormLabel className="text-sm">Bairro / Região (Recife):</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="text-lg cursor-pointer">
+                      <SelectTrigger className="text-sm cursor-pointer">
                         <SelectValue placeholder="Selecione o bairro" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-60">
                       {BAIRROS_RECIFE.map((bairro) => (
-                        <SelectItem key={bairro} className="text-lg" value={bairro}>
+                        <SelectItem key={bairro} className="text-sm" value={bairro}>
                           {bairro}
                         </SelectItem>
                       ))}
@@ -261,11 +261,11 @@ export function FormDenuncias() {
               name="descricao"
               render={({ field }) => (
                 <FormItem className="w-full relative pb-6">
-                  <FormLabel className="text-lg">Descrição do Problema:</FormLabel>
+                  <FormLabel className="text-sm">Descrição do Problema:</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Descreva o problema com o máximo de detalhes: localização exata, gravidade, há quanto tempo existe..."
-                      className="resize-none placeholder:text-lg"
+                      className="resize-none placeholder:text-sm h-auto min-h-[100px]"
                       rows={4}
                       {...field}
                     />
@@ -290,7 +290,7 @@ export function FormDenuncias() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel className="text-lg">
+                      <FormLabel className="text-sm cursor-pointer">
                         Autorizo o compartilhamento desta denúncia com os órgãos competentes da Prefeitura do Recife
                       </FormLabel>
                     </div>

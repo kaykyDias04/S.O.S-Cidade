@@ -13,10 +13,6 @@ import { Button } from "@/src/components/ui/button"
 import type { Column } from "@tanstack/react-table"
 import { ChevronDown } from "lucide-react"
 
-// 1. A LISTA DE OPÇÕES FOI REMOVIDA DAQUI.
-// Ela será passada como uma propriedade.
-
-// 2. A INTERFACE DE PROPS AGORA INCLUI 'options'
 interface DropdownHeaderTableProps<TData, TValue> {
   column: Column<TData, TValue>
   title: string
@@ -29,12 +25,9 @@ export function DropdownHeaderTable<TData, TValue>({
 
   const selectedValues = new Set((column.getFilterValue() as string[]) ?? []);
 
-    // Usamos a função da tabela para pegar os valores únicos da coluna
   const facetedValues = column.getFacetedUniqueValues();
-  // Transformamos o resultado (que é um Map) em um array de opções para o nosso menu
   const options = React.useMemo(() => {
     const sortedValues = Array.from(facetedValues.keys()).sort((a, b) => {
-      // If both are numbers, sort numerically; otherwise, use localeCompare for strings
       if (!isNaN(Number(a)) && !isNaN(Number(b))) {
         return Number(a) - Number(b);
       }
@@ -42,7 +35,7 @@ export function DropdownHeaderTable<TData, TValue>({
     });
     return sortedValues.map(value => ({
       value: value,
-      label: value, // Usamos o próprio valor como label, mas você poderia customizar
+      label: value, 
     }));
   }, [facetedValues]);
 
@@ -65,7 +58,6 @@ export function DropdownHeaderTable<TData, TValue>({
 
       <DropdownMenuContent className="w-40" align="start">
         <div className="max-h-auto overflow-y-auto p-1">
-          {/* 3. O .map() AGORA USA A PROP 'options' */}
           {options.map((option) => {
             const isChecked = selectedValues.has(option.value);
 

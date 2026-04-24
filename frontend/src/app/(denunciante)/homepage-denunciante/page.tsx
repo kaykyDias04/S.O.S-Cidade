@@ -9,7 +9,7 @@ export default function HomepageDenunciante() {
   const nomeExibicao = user?.name?.split(' ')[0] || "Cidadão";
 
   return (
-    <main className="p-8 relative bg-white rounded-2xl">
+    <main className="bg-white p-8 rounded-2xl shadow-md relative">
       <section className="mb-12">
         <h1 className="text-4xl font-bold text-gray-800">Olá, {nomeExibicao}!</h1>
         <p className="text-lg text-gray-500 mt-2">
@@ -40,7 +40,7 @@ export default function HomepageDenunciante() {
             <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
               <Check className="w-7 h-7 text-green-600" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800">Como Funciona</h2>
+            <h2 className="text-xl font-bold text-gray-800">Como Funciona?</h2>
             <p className="text-gray-600 mt-2 mb-6 flex-grow">
               Registre o problema, receba um protocolo e acompanhe o encaminhamento junto à Prefeitura do Recife.
             </p>
@@ -55,7 +55,11 @@ export default function HomepageDenunciante() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">3</span>
-                <span>O gestor analisa e encaminha</span>
+                <span>O gestor analisa e encaminha a denúncia</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">4</span>
+                <span>Acompanhe as suas denúncias pela aba Minhas Denúncias</span>
               </div>
             </div>
           </div>
@@ -63,10 +67,10 @@ export default function HomepageDenunciante() {
         </div>
 
         <div className="mt-8 w-full max-w-4xl bg-sky-50 border border-sky-200 rounded-2xl p-6">
-          <h3 className="font-bold text-sky-800 mb-2">📍 Área de cobertura</h3>
+          <h3 className="font-bold text-sky-800 mb-2">Área de cobertura</h3>
           <p className="text-sky-700 text-sm">
             Este sistema atende denúncias da <strong>Região Metropolitana do Recife — PE</strong>.
-            Bairros de Recife, Olinda, Caruaru e municípios vizinhos podem ser registrados.
+            Bairros de Recife, Olinda, Paulista e municípios vizinhos podem ser registrados.
           </p>
         </div>
       </div>

@@ -48,7 +48,7 @@ export function SiteHeader() {
         <div className="inline-block relative group">
           <SidebarTrigger className="-ml-1" />
           <div
-            className="absolute top-full left-24 transform -translate-x-1/2 mt-2 p-2 bg-white text-black text-md rounded shadow-lg 
+            className="absolute top-full left-24 transform -translate-x-1/2 mt-2 p-2 bg-white text-black text-sm font-medium rounded shadow-lg 
                        opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 whitespace-nowrap
                        z-50"
           >
@@ -56,13 +56,13 @@ export function SiteHeader() {
           </div>
         </div>
         <div className="flex flex-col gap-y-1">
-          <h1 className="text-2xl font-medium">{mainTitle}</h1>
+          <h1 className="text-lg font-medium">{mainTitle}</h1>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href={homepath} aria-label="Início">
-                    <HouseIcon className="w-5 h-5" />
+                    <HouseIcon className="w-4 h-4 text-slate-500 hover:text-slate-700" />
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -77,12 +77,12 @@ export function SiteHeader() {
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
                       {isLast ? (
-                        <BreadcrumbPage className="text-lg font-normal text-slate-900">
+                        <BreadcrumbPage className="text-md font-normal text-slate-900">
                           {displayName}
                         </BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink asChild>
-                          <Link href={to} className="text-lg">
+                          <Link href={to} className="text-md font-normal text-slate-500 hover:text-slate-700">
                             {displayName}
                           </Link>
                         </BreadcrumbLink>

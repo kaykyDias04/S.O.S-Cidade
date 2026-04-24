@@ -160,7 +160,7 @@ const columns: ColumnDef<DenunciaRow>[] = [
   {
     id: "editar",
     header: "Ações",
-    cell: ({ row }) => <EditStatusCell row={row} />,
+    cell: ({ row, table }) => <EditStatusCell row={row} table={table} />,
     size: 100,
   },
 ];
@@ -184,11 +184,25 @@ export function DenunciasDataTable({ data }: { readonly data: DenunciaRow[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 8 });
+  const [localData, setLocalData] = React.useState<DenunciaRow[]>(data);
+
+  React.useEffect(() => {
+    setLocalData(data);
+  }, [data]);
 
   const table = useReactTable({
-    data,
+    data: localData,
     columns,
     state: { sorting, columnVisibility, rowSelection, columnFilters, pagination, globalFilter },
+    meta: {
+      updateRow: (protocolo: string, novaSituacao: string) => {
+        setLocalData((old) =>
+          old.map((row) =>
+            row.protocolo === protocolo ? { ...row, situacao: novaSituacao } : row
+          )
+        );
+      },
+    },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

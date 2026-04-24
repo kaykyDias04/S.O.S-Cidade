@@ -8,34 +8,34 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { Edit } from "lucide-react";
 import { ConfirmationModal } from "./confimation-form-dialog";
-import { type DenunciaRow } from "./gestor-data-table"; 
+import { type DenunciaRow } from "./gestor-data-table";
 import { useState } from "react";
 
-export const EditStatusCell = ({ row }: { row: Row<DenunciaRow> }) => {
+export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: any }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingStatus, setPendingStatus] = useState<string>("");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleSelectNovaSituacao = (novaSituacao: string) => {
-    // Evita abrir o modal se a pessoa clicou na situação atual
-    if (novaSituacao === row.original.situacao.toLowerCase()) return;
-    
+    if (novaSituacao.toLowerCase() === row.original.situacao.toLowerCase()) return;
+
     setPendingStatus(novaSituacao);
     setIsModalOpen(true);
   };
 
   const handleConfirmUpdate = async () => {
     setIsUpdating(true);
-    
+
     try {
-      // AQUI VAI A SUA LÓGICA DE API
-      // Exemplo: await api.updateDenuncia(row.original.protocolo, pendingStatus);
-      
-      // Simulando um tempo de requisição
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      
+
       console.log(`Sucesso: Protocolo ${row.original.protocolo} atualizado para ${pendingStatus}`);
-      
+
+      const tableMeta = table?.options.meta as any;
+      if (tableMeta && tableMeta.updateRow) {
+        tableMeta.updateRow(row.original.protocolo, pendingStatus);
+      }
+
     } catch (error) {
       console.error("Erro ao atualizar situação", error);
     } finally {
@@ -54,10 +54,16 @@ export const EditStatusCell = ({ row }: { row: Row<DenunciaRow> }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => handleSelectNovaSituacao("em andamento")}>
+          <DropdownMenuItem
+            onClick={() => handleSelectNovaSituacao("Em andamento")}
+            disabled={row.original.situacao.toLowerCase() === "em andamento"}
+          >
             Em andamento
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleSelectNovaSituacao("finalizada")}>
+          <DropdownMenuItem
+            onClick={() => handleSelectNovaSituacao("Finalizada")}
+            disabled={row.original.situacao.toLowerCase() === "finalizada"}
+          >
             Finalizada
           </DropdownMenuItem>
         </DropdownMenuContent>

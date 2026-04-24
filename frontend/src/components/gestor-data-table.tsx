@@ -33,19 +33,20 @@ import {
 } from "@/src/components/ui/table";
 import { DropdownHeaderTable } from "./dropdown-header-table";
 import { ArrowUpDown, ArrowDown, ArrowUp, Search } from "lucide-react";
+import { DescriptionCell } from "./description-cell";
 
 const tipoDenunciaConfig: Record<string, string> = {
-  "buraco na via":        "text-orange-700 bg-white border-orange-600 hover:bg-orange-600/20",
-  "iluminacao publica":   "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
-  "iluminação pública":   "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
+  "buraco na via": "text-orange-700 bg-white border-orange-600 hover:bg-orange-600/20",
+  "iluminacao publica": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
+  "iluminação pública": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
   "descarte irregular de lixo": "text-green-700 bg-white border-green-600 hover:bg-green-600/20",
-  "assalto / violencia":  "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
-  "assalto / violência":  "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
+  "assalto / violencia": "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
+  "assalto / violência": "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
   "problema de transito": "text-blue-700 bg-white border-blue-600 hover:bg-blue-600/20",
   "problema de trânsito": "text-blue-700 bg-white border-blue-600 hover:bg-blue-600/20",
-  "alagamento / esgoto":  "text-cyan-700 bg-white border-cyan-600 hover:bg-cyan-600/20",
-  "vandalismo":           "text-purple-700 bg-white border-purple-600 hover:bg-purple-600/20",
-  "outro":                "text-gray-600 bg-white border-gray-500 hover:bg-gray-500/20",
+  "alagamento / esgoto": "text-cyan-700 bg-white border-cyan-600 hover:bg-cyan-600/20",
+  "vandalismo": "text-purple-700 bg-white border-purple-600 hover:bg-purple-600/20",
+  "outro": "text-gray-600 bg-white border-gray-500 hover:bg-gray-500/20",
 };
 
 export type DenunciaRow = {
@@ -61,7 +62,7 @@ export type DenunciaRow = {
 
 const situacaoConfig: Record<string, string> = {
   "em andamento": "text-orange-700 bg-orange-50 border-orange-300",
-  "finalizada":   "text-green-700 bg-green-50 border-green-300",
+  "finalizada": "text-green-700 bg-green-50 border-green-300",
 };
 
 const columns: ColumnDef<DenunciaRow>[] = [
@@ -115,8 +116,9 @@ const columns: ColumnDef<DenunciaRow>[] = [
   },
   {
     accessorKey: "descricaoOcorrencia",
-    header: () => <div>Descrição</div>,
-    size: 200,
+    header: "Descrição",
+    cell: ({ row }) => <DescriptionCell row={row} />,
+    size: 100,
   },
   {
     accessorKey: "protocolo",

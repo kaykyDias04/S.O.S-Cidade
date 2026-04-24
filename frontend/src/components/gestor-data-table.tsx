@@ -31,9 +31,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
 import { DropdownHeaderTable } from "./dropdown-header-table";
 import { ArrowUpDown, ArrowDown, ArrowUp, Search } from "lucide-react";
 import { DescriptionCell } from "./description-cell";
+import { EditStatusCell } from "./edit-status-cell";
 
 const tipoDenunciaConfig: Record<string, string> = {
   "buraco na via": "text-orange-700 bg-white border-orange-600 hover:bg-orange-600/20",
@@ -148,6 +156,12 @@ const columns: ColumnDef<DenunciaRow>[] = [
       );
     },
     size: 50,
+  },
+  {
+    id: "editar",
+    header: "Ações",
+    cell: ({ row }) => <EditStatusCell row={row} />,
+    size: 100,
   },
 ];
 

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { authAPI } from '@/src/lib/api';
+import Cookies from 'js-cookie';
 
 export interface User {
   name: string;
@@ -44,7 +45,8 @@ export const useAuthStore = create<AuthState>()(
               id: response.data.user.id,
             };
 
-            localStorage.setItem('authToken', response.data.token);
+            Cookies.set('authToken', response.data.token, { expires: 7 });
+            Cookies.set('userRole', mappedRole, { expires: 7 });
             set({ user: userData, isAuthenticated: true, isLoading: false });
 
             return { success: true };
@@ -60,7 +62,8 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        localStorage.removeItem('authToken');
+        Cookies.remove('authToken');
+        Cookies.remove('userRole');
         set({ user: null, isAuthenticated: false });
       },
     }),

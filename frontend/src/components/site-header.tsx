@@ -11,6 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/src/components/ui/breadcrumb";
 import { HouseIcon } from "lucide-react";
+import { UserNav } from "./user-nav";
 
 import Link from "next/link"; 
 import { usePathname } from "next/navigation"; 
@@ -93,6 +94,9 @@ export function SiteHeader() {
               })}
             </BreadcrumbList>
           </Breadcrumb>
+        </div>
+        <div className="ml-auto flex items-center gap-2">
+          <UserNav />
         </div>
       </div>
       <div className="h-2 w-full bg-stone-100" />

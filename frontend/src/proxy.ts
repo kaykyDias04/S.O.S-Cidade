@@ -23,6 +23,16 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(dashboardUrl, request.url));
   }
 
+  // 3. Impede acesso cruzado de perfis
+  if (token && !isPublicPath) {
+    if (role === 'GESTOR' && path.startsWith('/homepage-denunciante')) {
+      return NextResponse.redirect(new URL('/denuncias-recentes', request.url));
+    }
+    if (role === 'DENUNCIANTE' && path.startsWith('/denuncias-recentes')) {
+      return NextResponse.redirect(new URL('/homepage-denunciante', request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 

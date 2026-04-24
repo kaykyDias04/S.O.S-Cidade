@@ -44,15 +44,17 @@ export const LoginForm = () => {
 
       if (result.success) {
         toast.success("Login realizado com sucesso!");
-        
-        const userData = localStorage.getItem('userData');
-        if (userData) {
-          const user = JSON.parse(userData);
-          if (user.role === 'GESTOR') {
+
+        const currentUser = useAuthStore.getState().user;
+
+        if (currentUser) {
+          if (currentUser.role === 'GESTOR') {
             router.push("/denuncias-recentes");
           } else {
             router.push("/homepage-denunciante");
           }
+        } else {
+          router.push("/");
         }
       } else {
         toast.error(result.error || "Email ou Senha inválida");

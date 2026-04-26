@@ -21,6 +21,15 @@
         "read:*",
         "write:*"
       ]
+    },
+    {
+      "id": 3,
+      "name": "Kayky Dias",
+      "email": "gestor2@recife.pe.gov.br",
+      "password": "123456",
+      "role": "PROFESSOR",
+      "createdAt": "2026-04-26T00:29:32.761Z",
+      "updatedAt": "2026-04-26T00:29:32.761Z"
     }
   ],
   "denuncias": [
@@ -33,9 +42,9 @@
       "descricaoOcorrencia": "Buraco de grande porte na Av. Engenheiro Domingos Ferreira, próximo ao número 1200. Risco de acidente para motociclistas.",
       "dataOcorrencia": "20/04/2025",
       "protocolo": "SOS-2025-0001",
-      "situacao": "Em andamento",
+      "situacao": "Finalizada",
       "createdAt": "2025-04-20T10:00:00.000Z",
-      "updatedAt": "2025-04-20T10:00:00.000Z"
+      "updatedAt": "2026-04-26T00:29:18.848Z"
     },
     {
       "id": 2,

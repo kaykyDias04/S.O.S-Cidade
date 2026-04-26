@@ -9,8 +9,9 @@ export default function DenunciasRecentesPage() {
   const [data, setData] = useState<DenunciaRow[]>([]);
 
   useEffect(() => {
-    if (denuncias && denuncias.length > 0) {
+    if (denuncias) {
       const converted = denuncias.map((d) => ({
+        id: d.id,
         tipoDenuncia: d.tipoDenuncia,
         identificacao: d.identificacao,
         nomeDenunciante: (d as any).nomeDenunciante || (d as any).nomeAluno || "Anônimo",

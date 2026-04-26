@@ -6,6 +6,8 @@ services:
     container_name: sos-cidade-api
     ports:
       - "8000:8000"
+    volumes:
+      - ./fakeapi-backend/data:/app/data
     restart: unless-stopped
 
   web:

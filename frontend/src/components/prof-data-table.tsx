@@ -49,6 +49,7 @@ const tipoDenunciaConfig: Record<string, string> = {
 };
 
 export type DenunciaRow = {
+  id?: number;
   tipoDenuncia: string;
   identificacao: boolean;
   nomeDenunciante: string;

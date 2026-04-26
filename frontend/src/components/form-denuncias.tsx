@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/src/store/useAuthStore";
-import { useDenuncia } from "@/src/hooks/useDenuncias";
+import { useDenunciasStore } from "@/src/store/useDenunciasStore";
 
 import { Button } from "@/src/components/ui/button";
 import { Textarea } from "@/src/components/ui/textarea";
@@ -86,7 +86,7 @@ export function FormDenuncias() {
 
   const router = useRouter();
   const { user } = useAuthStore();
-  const { create } = useDenuncia();
+  const { createDenuncia, fetchDenuncias } = useDenunciasStore();
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isProtocolModalOpen, setIsProtocolModalOpen] = useState(false);
@@ -117,12 +117,15 @@ export function FormDenuncias() {
         situacao: "Em andamento",
       };
 
-      const result = await create(denunciaData);
+      const result = await createDenuncia(denunciaData);
 
       if (result) {
         setGeneratedProtocol(result.protocolo || generatedProtocolStr);
         setIsConfirmModalOpen(false);
         setDataToSubmit(null);
+
+        // Refresh the global store so gestor table sees new data
+        await fetchDenuncias();
 
         form.reset({
           tipoDenuncia: "" as any,

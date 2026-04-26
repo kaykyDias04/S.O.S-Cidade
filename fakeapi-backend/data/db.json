@@ -6,7 +6,10 @@
       "email": "gestor@recife.pe.gov.br",
       "password": "123456",
       "role": "PROFESSOR",
-      "scopes": ["read:*", "write:*"]
+      "scopes": [
+        "read:*",
+        "write:*"
+      ]
     },
     {
       "id": 2,
@@ -14,7 +17,10 @@
       "email": "joao.silva@gmail.com",
       "password": "123456",
       "role": "ALUNO",
-      "scopes": ["read:*", "write:*"]
+      "scopes": [
+        "read:*",
+        "write:*"
+      ]
     }
   ],
   "denuncias": [
@@ -108,6 +114,32 @@
       "situacao": "Em andamento",
       "createdAt": "2025-04-14T08:00:00.000Z",
       "updatedAt": "2025-04-14T08:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "tipoDenuncia": "Alagamento / Esgoto",
+      "identificacao": true,
+      "nomeDenunciante": "João Silva",
+      "bairroOcorrencia": "Afogados",
+      "descricaoOcorrencia": "TESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTETESTE",
+      "dataOcorrencia": "25/04/2026",
+      "protocolo": "PROT-1777163157841-8OKC7H",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-26T00:25:57.893Z",
+      "updatedAt": "2026-04-26T00:25:57.893Z"
+    },
+    {
+      "id": 9,
+      "tipoDenuncia": "Vandalismo",
+      "identificacao": true,
+      "nomeDenunciante": "João Silva",
+      "bairroOcorrencia": "Santo Amaro",
+      "descricaoOcorrencia": "VANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMOVANDALISMO",
+      "dataOcorrencia": "25/04/2026",
+      "protocolo": "PROT-1777163223960-0FJCHN",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-26T00:27:04.013Z",
+      "updatedAt": "2026-04-26T00:27:04.013Z"
     }
   ]
 }

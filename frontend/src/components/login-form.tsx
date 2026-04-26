@@ -49,12 +49,12 @@ export const LoginForm = () => {
 
         if (currentUser) {
           if (currentUser.role === 'GESTOR') {
-            router.push("/denuncias-recentes");
+            router.replace("/denuncias-recentes");
           } else {
-            router.push("/homepage-denunciante");
+            router.replace("/homepage-denunciante");
           }
         } else {
-          router.push("/");
+          router.replace("/");
         }
       } else {
         toast.error(result.error || "Email ou Senha inválida");

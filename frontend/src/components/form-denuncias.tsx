@@ -11,7 +11,6 @@ import { useAuthStore } from "@/src/store/useAuthStore";
 import { useDenuncia } from "@/src/hooks/useDenuncias";
 
 import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { Switch } from "@/src/components/ui/switch";
@@ -105,6 +104,8 @@ export function FormDenuncias() {
     setIsPending(true);
 
     try {
+      const generatedProtocolStr = `PROT-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
       const denunciaData = {
         tipoDenuncia: tipoLabels[dataToSubmit.tipoDenuncia] || dataToSubmit.tipoDenuncia,
         identificacao: !dataToSubmit.isAnonima,
@@ -112,15 +113,14 @@ export function FormDenuncias() {
         bairroOcorrencia: dataToSubmit.bairro,
         descricaoOcorrencia: dataToSubmit.descricao,
         dataOcorrencia: new Date().toLocaleDateString("pt-BR"),
-        protocolo: "",
+        protocolo: generatedProtocolStr,
         situacao: "Em andamento",
       };
 
       const result = await create(denunciaData);
 
-      if (result && result.protocolo) {
-        setGeneratedProtocol(result.protocolo);
-
+      if (result) {
+        setGeneratedProtocol(result.protocolo || generatedProtocolStr);
         setIsConfirmModalOpen(false);
         setDataToSubmit(null);
 
@@ -134,11 +134,12 @@ export function FormDenuncias() {
 
         setTimeout(() => {
           setIsProtocolModalOpen(true);
-        }, 100);
+        }, 300);
 
         toast.success("Denúncia registrada com sucesso!");
       } else {
-        throw new Error("Falha ao obter protocolo");
+        toast.error("Falha ao registrar denúncia. Tente novamente.");
+        setIsConfirmModalOpen(false);
       }
     } catch (error) {
       toast.error("Houve um erro ao enviar a denúncia.");
@@ -175,28 +176,27 @@ export function FormDenuncias() {
             onSubmit={form.handleSubmit(handleFormValidation)}
             className="space-y-4 mx-auto flex flex-col items-center text-2xl"
           >
-            {/* Tipo de Denúncia */}
             <FormField
               control={form.control}
               name="tipoDenuncia"
               render={({ field }) => (
                 <FormItem className="w-full relative pb-6">
                   <FormLabel className="text-sm">Tipo do Problema:</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-sm cursor-pointer">
                         <SelectValue placeholder="Selecione a categoria" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem className="text-lg" value="BURACO_VIA">🕳️ Buraco na Via</SelectItem>
-                      <SelectItem className="text-lg" value="ILUMINACAO">💡 Iluminação Pública</SelectItem>
-                      <SelectItem className="text-lg" value="LIXO">🗑️ Descarte Irregular de Lixo</SelectItem>
-                      <SelectItem className="text-lg" value="ASSALTO">🚨 Assalto / Violência</SelectItem>
-                      <SelectItem className="text-lg" value="TRANSITO">🚦 Problema de Trânsito</SelectItem>
-                      <SelectItem className="text-lg" value="ALAGAMENTO">🌊 Alagamento / Esgoto</SelectItem>
-                      <SelectItem className="text-lg" value="VANDALISMO">🔨 Vandalismo</SelectItem>
-                      <SelectItem className="text-lg" value="OUTRO">📋 Outro</SelectItem>
+                      <SelectItem className="text-md" value="ALAGAMENTO">Alagamento / Esgoto</SelectItem>
+                      <SelectItem className="text-md" value="ASSALTO">Assalto / Violência</SelectItem>
+                      <SelectItem className="text-md" value="BURACO_VIA">Buraco na Via</SelectItem>
+                      <SelectItem className="text-md" value="LIXO">Descarte Irregular de Lixo</SelectItem>
+                      <SelectItem className="text-md" value="ILUMINACAO">Iluminação Pública</SelectItem>
+                      <SelectItem className="text-md" value="TRANSITO">Problema de Trânsito</SelectItem>
+                      <SelectItem className="text-md" value="VANDALISMO">Vandalismo</SelectItem>
+                      <SelectItem className="text-md" value="OUTRO">Outro</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="absolute bottom-0 left-0" />
@@ -204,7 +204,6 @@ export function FormDenuncias() {
               )}
             />
 
-            {/* Denúncia Anônima */}
             <FormField
               control={form.control}
               name="isAnonima"
@@ -229,14 +228,13 @@ export function FormDenuncias() {
               )}
             />
 
-            {/* Bairro */}
             <FormField
               control={form.control}
               name="bairro"
               render={({ field }) => (
                 <FormItem className="w-full relative pb-6">
                   <FormLabel className="text-sm">Bairro / Região (Recife):</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="text-sm cursor-pointer">
                         <SelectValue placeholder="Selecione o bairro" />
@@ -255,7 +253,6 @@ export function FormDenuncias() {
               )}
             />
 
-            {/* Descrição */}
             <FormField
               control={form.control}
               name="descricao"
@@ -275,7 +272,6 @@ export function FormDenuncias() {
               )}
             />
 
-            {/* Consentimento */}
             <FormField
               control={form.control}
               name="consentimento"

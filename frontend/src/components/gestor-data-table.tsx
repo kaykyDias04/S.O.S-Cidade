@@ -31,30 +31,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
 import { DropdownHeaderTable } from "./dropdown-header-table";
 import { ArrowUpDown, ArrowDown, ArrowUp, Search } from "lucide-react";
 import { DescriptionCell } from "./description-cell";
 import { EditStatusCell } from "./edit-status-cell";
 
 const tipoDenunciaConfig: Record<string, string> = {
-  "buraco na via": "text-orange-700 bg-white border-orange-600 hover:bg-orange-600/20",
-  "iluminacao publica": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
-  "iluminação pública": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
-  "descarte irregular de lixo": "text-green-700 bg-white border-green-600 hover:bg-green-600/20",
+  "alagamento / esgoto": "text-cyan-700 bg-white border-cyan-600 hover:bg-cyan-600/20",
   "assalto / violencia": "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
   "assalto / violência": "text-red-700 bg-white border-red-600 hover:bg-red-600/20",
+  "buraco na via": "text-orange-700 bg-white border-orange-600 hover:bg-orange-600/20",
+  "descarte irregular de lixo": "text-green-700 bg-white border-green-600 hover:bg-green-600/20",
+  "iluminacao publica": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
+  "iluminação pública": "text-yellow-700 bg-white border-yellow-500 hover:bg-yellow-500/20",
+  "outro": "text-gray-600 bg-white border-gray-500 hover:bg-gray-500/20",
   "problema de transito": "text-blue-700 bg-white border-blue-600 hover:bg-blue-600/20",
   "problema de trânsito": "text-blue-700 bg-white border-blue-600 hover:bg-blue-600/20",
-  "alagamento / esgoto": "text-cyan-700 bg-white border-cyan-600 hover:bg-cyan-600/20",
   "vandalismo": "text-purple-700 bg-white border-purple-600 hover:bg-purple-600/20",
-  "outro": "text-gray-600 bg-white border-gray-500 hover:bg-gray-500/20",
 };
 
 export type DenunciaRow = {

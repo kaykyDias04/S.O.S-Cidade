@@ -53,15 +53,11 @@ S.O.S-Cidade/
 ### 1. Backend (API)
 ```bash
 cd fakeapi-backend
-npm install
-npm run dev        # Sobe em http://localhost:8000
-```
+npm i
+cd frontend
+npm i
 
-### 2. Frontend
-```bash
-cd sos-cidade2
-npm install
-npm run dev        # Sobe em http://localhost:3000
+docker-compose up
 ```
 
 ### Variável de Ambiente (opcional)

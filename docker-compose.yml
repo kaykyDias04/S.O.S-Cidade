@@ -9,7 +9,6 @@ services:
     volumes:
       - ./fakeapi-backend/data:/app/data
     restart: unless-stopped
-
   web:
     build:
       context: ./frontend

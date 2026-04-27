@@ -135,8 +135,10 @@ export function FormDenuncias() {
     setIsPending(true);
 
     try {
-      const generatedProtocolStr = `PROT-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const anoAtual = new Date().getFullYear();
+      const hashAleatorio = Math.random().toString(36).substring(2, 10).toUpperCase().padStart(8, '0');
 
+      const generatedProtocolStr = `SOS-${anoAtual}-${hashAleatorio}`;
       const denunciaData = {
         tipoDenuncia: tipoLabels[dataToSubmit.tipoDenuncia] || dataToSubmit.tipoDenuncia,
         identificacao: !dataToSubmit.isAnonima,

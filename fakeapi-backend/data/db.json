@@ -188,6 +188,84 @@
       "situacao": "Em andamento",
       "createdAt": "2026-04-27T13:31:51.080Z",
       "updatedAt": "2026-04-27T13:31:51.080Z"
+    },
+    {
+      "id": 13,
+      "tipoDenuncia": "Iluminação Pública",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Várzea",
+      "descricaoOcorrencia": "dfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfds",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-FVQIQM80",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:19:11.081Z",
+      "updatedAt": "2026-04-27T14:19:11.081Z"
+    },
+    {
+      "id": 14,
+      "tipoDenuncia": "Alagamento / Esgoto",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Várzea",
+      "descricaoOcorrencia": "dfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfds",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-M01IYQU9",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:19:20.542Z",
+      "updatedAt": "2026-04-27T14:19:20.542Z"
+    },
+    {
+      "id": 15,
+      "tipoDenuncia": "Descarte Irregular de Lixo",
+      "identificacao": true,
+      "nomeDenunciante": "João Silva",
+      "bairroOcorrencia": "Várzea",
+      "descricaoOcorrencia": "dfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfds",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-4LJZSTP4",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:19:38.699Z",
+      "updatedAt": "2026-04-27T14:19:38.699Z"
+    },
+    {
+      "id": 16,
+      "tipoDenuncia": "Alagamento / Esgoto",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Afogados",
+      "descricaoOcorrencia": "dfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfdsdfds",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-TEPKHCJ6",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:23:08.285Z",
+      "updatedAt": "2026-04-27T14:23:08.285Z"
+    },
+    {
+      "id": 17,
+      "tipoDenuncia": "Assalto / Violência",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Afogados",
+      "descricaoOcorrencia": " > [web builder 4/4] RUN npm run build:\n8.065       |                                          \n ^\n8.065   155 |\n8.065   156 |       if (result) {\n8.065   157 |         setGeneratedProtocol(result.protocolo || generatedProtocolStr);\n8.140 Next.js build worker exited with code: 1 and signal: null\n8.186 npm notice\n8.186 npm notice New major version of npm available! 10.8.2 -> 11.13.0\n8.186 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.13.0\n8.186 npm notice To update run: npm install -g npm@11.13.0\n8.186 npm notice\n------\n[+] up 0/2\n - Image sos-cidade-web Building                   9.7s\n - Image sos-cidade-api Building                   9.7s\nDockerfile:17\n\n--------------------\n\n  15 |     COPY . .\n\n  16 |     ENV NEXT_TELEMETRY_DISABLED=1\n\n  17 | >>> RUN npm run build\n\n  18 |\n\n  19 |     # --------- RUNNER ---------\n\n--------------------\n\ntarget web: failed to solve: process \"/bin/sh -c npm run build\" did not complete successfully: exit code: 1   \n",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-ZJKNIR2I",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:27:56.419Z",
+      "updatedAt": "2026-04-27T14:27:56.419Z"
+    },
+    {
+      "id": 18,
+      "tipoDenuncia": "Assalto / Violência",
+      "identificacao": true,
+      "nomeDenunciante": "João Silva",
+      "bairroOcorrencia": "Boa Vista",
+      "descricaoOcorrencia": " > [web builder 4/4] RUN npm run build:\n8.065       |                                          \n ^\n8.065   155 |\n8.065   156 |       if (result) {\n8.065   157 |         setGeneratedProtocol(result.protocolo || generatedProtocolStr);\n8.140 Next.js build worker exited with code: 1 and signal: null\n8.186 npm notice\n8.186 npm notice New major version of npm available! 10.8.2 -> 11.13.0\n8.186 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.13.0\n8.186 npm notice To update run: npm install -g npm@11.13.0\n8.186 npm notice\n------\n[+] up 0/2\n - Image sos-cidade-web Building                   9.7s\n - Image sos-cidade-api Building                   9.7s\nDockerfile:17\n\n--------------------\n\n  15 |     COPY . .\n\n  16 |     ENV NEXT_TELEMETRY_DISABLED=1\n\n  17 | >>> RUN npm run build\n\n  18 |\n\n  19 |     # --------- RUNNER ---------\n\n--------------------\n\ntarget web: failed to solve: process \"/bin/sh -c npm run build\" did not complete successfully: exit code: 1   \n",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "SOS-2026-6PJXVF7D",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T14:28:09.844Z",
+      "updatedAt": "2026-04-27T14:28:09.844Z"
     }
   ]
 }

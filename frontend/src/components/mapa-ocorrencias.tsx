@@ -14,7 +14,7 @@ import {
 import { type Denuncia } from "@/src/lib/api";
 
 const BAIRRO_COORDS: Record<string, [number, number]> = {
-  "Afogados": [-8.0725, -34.8987],
+  "Afogados": [-8.0700, -34.9050],
   "Água Fria": [-8.0125, -34.8975],
   "Arruda": [-8.0294, -34.8933],
   "Beberibe": [-8.0111, -34.9053],
@@ -22,10 +22,10 @@ const BAIRRO_COORDS: Record<string, [number, number]> = {
   "Boa Vista": [-8.0578, -34.8786],
   "Brasília Teimosa": [-8.0819, -34.8706],
   "Campo Grande": [-8.0358, -34.8869],
-  "Casa Amarela": [-8.0194, -34.9253],
+  "Casa Amarela": [-8.0320, -34.9160],
   "Caxangá": [-8.0303, -34.9606],
   "Coelhos": [-8.0644, -34.8864],
-  "Cordeiro": [-8.0403, -34.9181],
+  "Cordeiro": [-8.0460, -34.9350],
   "Derby": [-8.0533, -34.8978],
   "Dois Irmãos": [-8.0111, -34.9483],
   "Encruzilhada": [-8.0363, -34.8895],
@@ -231,6 +231,10 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
       }
     });
 
+    if (bairroGroups.length === 0) return;
+
+    const bounds = L.latLngBounds([]);
+
     bairroGroups.forEach((group) => {
       const marker = L.marker(group.coords, {
         icon: createClusterIcon(group.denuncias.length),
@@ -247,7 +251,12 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
       });
 
       marker.addTo(map);
+      bounds.extend(group.coords);
     });
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+    }
   }, [bairroGroups]);
 
   return (
@@ -277,8 +286,7 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
         </div>
         <div
           ref={mapRef}
-          className="w-full h-[calc(100vh-220px)] rounded-xl border shadow-sm overflow-hidden"
-          style={{ minHeight: 500 }}
+          className="relative z-0 w-full h-[500px] rounded-xl border shadow-sm overflow-hidden"
         />
       </div>
 
@@ -315,7 +323,7 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
                       {d.situacao}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
+                  <p className="text-sm text-muted-foreground break-all">
                     {d.descricaoOcorrencia}
                   </p>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">

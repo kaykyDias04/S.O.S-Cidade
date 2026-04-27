@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
               name: response.data.user.name,
               role: mappedRole,
               email: response.data.user.email,
-              id: response.data.user.id,
+              id: Number(response.data.user.id || (response.data.user as any).sub),
             };
 
             Cookies.set('authToken', response.data.token, { expires: 7 });

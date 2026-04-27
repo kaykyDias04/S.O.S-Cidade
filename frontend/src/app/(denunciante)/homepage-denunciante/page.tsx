@@ -69,8 +69,7 @@ export default function HomepageDenunciante() {
         <div className="mt-8 w-full max-w-4xl bg-sky-50 border border-sky-200 rounded-2xl p-6">
           <h3 className="font-bold text-sky-800 mb-2">Área de cobertura</h3>
           <p className="text-sky-700 text-sm">
-            Este sistema atende denúncias da <strong>Região Metropolitana do Recife — PE</strong>.
-            Bairros de Recife, Olinda, Paulista e municípios vizinhos podem ser registrados.
+            Este sistema atende denúncias da <strong>Cidade do Recife — PE</strong>.
           </p>
         </div>
       </div>

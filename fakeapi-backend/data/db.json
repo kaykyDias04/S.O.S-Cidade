@@ -5,7 +5,7 @@
       "name": "Gestor Recife",
       "email": "gestor@recife.pe.gov.br",
       "password": "123456",
-      "role": "PROFESSOR",
+      "role": "GESTOR",
       "scopes": [
         "read:*",
         "write:*"
@@ -16,7 +16,7 @@
       "name": "João Silva",
       "email": "joao.silva@gmail.com",
       "password": "123456",
-      "role": "ALUNO",
+      "role": "DENUNCIANTE",
       "scopes": [
         "read:*",
         "write:*"
@@ -27,7 +27,7 @@
       "name": "Kayky Dias",
       "email": "gestor2@recife.pe.gov.br",
       "password": "123456",
-      "role": "PROFESSOR",
+      "role": "GESTOR",
       "createdAt": "2026-04-26T00:29:32.761Z",
       "updatedAt": "2026-04-26T00:29:32.761Z"
     }
@@ -149,6 +149,19 @@
       "situacao": "Em andamento",
       "createdAt": "2026-04-26T00:27:04.013Z",
       "updatedAt": "2026-04-26T00:27:04.013Z"
+    },
+    {
+      "id": 10,
+      "tipoDenuncia": "Buraco na Via",
+      "identificacao": false,
+      "nomeDenunciante": "Anônimo",
+      "bairroOcorrencia": "Boa Vista",
+      "descricaoOcorrencia": "dafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafdsdafds",
+      "dataOcorrencia": "27/04/2026",
+      "protocolo": "PROT-1777294141694-CL0X5F",
+      "situacao": "Em andamento",
+      "createdAt": "2026-04-27T12:49:01.724Z",
+      "updatedAt": "2026-04-27T12:49:01.724Z"
     }
   ]
 }

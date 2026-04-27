@@ -35,8 +35,7 @@ export const RegisterForm = () => {
   const onRegisterSubmit = async (data: z.infer<typeof registerSchema>) => {
     setIsLoading(true);
     try {
-      // Map new role names to legacy API roles if needed
-      const apiRole = data.role === "GESTOR" ? "PROFESSOR" : "ALUNO";
+      const apiRole = data.role === "GESTOR" || "DENUNCIANTE" ? data.role : "DENUNCIANTE";
       const result = await usersAPI.create({
         name: data.name,
         email: data.email,

@@ -14,7 +14,7 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; role?: string; error?: string }>;
   logout: () => void;
   setUser: (user: User | null) => void;
 }
@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>()(
           if (response.success && response.data) {
             const rawRole = response.data.user.role;
             const mappedRole: 'DENUNCIANTE' | 'GESTOR' =
-              rawRole === 'PROFESSOR' || rawRole === 'GESTOR' ? 'GESTOR' : 'DENUNCIANTE';
+              rawRole === 'GESTOR' ? 'GESTOR' : 'DENUNCIANTE';
 
             const userData: User = {
               name: response.data.user.name,
@@ -49,7 +49,7 @@ export const useAuthStore = create<AuthState>()(
             Cookies.set('userRole', mappedRole, { expires: 7 });
             set({ user: userData, isAuthenticated: true, isLoading: false });
 
-            return { success: true };
+            return { success: true, role: mappedRole };
           } else {
             set({ isLoading: false });
             return { success: false, error: response.error || 'Login failed' };
@@ -68,8 +68,8 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage', // key in local storage
-      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }), // persist user and auth status
+      name: 'auth-storage',
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }),
     }
   )
 );

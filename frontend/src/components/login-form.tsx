@@ -45,16 +45,10 @@ export const LoginForm = () => {
       if (result.success) {
         toast.success("Login realizado com sucesso!");
 
-        const currentUser = useAuthStore.getState().user;
-
-        if (currentUser) {
-          if (currentUser.role === 'GESTOR') {
-            router.replace("/denuncias-recentes");
-          } else {
-            router.replace("/homepage-denunciante");
-          }
+        if (result.role === 'GESTOR') {
+          router.replace("/denuncias-recentes");
         } else {
-          router.replace("/");
+          router.replace("/homepage-denunciante");
         }
       } else {
         toast.error(result.error || "Email ou Senha inválida");

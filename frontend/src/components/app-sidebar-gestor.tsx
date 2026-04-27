@@ -30,7 +30,7 @@ export function AppSidebarGestor() {
   const { denuncias, loading } = useDenuncias(1, 100);
 
   const casosPrioritarios = useMemo(() => {
-    const tiposPrioritarios = ["Assalto/ Violência", "Vandalismo"];
+    const tiposPrioritarios = ["Assalto / Violência", "Vandalismo"];
     return (denuncias || [])
       .filter((d) => tiposPrioritarios.includes(d.tipoDenuncia) && d.situacao !== "Finalizada")
       .sort((a, b) => parseDate(b.dataOcorrencia).getTime() - parseDate(a.dataOcorrencia).getTime())

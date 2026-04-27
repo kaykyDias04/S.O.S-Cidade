@@ -20,7 +20,7 @@ export async function apiCall<T>(
   options?: RequestInit
 ): Promise<ApiResponse<T>> {
   try {
-    // Read token from cookie (set by useAuthStore via js-cookie)
+    
     const token = typeof document !== 'undefined'
       ? document.cookie.split('; ').find(c => c.startsWith('authToken='))?.split('=')[1] || null
       : null;

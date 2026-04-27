@@ -17,7 +17,7 @@ interface DenunciasState {
 
 export const useDenunciasStore = create<DenunciasState>((set, get) => ({
   denuncias: [],
-  loading: false, // Inicia como false, mas refetch seta true
+  loading: false, 
   error: null,
   page: 1,
   limit: 50,
@@ -63,7 +63,7 @@ export const useDenunciasStore = create<DenunciasState>((set, get) => ({
     try {
       const response = await denunciasAPI.create(data);
       if (response.success && response.data) {
-        // Opcional: já adicionar na lista local ou dar refetch
+        
         const newData = response.data as Denuncia;
         set((state) => ({ denuncias: [newData, ...state.denuncias], loading: false }));
         return newData;

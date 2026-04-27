@@ -37,7 +37,7 @@ export default function MapaOcorrenciasPage() {
       let allData: Denuncia[] = [];
       let page = 1;
       let hasMore = true;
-      const MAX_PAGES = 10; // previne loop infinito (até 1000 itens)
+      const MAX_PAGES = 10; 
 
       while (hasMore && page <= MAX_PAGES) {
         const res = await denunciasAPI.list(page, 100);

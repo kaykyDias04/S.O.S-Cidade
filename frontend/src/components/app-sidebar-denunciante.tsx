@@ -35,11 +35,11 @@ export function AppSidebarDenunciante() {
   const denunciasRecentes = useMemo(() => {
     return (denuncias || [])
       .filter((d) => {
-        // Filtra pelo userId para capturar tanto denúncias identificadas quanto anônimas
+        
         if (user?.id && (d as any).userId) {
           return (d as any).userId === user.id;
         }
-        // Fallback: filtra pelo nome para denúncias antigas sem userId
+        
         return d.nomeDenunciante === user?.name;
       })
       .slice(0, 2)

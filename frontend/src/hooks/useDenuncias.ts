@@ -25,7 +25,7 @@ export function useDenuncias(
     } else {
       store.fetchDenuncias();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [initialPage, initialLimit]);
 
   return {
@@ -146,7 +146,7 @@ export function useDenuncia(id?: number): UseDenunciaReturn {
 
   useEffect(() => {
     if (id) refetch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [id]);
 
   return {

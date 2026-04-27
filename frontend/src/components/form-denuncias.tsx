@@ -158,7 +158,7 @@ export function FormDenuncias() {
         setIsConfirmModalOpen(false);
         setDataToSubmit(null);
 
-        // Refresh the global store so gestor table sees new data
+        
         await fetchDenuncias();
 
         form.reset({

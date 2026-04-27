@@ -177,7 +177,7 @@ export function DenunciasDataTable({ data }: { readonly data: DenunciaRow[] }) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 8 });
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 12 });
   const [localData, setLocalData] = React.useState<DenunciaRow[]>(data);
 
   React.useEffect(() => {

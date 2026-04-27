@@ -82,6 +82,7 @@ export interface Denuncia {
   tipoDenuncia: string;
   identificacao: boolean;
   nomeDenunciante: string;
+  userId?: number;
   bairroOcorrencia: string;
   descricaoOcorrencia: string;
   dataOcorrencia: string;

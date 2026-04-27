@@ -34,14 +34,21 @@ export function AppSidebarDenunciante() {
 
   const denunciasRecentes = useMemo(() => {
     return (denuncias || [])
-      .filter((d) => d.nomeDenunciante === user?.name || d.nomeDenunciante === "Anônimo")
+      .filter((d) => {
+        // Filtra pelo userId para capturar tanto denúncias identificadas quanto anônimas
+        if (user?.id && (d as any).userId) {
+          return (d as any).userId === user.id;
+        }
+        // Fallback: filtra pelo nome para denúncias antigas sem userId
+        return d.nomeDenunciante === user?.name;
+      })
       .slice(0, 2)
       .map((d) => ({
         id: d.protocolo,
         status: d.situacao,
         statusColor: getStatusColor(d.situacao),
       }));
-  }, [denuncias, user?.name]);
+  }, [denuncias, user]);
 
   return (
     <Sidebar className="bg-stone-100 p-6 rounded-2xl flex flex-col">

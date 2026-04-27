@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { DenuncianteDenunciasDataTable, type DenunciaRow } from "@/src/components/denunciante-data-table";
 import { useDenuncias } from "@/src/hooks/useDenuncias";
 import { useAuthStore } from "@/src/store/useAuthStore";
+import { DataTableSkeleton } from "@/src/components/data-table-skeleton";
 
 export default function MinhasDenunciasPage() {
   const { denuncias, loading, error, refetch } = useDenuncias(1, 50);
@@ -11,10 +12,17 @@ export default function MinhasDenunciasPage() {
   const [data, setData] = useState<DenunciaRow[]>([]);
 
   const minhasDenuncias = useMemo(() => {
-    if (!denuncias || !user?.name) return [];
+    if (!denuncias || !user) return [];
 
     return denuncias
-      .filter((d) => d.nomeDenunciante === user.name)
+      .filter((d) => {
+        // Filtra pelo userId para capturar tanto denúncias identificadas quanto anônimas
+        if (user.id && (d as any).userId) {
+          return (d as any).userId === user.id;
+        }
+        // Fallback: filtra pelo nome para denúncias antigas sem userId
+        return d.nomeDenunciante === user.name;
+      })
       .map((d) => ({
         id: d.id,
         tipoDenuncia: d.tipoDenuncia,
@@ -26,7 +34,7 @@ export default function MinhasDenunciasPage() {
         protocolo: d.protocolo,
         situacao: d.situacao,
       }));
-  }, [denuncias, user?.name]);
+  }, [denuncias, user]);
 
   useEffect(() => {
     setData(minhasDenuncias);
@@ -34,8 +42,8 @@ export default function MinhasDenunciasPage() {
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center p-8">
-        <p className="text-gray-600">Carregando denúncias...</p>
+      <div className="w-full">
+        <DataTableSkeleton columns={6} rows={8} />
       </div>
     );
   }

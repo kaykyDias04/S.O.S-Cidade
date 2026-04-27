@@ -14,7 +14,7 @@ export default function DenunciasRecentesPage() {
         id: d.id,
         tipoDenuncia: d.tipoDenuncia,
         identificacao: d.identificacao,
-        nomeDenunciante: (d as any).nomeDenunciante || (d as any).nomeAluno || "Anônimo",
+        nomeDenunciante: (d as any).nomeDenunciante || (d as any).nomeDenunciante || "Anônimo",
         bairroOcorrencia: (d as any).bairroOcorrencia || (d as any).localOcorrencia || "",
         descricaoOcorrencia: d.descricaoOcorrencia,
         dataOcorrencia: d.dataOcorrencia,

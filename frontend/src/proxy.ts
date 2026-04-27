@@ -18,7 +18,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(dashboardUrl, request.url));
   }
   const denuncianteRoutes = ['/homepage-denunciante', '/minhas-denuncias', '/nova-denuncia'];
-  const gestorRoutes = ['/denuncias-recentes'];
+  const gestorRoutes = ['/denuncias-recentes', '/mapa-ocorrencias'];
 
   if (token && !isPublicPath) {
     if (role === 'GESTOR' && denuncianteRoutes.some(r => path.startsWith(r))) {

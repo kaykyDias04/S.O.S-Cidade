@@ -30,12 +30,10 @@ export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: 
     setIsUpdating(true);
 
     try {
-      // Find the denuncia ID from the store by matching protocolo
       const denuncias = useDenunciasStore.getState().denuncias;
       const denuncia = denuncias.find(d => d.protocolo === row.original.protocolo);
 
       if (denuncia) {
-        // Call the backend API to persist the status change
         const response = await denunciasAPI.update(denuncia.id, { situacao: pendingStatus });
 
         if (response.success) {
@@ -46,13 +44,11 @@ export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: 
         }
       }
 
-      // Update local table state
       const tableMeta = table?.options.meta as any;
       if (tableMeta && tableMeta.updateRow) {
         tableMeta.updateRow(row.original.protocolo, pendingStatus);
       }
 
-      // Also update the global store
       useDenunciasStore.getState().updateDenunciaLocalmente(row.original.protocolo, pendingStatus);
 
     } catch (error) {
@@ -68,7 +64,7 @@ export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: 
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8">
+          <Button variant="outline" size="sm" className="h-8 cursor-pointer">
             <Edit className="w-3 h-3 mr-2" />
             Editar
           </Button>

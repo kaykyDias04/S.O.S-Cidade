@@ -37,6 +37,7 @@ export function SiteHeader() {
   const breadcrumbNames: Record<string, string> = {
     "homepage-denunciante": "Início",
     "denuncias-recentes": "Denúncias Recentes",
+    "minhas-denuncias": "Minhas Denúncias",
     "nova-denuncia": "Nova Denúncia",
   };
 

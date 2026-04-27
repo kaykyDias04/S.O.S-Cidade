@@ -16,6 +16,7 @@ import { useMemo } from "react";
 
 const items = [
   { title: "Início", url: "/homepage-denunciante" },
+  { title: "Minhas Denúncias", url: "/minhas-denuncias" },
   { title: "Nova Denúncia", url: "/nova-denuncia" },
 ];
 

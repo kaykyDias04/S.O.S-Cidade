@@ -17,11 +17,14 @@ export function proxy(request: NextRequest) {
     const dashboardUrl = role === 'GESTOR' ? '/denuncias-recentes' : '/homepage-denunciante';
     return NextResponse.redirect(new URL(dashboardUrl, request.url));
   }
+  const denuncianteRoutes = ['/homepage-denunciante', '/minhas-denuncias', '/nova-denuncia'];
+  const gestorRoutes = ['/denuncias-recentes'];
+
   if (token && !isPublicPath) {
-    if (role === 'GESTOR' && path.startsWith('/homepage-denunciante')) {
+    if (role === 'GESTOR' && denuncianteRoutes.some(r => path.startsWith(r))) {
       return NextResponse.redirect(new URL('/denuncias-recentes', request.url));
     }
-    if (role === 'DENUNCIANTE' && path.startsWith('/denuncias-recentes')) {
+    if (role === 'DENUNCIANTE' && gestorRoutes.some(r => path.startsWith(r))) {
       return NextResponse.redirect(new URL('/homepage-denunciante', request.url));
     }
   }

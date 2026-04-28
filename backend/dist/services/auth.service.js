@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const user_repository_1 = require("../repositories/user.repository");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class AuthService {
     constructor() {
@@ -25,7 +25,7 @@ class AuthService {
             const user = yield this.userRepository.findByEmail(email);
             if (!user)
                 throw new Error('Invalid credentials');
-            const isMatch = yield bcrypt_1.default.compare(password, user.password);
+            const isMatch = yield bcryptjs_1.default.compare(password, user.password);
             if (!isMatch)
                 throw new Error('Invalid credentials');
             const JWT_SECRET = process.env.JWT_SECRET || 'supersecret123';

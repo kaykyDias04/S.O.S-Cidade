@@ -7,6 +7,6 @@ const app_1 = __importDefault(require("./app"));
 const cron_1 = require("./jobs/cron");
 const PORT = process.env.PORT || 8000;
 (0, cron_1.startCronJobs)();
-app_1.default.listen(PORT, () => {
+app_1.default.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });

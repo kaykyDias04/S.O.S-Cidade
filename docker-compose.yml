@@ -1,14 +1,43 @@
+version: '3.8'
+
 services:
+  db:
+    image: postgres:15
+    container_name: sos-cidade-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: soscidade
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: sos-cidade-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
   api:
     build:
-      context: ./fakeapi-backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: sos-cidade-api
     ports:
       - "8000:8000"
-    volumes:
-      - ./fakeapi-backend/data:/app/data
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/soscidade?schema=public
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=supersecret123
+      - PORT=8000
+    depends_on:
+      - db
+      - redis
     restart: unless-stopped
+
   web:
     build:
       context: ./frontend
@@ -16,6 +45,11 @@ services:
     container_name: sos-cidade-web
     ports:
       - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     restart: unless-stopped
     depends_on:
       - api
+
+volumes:
+  pgdata:

@@ -1,0 +1,36 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String
+  password  String
+  role      String     @default("DENUNCIANTE")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  denuncias Denuncia[]
+}
+
+model Denuncia {
+  id                  Int      @id @default(autoincrement())
+  tipoDenuncia        String
+  identificacao       Boolean
+  nomeDenunciante     String
+  userId              Int?
+  user                User?    @relation(fields: [userId], references: [id])
+  bairroOcorrencia    String
+  descricaoOcorrencia String
+  dataOcorrencia      String
+  protocolo           String   @unique
+  situacao            String   @default("Em Andamento")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

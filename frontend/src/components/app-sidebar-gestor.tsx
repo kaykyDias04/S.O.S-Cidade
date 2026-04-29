@@ -15,6 +15,7 @@ import { useDenuncias } from "@/src/hooks/useDenuncias";
 import { useAuthStore } from "@/src/store/useAuthStore";
 
 const items = [
+  { title: "Dashboard", url: "/dashboard" },
   { title: "Denúncias Recentes", url: "/denuncias-recentes" },
   { title: "Mapa de Ocorrências", url: "/mapa-ocorrencias" },
 ];

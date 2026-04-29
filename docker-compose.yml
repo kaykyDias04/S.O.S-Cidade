@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15
@@ -25,6 +23,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: dev
     container_name: sos-cidade-api
     ports:
       - "8000:8000"
@@ -33,6 +32,9 @@ services:
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET=supersecret123
       - PORT=8000
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       - db
       - redis
@@ -42,11 +44,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: dev
     container_name: sos-cidade-web
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     restart: unless-stopped
     depends_on:
       - api

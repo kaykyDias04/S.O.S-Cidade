@@ -8,6 +8,15 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci
 
+# --------- DEV ---------
+FROM base AS dev
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
+
 # --------- BUILDER ---------
 FROM base AS builder
 WORKDIR /app

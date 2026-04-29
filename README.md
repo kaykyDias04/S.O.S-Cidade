@@ -128,6 +128,7 @@ Ao fazer login, o backend injeta as credenciais do usuario em um Cookie seguro e
 | /homepage-denunciante    | Denunciante  | Tela de boas-vindas do cidadao                    |
 | /nova-denuncia           | Denunciante  | Formulario guiado de abertura de denuncia         |
 | /minhas-denuncias        | Denunciante  | Historico de solicitacoes do usuario atual        |
+| /dashboard               | Gestor       | Visão estatística básica das denúncias + filtros  |
 | /denuncias-recentes      | Gestor       | Painel de administracao (Tabela de ocorrencias)   |
 | /mapa-ocorrencias        | Gestor       | Visao cartografica dos chamados em aberto         |
 

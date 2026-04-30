@@ -13,7 +13,7 @@ const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const denuncia_routes_1 = __importDefault(require("./routes/denuncia.routes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+    origin: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000' || 'https://sos-cidade-front.vercel.app',
     credentials: true
 }));
 app.use(express_1.default.json());

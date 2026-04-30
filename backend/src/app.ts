@@ -13,7 +13,8 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
-  'https://sos-cidade-front.vercel.app'
+  'https://sos-cidade-front.vercel.app',
+  'https://sos-cidade-front.vercel.app/'
 ];
 
 app.use(cors({
@@ -21,7 +22,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, false);
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

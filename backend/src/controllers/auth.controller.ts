@@ -10,7 +10,7 @@ export class AuthController {
       const { user, token } = await this.authService.login(email, password);
       
       // Set token as an HTTP-only cookie
-      res.cookie('token', token, {
+      res.cookie('authToken', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
@@ -24,7 +24,7 @@ export class AuthController {
   }
 
   async logout(req: Request, res: Response) {
-    res.clearCookie('token');
+    res.clearCookie('authToken');
     res.json({ success: true });
   }
 }

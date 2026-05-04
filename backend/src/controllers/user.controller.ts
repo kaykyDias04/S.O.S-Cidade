@@ -8,8 +8,17 @@ export class UserController {
     try {
       const user = await this.userService.createUser(req.body);
       res.json({ id: user.id, email: user.email, name: user.name, role: user.role });
-    } catch (error) {
-      res.status(500).json({ success: false, error: 'Internal server error' });
+    } catch (error: any) {
+      console.error('Error creating user:', error);
+      
+      if (error.code === 'P2002') {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Este email já está cadastrado.' 
+        });
+      }
+
+      res.status(500).json({ success: false, error: 'Erro interno no servidor' });
     }
   }
 }

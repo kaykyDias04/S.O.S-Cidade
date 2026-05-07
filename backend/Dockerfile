@@ -21,4 +21,5 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 EXPOSE 8000
+# 'npm start' will run: prisma migrate deploy && node dist/server.js
 CMD ["npm", "start"]

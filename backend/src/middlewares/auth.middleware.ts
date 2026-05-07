@@ -2,13 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+  // Read from cookie (name: authToken) OR Authorization header
+  const token = req.cookies?.authToken || req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
   
   try {
-    const JWT_SECRET = process.env.JWT_SECRET || 'supersecret123';
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) throw new Error('JWT_SECRET not configured');
     const decoded = jwt.verify(token, JWT_SECRET);
     (req as any).user = decoded;
     next();

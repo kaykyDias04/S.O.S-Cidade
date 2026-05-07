@@ -9,12 +9,13 @@ export class AuthController {
       const { email, password } = req.body;
       const { user, token } = await this.authService.login(email, password);
       
-      // Set token as an HTTP-only cookie
+      // Cross-domain cookies (Vercel frontend + Render backend) require
+      // sameSite: 'none' and secure: true
       res.cookie('authToken', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        secure: true, // always true — Render and Vercel are always HTTPS
+        sameSite: 'none', // required for cross-domain requests
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
       });
 
       res.json({ user, token });
@@ -23,8 +24,12 @@ export class AuthController {
     }
   }
 
-  async logout(req: Request, res: Response) {
-    res.clearCookie('authToken');
+  async logout(_req: Request, res: Response) {
+    res.clearCookie('authToken', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
     res.json({ success: true });
   }
 }

@@ -1,15 +1,15 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/server.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "src/server.ts"
-    }
-  ]
+  "_comment": "This backend is deployed to Render, NOT Vercel. This file is kept for reference only.",
+  "_render_config": {
+    "buildCommand": "npm install && npm run build",
+    "startCommand": "npm start",
+    "envVars": [
+      "DATABASE_URL",
+      "REDIS_URL",
+      "JWT_SECRET",
+      "FRONTEND_URL",
+      "NODE_ENV",
+      "PORT"
+    ]
+  }
 }

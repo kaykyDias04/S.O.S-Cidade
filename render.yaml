@@ -1,0 +1,32 @@
+# render.yaml — Infrastructure-as-Code for Render.com
+# Docs: https://render.com/docs/yaml-spec
+#
+# To use: connect this repo on render.com and it will auto-detect this file.
+
+services:
+  - type: web
+    name: sos-cidade-api
+    runtime: node
+    rootDir: backend
+    region: oregon  # change to 'frankfurt' for lower latency from Brazil
+    plan: free      # change to 'starter' for production workloads
+
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+
+    healthCheckPath: /
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      # Set these manually in the Render dashboard (sensitive values):
+      - key: DATABASE_URL
+        sync: false  # will prompt you to set in dashboard
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false

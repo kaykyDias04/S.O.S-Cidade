@@ -37,12 +37,14 @@ export async function apiCall<T>(
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers,
+      // Required for cross-domain cookies (Vercel frontend ↔ Render backend)
+      credentials: 'include',
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
-        errorData.message || `API Error: ${response.status} ${response.statusText}`
+        errorData.error || errorData.message || `API Error: ${response.status} ${response.statusText}`
       );
     }
 

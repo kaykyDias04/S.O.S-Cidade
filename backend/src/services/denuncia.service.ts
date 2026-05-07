@@ -1,5 +1,5 @@
 import { DenunciaRepository } from '../repositories/denuncia.repository';
-import { redis } from '../lib/redis';
+import { redisGet, redisSet, redisDel, redisKeys } from '../lib/redis';
 
 export class DenunciaService {
   private denunciaRepository = new DenunciaRepository();
@@ -8,7 +8,7 @@ export class DenunciaService {
     const cacheKey = `denuncias:${page}:${limit}`;
     
     // Try cache first
-    const cached = await redis.get(cacheKey);
+    const cached = await redisGet(cacheKey);
     if (cached) {
       return JSON.parse(cached);
     }
@@ -22,7 +22,7 @@ export class DenunciaService {
     const result = { data: denuncias, meta: { total, page, limit } };
     
     // Store in cache for 60 seconds
-    await redis.set(cacheKey, JSON.stringify(result), 'EX', 60);
+    await redisSet(cacheKey, JSON.stringify(result), 60);
 
     return result;
   }
@@ -65,9 +65,7 @@ export class DenunciaService {
   }
 
   private async clearCache() {
-    const keys = await redis.keys('denuncias:*');
-    if (keys.length > 0) {
-      await redis.del(...keys);
-    }
+    const keys = await redisKeys('denuncias:*');
+    await redisDel(...keys);
   }
 }

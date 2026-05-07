@@ -11,12 +11,16 @@ services:
     region: oregon  # change to 'frankfurt' for lower latency from Brazil
     plan: free      # change to 'starter' for production workloads
 
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    # IMPORTANT: quotes are required so '&&' is not parsed as a YAML anchor.
+    # --include=dev ensures devDependencies (TypeScript, @types/*) are installed during build.
+    buildCommand: "npm install --include=dev && npm run build"
+    startCommand: "npm start"
 
     healthCheckPath: /
 
     envVars:
+      # NODE_ENV is set here for runtime only (after build completes).
+      # During build, npm uses the value from the build environment — not this list.
       - key: NODE_ENV
         value: production
       - key: PORT

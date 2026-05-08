@@ -13,4 +13,12 @@ export class UserService {
       role: data.role || 'DENUNCIANTE'
     });
   }
+
+  async getUsersByRole(role: string) {
+    return this.userRepository.findByRole(role);
+  }
+
+  async deleteUser(id: number) {
+    return this.userRepository.delete(id);
+  }
 }

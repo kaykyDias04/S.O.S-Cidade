@@ -149,4 +149,15 @@ export const usersAPI = {
       body: JSON.stringify(data),
     });
   },
+
+  list: async (role?: string) => {
+    const url = role ? `/users?role=${role}` : '/users';
+    return apiCall<User[]>(url);
+  },
+
+  delete: async (id: number) => {
+    return apiCall<void>(`/users/${id}`, {
+      method: 'DELETE',
+    });
+  },
 };

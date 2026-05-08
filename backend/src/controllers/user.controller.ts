@@ -21,4 +21,30 @@ export class UserController {
       res.status(500).json({ success: false, error: 'Erro interno no servidor' });
     }
   }
+
+  async getAll(req: Request, res: Response) {
+    try {
+      const role = req.query.role as string;
+      const users = role ? await this.userService.getUsersByRole(role) : [];
+      res.json({ success: true, data: users });
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      res.status(500).json({ success: false, error: 'Erro interno no servidor' });
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ success: false, error: 'ID inválido' });
+      }
+      
+      await this.userService.deleteUser(id);
+      res.json({ success: true, message: 'Usuário deletado com sucesso' });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      res.status(500).json({ success: false, error: 'Erro interno no servidor' });
+    }
+  }
 }

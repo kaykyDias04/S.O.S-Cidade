@@ -18,6 +18,7 @@ const items = [
   { title: "Dashboard", url: "/dashboard" },
   { title: "Denúncias Recentes", url: "/denuncias-recentes" },
   { title: "Mapa de Ocorrências", url: "/mapa-ocorrencias" },
+  { title: "Gestores", url: "/gestores" },
 ];
 
 const parseDate = (dateString: string) => {

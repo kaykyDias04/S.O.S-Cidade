@@ -26,7 +26,7 @@ export class UserController {
     try {
       const role = req.query.role as string;
       const users = role ? await this.userService.getUsersByRole(role) : [];
-      res.json({ success: true, data: users });
+      res.json(users);
     } catch (error) {
       console.error('Error fetching users:', error);
       res.status(500).json({ success: false, error: 'Erro interno no servidor' });

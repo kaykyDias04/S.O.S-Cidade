@@ -16,6 +16,7 @@ import {
   Cell,
 } from "recharts";
 import { Filter, AlertCircle } from "lucide-react";
+import { DashboardSkeleton } from "@/src/components/dashboard-skeleton";
 
 const COLORS = ['rgba(44, 105, 175, 1)', '#58d69bff', '#ffdd55ff', '#c65b5bff', '#b48edcff', '#8fa2b9ff'];
 
@@ -73,11 +74,7 @@ export default function DashboardPage() {
   }, [filteredDenuncias]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-full min-h-[50vh]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-400"></div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (error) {

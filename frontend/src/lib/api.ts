@@ -37,7 +37,7 @@ export async function apiCall<T>(
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers,
-      // Required for cross-domain cookies (Vercel frontend ↔ Render backend)
+      
       credentials: 'include',
     });
 

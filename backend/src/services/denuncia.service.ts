@@ -7,7 +7,7 @@ export class DenunciaService {
   async getDenuncias(page: number, limit: number) {
     const cacheKey = `denuncias:${page}:${limit}`;
     
-    // Try cache first
+    
     const cached = await redisGet(cacheKey);
     if (cached) {
       return JSON.parse(cached);
@@ -21,7 +21,7 @@ export class DenunciaService {
 
     const result = { data: denuncias, meta: { total, page, limit } };
     
-    // Store in cache for 60 seconds
+    
     await redisSet(cacheKey, JSON.stringify(result), 60);
 
     return result;
@@ -48,7 +48,7 @@ export class DenunciaService {
       updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined,
     });
 
-    // Invalidate cache
+    
     await this.clearCache();
     return denuncia;
   }

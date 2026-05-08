@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DenunciasDataTable, DenunciaRow } from "@/src/components/gestor-data-table";
 import { useDenuncias } from "@/src/hooks/useDenuncias";
+import { DataTableSkeleton } from "@/src/components/data-table-skeleton";
 
 export default function DenunciasRecentesPage() {
   const { denuncias, loading, error, refetch } = useDenuncias(1, 50);
@@ -27,8 +28,8 @@ export default function DenunciasRecentesPage() {
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center p-8">
-        <p className="text-gray-600">Carregando denúncias...</p>
+      <div className="w-full">
+        <DataTableSkeleton columns={8} rows={8} />
       </div>
     );
   }

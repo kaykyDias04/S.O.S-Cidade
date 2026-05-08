@@ -9,13 +9,13 @@ export class AuthController {
       const { email, password } = req.body;
       const { user, token } = await this.authService.login(email, password);
       
-      // Cross-domain cookies (Vercel frontend + Render backend) require
-      // sameSite: 'none' and secure: true
+      
+      
       res.cookie('authToken', token, {
         httpOnly: true,
-        secure: true, // always true — Render and Vercel are always HTTPS
-        sameSite: 'none', // required for cross-domain requests
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        secure: true, 
+        sameSite: 'none', 
+        maxAge: 24 * 60 * 60 * 1000, 
       });
 
       res.json({ user, token });

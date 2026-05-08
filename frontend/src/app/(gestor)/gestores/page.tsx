@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { GestoresDataTable } from "@/src/components/gestores-data-table";
 import { User, usersAPI } from "@/src/lib/api";
+import { DataTableSkeleton } from "@/src/components/data-table-skeleton";
 
 export default function GestoresPage() {
   const [data, setData] = useState<User[]>([]);
@@ -32,8 +33,8 @@ export default function GestoresPage() {
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center p-8">
-        <p className="text-gray-600">Carregando gestores...</p>
+      <div className="w-full">
+        <DataTableSkeleton columns={4} rows={6} />
       </div>
     );
   }

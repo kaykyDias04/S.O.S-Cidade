@@ -10,25 +10,25 @@ import denunciaRoutes from './routes/denuncia.routes';
 
 const app = express();
 
-// Build allowed origins from env vars + local defaults
+
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
 ];
 
-// Accept multiple frontend URLs from a comma-separated env var, e.g.:
-// FRONTEND_URL=https://sos-cidade-front.vercel.app,https://sos-cidade.vercel.app
+
+
 if (process.env.FRONTEND_URL) {
   process.env.FRONTEND_URL.split(',').forEach((url) => {
     allowedOrigins.push(url.trim());
-    // Also accept without trailing slash
+    
     allowedOrigins.push(url.trim().replace(/\/$/, ''));
   });
 }
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (curl, Postman, server-to-server)
+    
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -41,7 +41,7 @@ const corsOptions: cors.CorsOptions = {
   optionsSuccessStatus: 200,
 };
 
-// Handle OPTIONS preflight for all routes BEFORE other middleware
+
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 

@@ -3,14 +3,14 @@ import { prisma } from '../lib/prisma';
 import { redisKeys, redisDel } from '../lib/redis';
 
 export const startCronJobs = () => {
-  // Limpeza de cache órfão às 3h da manhã
+  
   cron.schedule('0 3 * * *', async () => {
     console.log('[CRON] Cleaning up old redis cache...');
     const keys = await redisKeys('denuncias:*');
     await redisDel(...keys);
   });
 
-  // Cálculo de métricas diárias (exemplo)
+  
   cron.schedule('0 0 * * *', async () => {
     console.log('[CRON] Consolidating daily metrics...');
     const count = await prisma.denuncia.count({

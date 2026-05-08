@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
-  // Read from cookie (name: authToken) OR Authorization header
+  
   const token = req.cookies?.authToken || req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ success: false, error: 'Unauthorized' });

@@ -38,10 +38,15 @@ export const RegisterForm = () => {
         toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
         form.reset();
       } else {
-        toast.error(result.error || "Erro ao realizar cadastro.");
+        const errorMsg = result.error || "";
+        if (errorMsg.toLowerCase().includes("user already exists")) {
+          toast.error("Este e-mail já está em uso. Tente outro.");
+        } else {
+          toast.error(errorMsg || "Não foi possível realizar o cadastro. Tente novamente.");
+        }
       }
     } catch {
-      toast.error("Erro ao realizar cadastro.");
+      toast.error("Ocorreu um erro inesperado ao realizar o cadastro.");
     } finally {
       setIsLoading(false);
     }

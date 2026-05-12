@@ -72,11 +72,16 @@ export const CriarGestorModal = ({ isOpen, onClose, onSuccess }: CriarGestorModa
         onClose();
         onSuccess();
       } else {
-        toast.error(response.error || "Erro ao criar gestor.");
+        const errorMsg = response.error || "";
+        if (errorMsg.toLowerCase().includes("user already exists")) {
+          toast.error("Este e-mail já está sendo usado por outro usuário.");
+        } else {
+          toast.error(errorMsg || "Erro ao criar novo gestor. Tente novamente.");
+        }
         setIsConfirmationOpen(false);
       }
     } catch (err: any) {
-      toast.error(err.message || "Erro desconhecido ao criar gestor.");
+      toast.error("Ocorreu uma falha na comunicação com o servidor.");
       setIsConfirmationOpen(false);
     } finally {
       setIsSubmitting(false);

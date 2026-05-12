@@ -38,8 +38,9 @@ export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: 
 
         if (response.success) {
           toast.success(`Status atualizado para "${pendingStatus}"`);
-        } else {
-          toast.error("Erro ao atualizar status no servidor.");
+        }
+        if (response.error) {
+          toast.error("Não foi possível atualizar o status no momento. Tente novamente.");
           return;
         }
       }
@@ -52,8 +53,7 @@ export const EditStatusCell = ({ row, table }: { row: Row<DenunciaRow>; table?: 
       useDenunciasStore.getState().updateDenunciaLocalmente(row.original.protocolo, pendingStatus);
 
     } catch (error) {
-      console.error("Erro ao atualizar situação", error);
-      toast.error("Erro ao atualizar status.");
+      toast.error("Houve um problema ao salvar as alterações.");
     } finally {
       setIsUpdating(false);
       setIsModalOpen(false);

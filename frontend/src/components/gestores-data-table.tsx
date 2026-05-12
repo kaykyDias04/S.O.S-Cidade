@@ -41,13 +41,13 @@ const ActionCell = ({ row, onDeleteSuccess }: { row: Row<User>; onDeleteSuccess:
     try {
       const response = await usersAPI.delete(row.original.id);
       if (response.success) {
-        toast.success("Gestor excluído com sucesso.");
+        toast.success("Gestor removido com sucesso.");
         onDeleteSuccess();
       } else {
-        toast.error(response.error || "Erro ao excluir gestor.");
+        toast.error(response.error || "Não foi possível remover o gestor selecionado.");
       }
     } catch (error) {
-      toast.error("Erro ao excluir gestor.");
+      toast.error("Ocorreu uma falha ao tentar excluir o gestor. Tente novamente.");
     } finally {
       setIsDeleting(false);
       setIsModalOpen(false);

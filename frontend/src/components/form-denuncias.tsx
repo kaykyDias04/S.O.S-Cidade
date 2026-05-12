@@ -175,11 +175,11 @@ export function FormDenuncias() {
 
         toast.success("Denúncia registrada com sucesso!");
       } else {
-        toast.error("Falha ao registrar denúncia. Tente novamente.");
+        toast.error("Ocorreu um problema ao registrar sua denúncia. Verifique os dados e tente novamente.");
         setIsConfirmModalOpen(false);
       }
     } catch (error) {
-      toast.error("Houve um erro ao enviar a denúncia.");
+      toast.error("Não foi possível enviar sua denúncia. Verifique sua conexão com a internet.");
       console.error(error);
       setIsConfirmModalOpen(false);
     } finally {

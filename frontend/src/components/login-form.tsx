@@ -43,7 +43,7 @@ export const LoginForm = () => {
       const result = await login(email, password);
 
       if (result.success) {
-        toast.success("Login realizado com sucesso!");
+        toast.success("Login realizado com sucesso! Bem-vindo de volta.");
 
         if (result.role === 'GESTOR') {
           router.replace("/dashboard");
@@ -51,11 +51,15 @@ export const LoginForm = () => {
           router.replace("/homepage-denunciante");
         }
       } else {
-        toast.error(result.error || "Email ou Senha inválida");
+        const errorMsg = result.error || "";
+        if (errorMsg.toLowerCase().includes("invalid credentials") || errorMsg.toLowerCase().includes("invalid login credentials")) {
+          toast.error("E-mail ou senha incorretos. Por favor, verifique seus dados.");
+        } else {
+          toast.error(errorMsg || "Não foi possível realizar o login. Tente novamente.");
+        }
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Erro ao fazer login";
-      toast.error(message);
+      toast.error("Ocorreu um erro inesperado ao fazer login. Tente novamente mais tarde.");
     } finally {
       setIsLoading(false);
     }

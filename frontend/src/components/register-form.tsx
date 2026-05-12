@@ -9,19 +9,11 @@ import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { usersAPI } from "@/src/lib/api";
 import { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
 
 const registerSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
   email: z.string().email({ message: "Por favor, insira um email válido." }),
   password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
-  role: z.enum(["DENUNCIANTE", "GESTOR"], { message: "Selecione um perfil." }),
 });
 
 export const RegisterForm = () => {
@@ -29,18 +21,17 @@ export const RegisterForm = () => {
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", email: "", password: "", role: "DENUNCIANTE" },
+    defaultValues: { name: "", email: "", password: "" },
   });
 
   const onRegisterSubmit = async (data: z.infer<typeof registerSchema>) => {
     setIsLoading(true);
     try {
-      const apiRole = data.role === "GESTOR" || "DENUNCIANTE" ? data.role : "DENUNCIANTE";
       const result = await usersAPI.create({
         name: data.name,
         email: data.email,
         password: data.password,
-        role: apiRole,
+        role: "DENUNCIANTE",
       });
 
       if (result.success) {
@@ -96,27 +87,6 @@ export const RegisterForm = () => {
                 <FormControl>
                   <Input className="bg-stone-100 h-12" type="password" placeholder="******" {...field} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Perfil</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="bg-stone-100 h-12">
-                      <SelectValue placeholder="Selecione seu perfil" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="DENUNCIANTE">Denunciante (Cidadão)</SelectItem>
-                    <SelectItem value="GESTOR">Gestor (Prefeitura / Órgão Público)</SelectItem>
-                  </SelectContent>
-                </Select>
                 <FormMessage />
               </FormItem>
             )}

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -9,10 +12,20 @@ import {
   DialogTitle,
 } from "@/src/components/ui/dialog";
 import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/components/ui/form";
 import { usersAPI } from "@/src/lib/api";
 import { ConfirmationModal } from "./confimation-form-dialog";
 import { toast } from "sonner";
+
+const gestorSchema = z.object({
+  name: z.string().min(2, { message: "O nome deve ter no mínimo 2 caracteres." }),
+  email: z.string().email({ message: "Por favor, insira um email válido." }),
+  password: z.string().min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
+  confirmPassword: z.string().min(6, { message: "A confirmação de senha deve ter no mínimo 6 caracteres." }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "As senhas não coincidem.",
+  path: ["confirmPassword"],
+});
 
 interface CriarGestorModalProps {
   isOpen: boolean;
@@ -21,56 +34,49 @@ interface CriarGestorModalProps {
 }
 
 export const CriarGestorModal = ({ isOpen, onClose, onSuccess }: CriarGestorModalProps) => {
-  const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    senha: "",
-    confirmacaoSenha: "",
-  });
-  const [error, setError] = useState<string | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingData, setPendingData] = useState<z.infer<typeof gestorSchema> | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(null);
-  };
+  const form = useForm<z.infer<typeof gestorSchema>>({
+    resolver: zodResolver(gestorSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-  const handleInitialSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.nome || !formData.email || !formData.senha || !formData.confirmacaoSenha) {
-      setError("Todos os campos são obrigatórios.");
-      return;
-    }
-    if (formData.senha !== formData.confirmacaoSenha) {
-      setError("As senhas não coincidem.");
-      return;
-    }
+  const onFormSubmit = (data: z.infer<typeof gestorSchema>) => {
+    setPendingData(data);
     setIsConfirmationOpen(true);
   };
 
   const handleConfirmSubmit = async () => {
+    if (!pendingData) return;
+
     setIsSubmitting(true);
     try {
       const response = await usersAPI.create({
-        name: formData.nome,
-        email: formData.email,
-        password: formData.senha,
+        name: pendingData.name,
+        email: pendingData.email,
+        password: pendingData.password,
         role: "GESTOR",
       });
 
       if (response.success) {
         toast.success("Gestor criado com sucesso!");
-        setFormData({ nome: "", email: "", senha: "", confirmacaoSenha: "" });
+        form.reset();
         setIsConfirmationOpen(false);
         onClose();
         onSuccess();
       } else {
-        setError(response.error || "Erro ao criar gestor.");
+        toast.error(response.error || "Erro ao criar gestor.");
         setIsConfirmationOpen(false);
       }
     } catch (err: any) {
-      setError(err.message || "Erro desconhecido ao criar gestor.");
+      toast.error(err.message || "Erro desconhecido ao criar gestor.");
       setIsConfirmationOpen(false);
     } finally {
       setIsSubmitting(false);
@@ -81,66 +87,78 @@ export const CriarGestorModal = ({ isOpen, onClose, onSuccess }: CriarGestorModa
     <>
       <Dialog open={isOpen && !isConfirmationOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[425px]">
-          <form onSubmit={handleInitialSubmit}>
-            <DialogHeader>
-              <DialogTitle>Criar Usuário Gestor</DialogTitle>
-              <DialogDescription>
-                Preencha os dados abaixo para cadastrar um novo gestor.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="nome">Nome Completo</Label>
-                <Input
-                  id="nome"
-                  name="nome"
-                  value={formData.nome}
-                  onChange={handleChange}
-                  placeholder="Ex: João da Silva"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onFormSubmit)}>
+              <DialogHeader>
+                <DialogTitle>Criar Usuário Gestor</DialogTitle>
+                <DialogDescription>
+                  Preencha os dados abaixo para cadastrar um novo gestor.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome Completo</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Ex: João da Silva" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
+                <FormField
+                  control={form.control}
                   name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Ex: joao@soscidade.com"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>E-mail</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="Ex: joao@soscidade.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Senha</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="******" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirmação de Senha</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="******" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="senha">Senha</Label>
-                <Input
-                  id="senha"
-                  name="senha"
-                  type="password"
-                  value={formData.senha}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="confirmacaoSenha">Confirmação de Senha</Label>
-                <Input
-                  id="confirmacaoSenha"
-                  name="confirmacaoSenha"
-                  type="password"
-                  value={formData.confirmacaoSenha}
-                  onChange={handleChange}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={onClose} className="cursor-pointer">
-                Cancelar
-              </Button>
-              <Button type="submit" className="cursor-pointer bg-sky-700 hover:bg-sky-800 text-white">
-                Cadastrar
-              </Button>
-            </DialogFooter>
-          </form>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={onClose} className="cursor-pointer">
+                  Cancelar
+                </Button>
+                <Button type="submit" className="cursor-pointer bg-sky-700 hover:bg-sky-800 text-white">
+                  Cadastrar
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
@@ -149,7 +167,7 @@ export const CriarGestorModal = ({ isOpen, onClose, onSuccess }: CriarGestorModa
         onClose={() => setIsConfirmationOpen(false)}
         onConfirm={handleConfirmSubmit}
         title="Confirmar Cadastro"
-        description={`Tem certeza que deseja cadastrar o gestor "${formData.nome}" (${formData.email})?`}
+        description={`Tem certeza que deseja cadastrar o gestor "${pendingData?.name}" (${pendingData?.email})?`}
         isPending={isSubmitting}
       />
     </>

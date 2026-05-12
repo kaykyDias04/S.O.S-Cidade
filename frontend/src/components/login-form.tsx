@@ -46,7 +46,7 @@ export const LoginForm = () => {
         toast.success("Login realizado com sucesso!");
 
         if (result.role === 'GESTOR') {
-          router.replace("/denuncias-recentes");
+          router.replace("/dashboard");
         } else {
           router.replace("/homepage-denunciante");
         }

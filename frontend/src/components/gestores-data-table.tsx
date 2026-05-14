@@ -87,7 +87,7 @@ export function GestoresDataTable({
 }) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 12 });
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 6 });
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
 
   const columns: ColumnDef<User>[] = [
@@ -132,11 +132,11 @@ export function GestoresDataTable({
   });
 
   return (
-    <div className="space-y-3 dark:bg-transparent">
+    <div className="space-y-2 dark:bg-transparent">
       <div className="flex items-end justify-between lg:px-6">
-        <div className="py-1.5 ml-[-1.5rem]">
-          <span className="text-2xl font-medium">Gestores</span>
-          <div className="relative w-full max-w-md mt-[10px]">
+        <div className="py-0.5 ml-[-1.5rem]">
+          <span className="text-xl font-medium text-slate-800">Gestores</span>
+          <div className="relative w-full max-w-md mt-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="w-full md:w-74 pl-10"

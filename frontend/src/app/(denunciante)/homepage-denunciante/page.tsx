@@ -9,10 +9,10 @@ export default function HomepageDenunciante() {
   const nomeExibicao = user?.name?.split(' ')[0] || "Cidadão";
 
   return (
-    <main className="bg-white p-8 rounded-2xl shadow-md relative">
-      <section className="mb-12">
-        <h1 className="text-4xl font-bold text-gray-800">Olá, {nomeExibicao}!</h1>
-        <p className="text-lg text-gray-500 mt-2">
+    <div className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 relative">
+      <section className="mb-8">
+        <h1 className="text-3xl font-bold text-slate-800">Olá, {nomeExibicao}!</h1>
+        <p className="text-base text-slate-500 mt-1">
           Bem-vindo(a) ao S.O.S Cidade — sistema de denúncias urbanas de Recife. O que deseja fazer?
         </p>
       </section>
@@ -89,6 +89,6 @@ export default function HomepageDenunciante() {
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

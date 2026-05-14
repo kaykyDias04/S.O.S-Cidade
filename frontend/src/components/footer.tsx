@@ -2,7 +2,7 @@ import React from "react";
 
 export function Footer() {
   return (
-    <footer className="bg-[#efefef] w-full py-4 mt-auto border-t border-gray-200">
+    <footer className="bg-[#efefef] w-full py-4 mt-auto border-t border-gray-200 relative z-[60]">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-6">
           <img 

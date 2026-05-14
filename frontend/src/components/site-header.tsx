@@ -47,7 +47,7 @@ export function SiteHeader() {
 
   return (
     <header className="flex flex-col shrink-0 bg-white">
-      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6 py-4">
+      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6 py-2.5">
         <div className="inline-block relative group">
           <SidebarTrigger className="-ml-1" />
           <div

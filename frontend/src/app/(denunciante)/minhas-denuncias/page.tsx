@@ -101,8 +101,14 @@ export default function MinhasDenunciasPage() {
   }
 
   return (
-    <div className="w-full">
-      <DenuncianteDenunciasDataTable data={data} />
+    <div className="w-full space-y-4">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-800">Minhas Denúncias</h1>
+        <p className="text-slate-500">Acompanhe o status e o histórico das suas solicitações</p>
+      </div>
+      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-4">
+        <DenuncianteDenunciasDataTable data={data} />
+      </div>
     </div>
   );
 }

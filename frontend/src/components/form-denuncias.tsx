@@ -200,13 +200,8 @@ export function FormDenuncias() {
 
   return (
     <>
-      <div className="bg-white p-8 rounded-2xl shadow-md max-w-4xl mx-auto">
-        <div className="mb-8 text-center">
-          <h1 className="md:text-3xl font-bold text-gray-800">Nova Denúncia Urbana</h1>
-          <p className="text-gray-500 text-lg md:text-md mt-2">
-            Preencha os campos abaixo para registrar um problema na cidade de Recife
-          </p>
-        </div>
+      <div className="bg-white p-6 rounded-2xl shadow-md max-w-4xl mx-auto">
+
 
         <Form {...form}>
           <form

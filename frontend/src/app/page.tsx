@@ -5,7 +5,7 @@ import { Camera, Search, Settings, Lock } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="bg-[#f4f4f4] font-sans flex flex-col min-h-screen">
+    <div className="bg-[#f4f4f4] font-sans flex flex-col flex-1">
 
       <header className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

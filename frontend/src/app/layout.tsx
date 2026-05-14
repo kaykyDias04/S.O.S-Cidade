@@ -23,11 +23,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br" className={cn("font-sans", poppins.variable)}>
-      <body className="min-h-screen flex flex-col">
-        <main className="flex-1">
+      <body className="h-screen flex flex-col overflow-hidden">
+        <main className="flex-1 flex flex-col min-h-0 overflow-y-auto overflow-x-hidden relative z-0">
           {children}
         </main>
-        <Footer />
+        <div className="z-40 bg-white shrink-0 relative">
+          <Footer />
+        </div>
       </body>
     </html>
   );

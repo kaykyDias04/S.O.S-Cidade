@@ -157,7 +157,7 @@ export function DenuncianteDenunciasDataTable({ data }: { readonly data: Denunci
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 12 });
+  const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 6 });
   const [localData, setLocalData] = React.useState<DenunciaRow[]>(data);
 
   React.useEffect(() => {
@@ -184,15 +184,15 @@ export function DenuncianteDenunciasDataTable({ data }: { readonly data: Denunci
   });
 
   return (
-    <div className="space-y-3 dark:bg-transparent">
-      <div className="flex items-end justify-between lg:px-6">
-        <div className="py-1.5 ml-[-1.5rem]">
-          <span className="text-2xl font-medium">Pesquisa</span>
-          <div className="relative w-full max-w-md mt-[10px]">
+    <div className="space-y-2 dark:bg-transparent">
+      <div className="flex items-end justify-between lg:px-8">
+        <div className="py-0.5 ml-[-1.5rem]">
+          <span className="text-xl font-medium text-slate-800">Pesquisa</span>
+          <div className="relative w-full max-w-md mt-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="w-full md:w-74 pl-10"
-              placeholder="Pesquise por bairro, tipo, protocolo..."
+              placeholder="Pesquise por bairro ou protocolo"
               value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
             />

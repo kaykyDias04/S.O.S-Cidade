@@ -41,13 +41,13 @@ export function AppSidebarGestor() {
 
   return (
     <Sidebar className="bg-stone-100 p-6 rounded-2xl flex flex-col">
-      <SidebarHeader className="flex flex-col items-center bg-stone-100 text-center gap-4">
-        <div className="relative w-24 h-24 md:w-30 md:h-30 bg-sky-700 rounded-full flex items-center justify-center shadow-md">
-          <img src="/logo.svg" alt="Logo" className="w-16 h-16 md:w-20 md:h-20" />
+      <SidebarHeader className="flex flex-col items-center bg-stone-100 text-center gap-2">
+        <div className="relative w-16 h-16 md:w-20 md:h-20 bg-sky-700 rounded-full flex items-center justify-center shadow-md">
+          <img src="/logo.svg" alt="Logo" className="w-10 h-10 md:w-12 md:h-12" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-sky-700">S.O.S Cidade</h1>
-          <p className="text-sm text-stone-600">
+          <h1 className="text-xl font-bold text-sky-700">S.O.S Cidade</h1>
+          <p className="text-xs text-stone-600">
             Bem-vindo(a), Gestor {user?.name ? user.name.split(' ')[0] : ""}
           </p>
         </div>
@@ -62,7 +62,7 @@ export function AppSidebarGestor() {
                 <Link
                   href={item.url}
                   className={`
-                    flex items-center w-full p-3 rounded-lg text-lg font-semibold
+                    flex items-center w-full p-2 rounded-lg text-sm font-semibold
                     transition-colors duration-200
                     ${isActive ? "bg-sky-700 text-white" : "text-stone-700 hover:bg-stone-200"}
                   `}
@@ -75,13 +75,13 @@ export function AppSidebarGestor() {
         </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter className="mt-auto pt-6 border-t bg-stone-100 border-stone-200">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-stone-200">
-          <h2 className="text-sm uppercase tracking-wide font-bold text-center text-stone-800 mb-4">
+      <SidebarFooter className="mt-auto pt-4 border-t bg-stone-100 border-stone-200">
+        <div className="bg-white p-3 rounded-xl shadow-sm border border-stone-200">
+          <h2 className="text-xs uppercase tracking-wide font-bold text-center text-stone-800 mb-2">
             Ocorrências Prioritárias
           </h2>
           <div className="space-y-3">
-            {loading ? (
+            {loading && casosPrioritarios.length === 0 ? (
               <p className="text-center text-xs text-stone-500 animate-pulse">Carregando...</p>
             ) : casosPrioritarios.length > 0 ? (
               casosPrioritarios.map((d, index) => (

@@ -12,11 +12,11 @@ export default function LayoutDenunciante({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen w-full bg-white">
+      <div className="flex flex-1 min-h-0 w-full bg-white">
         <AppSidebarDenunciante />
         <SidebarInset className="flex flex-col flex-1 overflow-hidden">
           <SiteHeader />
-          <main className="flex-1 p-6 overflow-y-auto bg-stone-50">
+          <main className="flex-1 p-4 overflow-y-auto bg-white">
             {children}
           </main>
         </SidebarInset>

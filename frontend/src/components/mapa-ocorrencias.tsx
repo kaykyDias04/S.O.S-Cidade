@@ -331,8 +331,8 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-medium">Mapa de Ocorrências</h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h1 className="text-2xl font-bold text-slate-800">Mapa de Ocorrências</h1>
+            <p className="text-slate-500">
               Clique em um alfinete para ver as denúncias do bairro
             </p>
           </div>

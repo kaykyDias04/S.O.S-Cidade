@@ -23,21 +23,24 @@ export class DenunciaService {
       return JSON.parse(cached);
     }
 
-    const skip = (page - 1) * limit;
-    const [denuncias, total] = await Promise.all([
-      this.denunciaRepository.findAll(skip, limit),
-      this.denunciaRepository.count()
-    ]);
+    try {
+      const skip = (page - 1) * limit;
+      const [denuncias, total] = await Promise.all([
+        this.denunciaRepository.findAll(skip, limit),
+        this.denunciaRepository.count()
+      ]);
 
-    const result = {
-      data: denuncias.map((d) => this.parseImagens(d)),
-      meta: { total, page, limit }
-    };
-    
-    
-    await redisSet(cacheKey, JSON.stringify(result), 60);
-
-    return result;
+      const result = {
+        data: (denuncias || []).map((d) => this.parseImagens(d)),
+        meta: { total: total || 0, page, limit }
+      };
+      
+      await redisSet(cacheKey, JSON.stringify(result), 60);
+      return result;
+    } catch (error) {
+      console.error('[DenunciaService] Error fetching denuncias:', error);
+      throw error;
+    }
   }
 
   async getDenunciaById(id: number) {
@@ -69,7 +72,11 @@ export class DenunciaService {
   }
 
   async updateDenuncia(id: number, data: any) {
-    const denuncia = await this.denunciaRepository.update(id, data);
+    const updateData = { ...data };
+    if (updateData.imagens && Array.isArray(updateData.imagens)) {
+      updateData.imagens = JSON.stringify(updateData.imagens);
+    }
+    const denuncia = await this.denunciaRepository.update(id, updateData);
     await this.clearCache();
     return this.parseImagens(denuncia);
   }

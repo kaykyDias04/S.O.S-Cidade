@@ -77,6 +77,11 @@ export const authAPI = {
       body: JSON.stringify({ email, password }),
     });
   },
+  logout: async () => {
+    return apiCall<{ success: boolean }>('/auth/logout', {
+      method: 'POST',
+    });
+  },
 };
 
 export interface Denuncia {

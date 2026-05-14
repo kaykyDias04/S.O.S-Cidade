@@ -15,7 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; role?: string; error?: string }>;
-  logout: () => void;
+  logout: () => Promise<void>;
   setUser: (user: User | null) => void;
 }
 
@@ -61,7 +61,12 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => {
+      logout: async () => {
+        try {
+          await authAPI.logout();
+        } catch (error) {
+          console.error('Logout API error:', error);
+        }
         Cookies.remove('authToken');
         Cookies.remove('userRole');
         set({ user: null, isAuthenticated: false });

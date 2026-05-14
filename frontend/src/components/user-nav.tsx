@@ -37,8 +37,8 @@ export function UserNav() {
   const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.replace("/login");
   };
 

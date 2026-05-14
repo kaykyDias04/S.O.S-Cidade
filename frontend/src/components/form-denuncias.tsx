@@ -77,8 +77,10 @@ const BAIRROS_RECIFE = [
 
 const denunciaSchema = z.object({
   tipoDenuncia: z.enum([
-    "BURACO_VIA", "ILUMINACAO", "LIXO", "ASSALTO",
-    "TRANSITO", "ALAGAMENTO", "VANDALISMO", "OUTRO"
+    "PODA_ARVORE", "CALCADA_IRREGULAR", "FOCO_DENGUE", "SINALIZACAO_DANIFICADA",
+    "LIMPEZA_BUEIRO", "MANUTENCAO_PARQUE", "ANIMAL_SOLTO", "POLUICAO_SONORA",
+    "VAZAMENTO_AGUA", "TERRENO_BALDIO", "FALTA_AGUA", "LIXO",
+    "BURACO_VIA", "ILUMINACAO", "ENCHENTE"
   ], { message: "Selecione o tipo da denúncia." }),
   isAnonima: z.boolean().default(true),
   bairro: z.string().min(2, { message: "Selecione o bairro da ocorrência." }),
@@ -93,14 +95,21 @@ const denunciaSchema = z.object({
 type DenunciaFormData = z.input<typeof denunciaSchema>;
 
 const tipoLabels: Record<string, string> = {
+  PODA_ARVORE: "Poda de Árvore / Árvore Caída",
+  CALCADA_IRREGULAR: "Calçada Irregular",
+  FOCO_DENGUE: "Foco de Dengue / Água Parada",
+  SINALIZACAO_DANIFICADA: "Sinalização Danificada",
+  LIMPEZA_BUEIRO: "Limpeza de Bueiro (Boca de Lobo)",
+  MANUTENCAO_PARQUE: "Manutenção de Parques e Praças",
+  ANIMAL_SOLTO: "Animal de Grande Porte Solto",
+  POLUICAO_SONORA: "Poluição Sonora (Comercial/Obras)",
+  VAZAMENTO_AGUA: "Vazamento de Água Potável",
+  TERRENO_BALDIO: "Terreno Baldio Sujo",
+  FALTA_AGUA: "Falta D'Água",
+  LIXO: "Descarte Irregular de Lixo",
   BURACO_VIA: "Buraco na Via",
   ILUMINACAO: "Iluminação Pública",
-  LIXO: "Descarte Irregular de Lixo",
-  ASSALTO: "Assalto / Violência",
-  TRANSITO: "Problema de Trânsito",
-  ALAGAMENTO: "Alagamento / Esgoto",
-  VANDALISMO: "Vandalismo",
-  OUTRO: "Outro",
+  ENCHENTE: "Enchente",
 };
 
 export function FormDenuncias() {
@@ -221,13 +230,21 @@ export function FormDenuncias() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem className="text-md" value="ALAGAMENTO">Alagamento / Esgoto</SelectItem>
-                      <SelectItem className="text-md" value="ASSALTO">Assalto / Violência</SelectItem>
+                      <SelectItem className="text-md" value="ANIMAL_SOLTO">Animal de Grande Porte Solto</SelectItem>
                       <SelectItem className="text-md" value="BURACO_VIA">Buraco na Via</SelectItem>
+                      <SelectItem className="text-md" value="CALCADA_IRREGULAR">Calçada Irregular</SelectItem>
                       <SelectItem className="text-md" value="LIXO">Descarte Irregular de Lixo</SelectItem>
+                      <SelectItem className="text-md" value="ENCHENTE">Enchente</SelectItem>
+                      <SelectItem className="text-md" value="FALTA_AGUA">Falta D'Água</SelectItem>
+                      <SelectItem className="text-md" value="FOCO_DENGUE">Foco de Dengue / Água Parada</SelectItem>
                       <SelectItem className="text-md" value="ILUMINACAO">Iluminação Pública</SelectItem>
-                      <SelectItem className="text-md" value="TRANSITO">Problema de Trânsito</SelectItem>
-                      <SelectItem className="text-md" value="VANDALISMO">Vandalismo</SelectItem>
+                      <SelectItem className="text-md" value="LIMPEZA_BUEIRO">Limpeza de Bueiro (Boca de Lobo)</SelectItem>
+                      <SelectItem className="text-md" value="MANUTENCAO_PARQUE">Manutenção de Parques e Praças</SelectItem>
+                      <SelectItem className="text-md" value="PODA_ARVORE">Poda de Árvore / Árvore Caída</SelectItem>
+                      <SelectItem className="text-md" value="POLUICAO_SONORA">Poluição Sonora (Comercial/Obras)</SelectItem>
+                      <SelectItem className="text-md" value="SINALIZACAO_DANIFICADA">Sinalização Danificada</SelectItem>
+                      <SelectItem className="text-md" value="TERRENO_BALDIO">Terreno Baldio Sujo</SelectItem>
+                      <SelectItem className="text-md" value="VAZAMENTO_AGUA">Vazamento de Água Potável</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage className="text-xs" />

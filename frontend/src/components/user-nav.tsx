@@ -39,7 +39,7 @@ export function UserNav() {
 
   const handleLogout = () => {
     logout();
-    router.replace("/");
+    router.replace("/login");
   };
 
   return (

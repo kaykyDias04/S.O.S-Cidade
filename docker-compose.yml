@@ -32,6 +32,8 @@ services:
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET=supersecret123
       - PORT=8000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -50,6 +52,8 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./frontend:/app
       - /app/node_modules

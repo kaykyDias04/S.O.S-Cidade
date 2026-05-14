@@ -6,11 +6,11 @@ export function middleware(request: NextRequest) {
   const role = request.cookies.get('userRole')?.value;
   const path = request.nextUrl.pathname;
 
-  const publicPaths = ['/', '/cadastro'];
+  const publicPaths = ['/', '/login', '/cadastro'];
   const isPublicPath = publicPaths.includes(path);
 
   if (!isPublicPath && !token) {
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   if (isPublicPath && token) {

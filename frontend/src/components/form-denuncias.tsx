@@ -200,19 +200,19 @@ export function FormDenuncias() {
 
   return (
     <>
-      <div className="bg-white p-6 rounded-2xl shadow-md max-w-4xl mx-auto">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-4 lg:p-6">
 
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleFormValidation)}
-            className="space-y-2 mx-auto flex flex-col items-center"
+            className="space-y-4"
           >
             <FormField
               control={form.control}
               name="tipoDenuncia"
               render={({ field }) => (
-                <FormItem className="w-full relative pb-7">
+                <FormItem className="w-full">
                   <FormLabel className="text-sm">Tipo do Problema:</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -230,7 +230,7 @@ export function FormDenuncias() {
                       <SelectItem className="text-md" value="VANDALISMO">Vandalismo</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage className="absolute bottom-1 left-0 text-xs" />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -239,7 +239,7 @@ export function FormDenuncias() {
               control={form.control}
               name="isAnonima"
               render={({ field }) => (
-                <FormItem className="w-full relative pb-7">
+                <FormItem className="w-full">
                   <div className="flex flex-row items-center justify-between rounded-lg border p-3 bg-gray-50/50">
                     <div className="space-y-0.5">
                       <FormLabel className="text-sm">Denúncia Anônima</FormLabel>
@@ -257,7 +257,7 @@ export function FormDenuncias() {
                       />
                     </FormControl>
                   </div>
-                  <FormMessage className="absolute bottom-1 left-0 text-xs" />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -266,7 +266,7 @@ export function FormDenuncias() {
               control={form.control}
               name="bairro"
               render={({ field }) => (
-                <FormItem className="w-full relative pb-7">
+                <FormItem className="w-full">
                   <FormLabel className="text-sm">Bairro / Região (Recife):</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -282,7 +282,7 @@ export function FormDenuncias() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage className="absolute bottom-1 left-0 text-xs" />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -291,7 +291,7 @@ export function FormDenuncias() {
               control={form.control}
               name="descricao"
               render={({ field }) => (
-                <FormItem className="w-full relative pb-7">
+                <FormItem className="w-full">
                   <FormLabel className="text-sm">Descrição do Problema:</FormLabel>
                   <FormControl>
                     <Textarea
@@ -301,7 +301,7 @@ export function FormDenuncias() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="absolute bottom-1 left-0 text-xs" />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -310,7 +310,7 @@ export function FormDenuncias() {
               control={form.control}
               name="consentimento"
               render={({ field }) => (
-                <FormItem className="w-full relative pb-10">
+                <FormItem className="w-full">
                   <div className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
                       <Checkbox
@@ -323,18 +323,20 @@ export function FormDenuncias() {
                       Autorizo o compartilhamento desta denúncia com os órgãos competentes da Prefeitura do Recife
                     </FormLabel>
                   </div>
-                  <FormMessage className="absolute bottom-4 left-0 text-xs" />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
 
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full md:w-1/2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-lg font-semibold"
-            >
-              Enviar Denúncia
-            </Button>
+            <div className="flex justify-end pt-2">
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full md:w-auto px-12 cursor-pointer bg-sky-700 hover:bg-sky-800 text-white font-semibold"
+              >
+                Enviar Denúncia
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

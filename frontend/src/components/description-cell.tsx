@@ -7,7 +7,8 @@ import { DialogHeader } from "./ui/dialog";
 import { DialogTitle } from "./ui/dialog";
 import { DialogDescription } from "./ui/dialog";
 import { Badge } from "@/src/components/ui/badge";
-import { Eye, MapPin, Calendar, User, FileText, AlertCircle } from "lucide-react";
+import { Eye, MapPin, Calendar, User, FileText, AlertCircle, ImageIcon } from "lucide-react";
+import { useState } from "react";
 
 const situacaoStyle: Record<string, string> = {
   "em andamento": "text-orange-700 bg-orange-50 border-orange-300",
@@ -17,6 +18,14 @@ const situacaoStyle: Record<string, string> = {
 export function DescriptionCell({ row }: { row: Row<DenunciaRow> }) {
   const d = row.original;
   const sitStyle = situacaoStyle[d.situacao.toLowerCase()] || "text-gray-600 bg-gray-50 border-gray-300";
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // imagens pode vir como string JSON (do banco) ou como array já parseado
+  const imagensList: string[] = (() => {
+    if (!d.imagens) return [];
+    if (Array.isArray(d.imagens)) return d.imagens;
+    try { return JSON.parse(d.imagens as unknown as string); } catch { return []; }
+  })();
 
   return (
     <Dialog>
@@ -79,6 +88,46 @@ export function DescriptionCell({ row }: { row: Row<DenunciaRow> }) {
             <p className="text-sm bg-muted p-4 rounded-lg leading-relaxed whitespace-pre-wrap break-all overflow-hidden max-h-48 overflow-y-auto">
               {d.descricaoOcorrencia}
             </p>
+          </div>
+
+          <div className="col-span-2 space-y-2 border-t pt-4">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+              <ImageIcon className="h-3.5 w-3.5" />
+              Fotos da Ocorrência
+            </p>
+            
+            {imagensList.length > 0 ? (
+              selectedImage ? (
+                <div className="relative">
+                  <img
+                    src={selectedImage}
+                    alt="Foto ampliada"
+                    className="w-full max-h-72 object-contain rounded-lg border border-stone-200 bg-stone-50"
+                  />
+                  <button
+                    onClick={() => setSelectedImage(null)}
+                    className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded hover:bg-black/80"
+                  >
+                    Voltar para miniaturas
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {imagensList.map((src, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setSelectedImage(src)}
+                      className="w-20 h-20 rounded-lg overflow-hidden border border-stone-200 hover:border-sky-400 transition-colors cursor-pointer bg-stone-50"
+                    >
+                      <img src={src} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )
+            ) : (
+              <p className="text-xs text-stone-400 italic">Nenhuma foto foi anexada a esta denúncia.</p>
+            )}
           </div>
         </div>
       </DialogContent>

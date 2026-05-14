@@ -48,6 +48,14 @@ Routes → Controllers → Services → Repositories → Banco
 - **Repositories** (`src/repositories/`): acesso exclusivo ao banco via Prisma
 
 ---
+## 2. Desenho da Arquitetura 
+
+
+
+
+
+
+---
 
 ## 3. Concorrência e Paralelismo
 

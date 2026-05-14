@@ -4,6 +4,16 @@ import { redisGet, redisSet, redisDel, redisKeys } from '../lib/redis';
 export class DenunciaService {
   private denunciaRepository = new DenunciaRepository();
 
+  // Deserializa o campo imagens de string JSON para array
+  private parseImagens(d: any) {
+    if (!d) return d;
+    try {
+      return { ...d, imagens: d.imagens ? JSON.parse(d.imagens) : null };
+    } catch {
+      return { ...d, imagens: null };
+    }
+  }
+
   async getDenuncias(page: number, limit: number) {
     const cacheKey = `denuncias:${page}:${limit}`;
     
@@ -19,7 +29,10 @@ export class DenunciaService {
       this.denunciaRepository.count()
     ]);
 
-    const result = { data: denuncias, meta: { total, page, limit } };
+    const result = {
+      data: denuncias.map((d) => this.parseImagens(d)),
+      meta: { total, page, limit }
+    };
     
     
     await redisSet(cacheKey, JSON.stringify(result), 60);
@@ -28,7 +41,8 @@ export class DenunciaService {
   }
 
   async getDenunciaById(id: number) {
-    return this.denunciaRepository.findById(id);
+    const d = await this.denunciaRepository.findById(id);
+    return this.parseImagens(d);
   }
 
   async createDenuncia(data: any) {
@@ -44,19 +58,20 @@ export class DenunciaService {
       dataOcorrencia: data.dataOcorrencia,
       protocolo,
       situacao: data.situacao || 'Em Andamento',
+      imagens: data.imagens ? JSON.stringify(data.imagens) : null,
       createdAt: data.createdAt ? new Date(data.createdAt) : undefined,
       updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined,
     });
 
     
     await this.clearCache();
-    return denuncia;
+    return this.parseImagens(denuncia);
   }
 
   async updateDenuncia(id: number, data: any) {
     const denuncia = await this.denunciaRepository.update(id, data);
     await this.clearCache();
-    return denuncia;
+    return this.parseImagens(denuncia);
   }
 
   async deleteDenuncia(id: number) {

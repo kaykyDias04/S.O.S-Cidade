@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { ImagePlus, X } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/src/store/useAuthStore";
@@ -133,6 +134,28 @@ export function FormDenuncias() {
   const [dataToSubmit, setDataToSubmit] = useState<DenunciaFormData | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [generatedProtocol, setGeneratedProtocol] = useState("");
+  const [imagens, setImagens] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    const remaining = 4 - imagens.length;
+    if (remaining <= 0) return;
+    const toProcess = files.slice(0, remaining);
+    toProcess.forEach((file) => {
+      if (!file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setImagens((prev) => [...prev, ev.target?.result as string].slice(0, 4));
+      };
+      reader.readAsDataURL(file);
+    });
+    if (e.target) e.target.value = "";
+  }
+
+  function removeImage(idx: number) {
+    setImagens((prev) => prev.filter((_, i) => i !== idx));
+  }
 
   function handleFormValidation(values: DenunciaFormData) {
     setDataToSubmit(values);
@@ -158,6 +181,7 @@ export function FormDenuncias() {
         dataOcorrencia: new Date().toLocaleDateString("pt-BR"),
         protocolo: generatedProtocolStr,
         situacao: "Em andamento",
+        imagens: imagens.length > 0 ? imagens : undefined,
       };
 
       const result = await createDenuncia(denunciaData);
@@ -322,6 +346,49 @@ export function FormDenuncias() {
                 </FormItem>
               )}
             />
+
+            {/* Campo de imagens — opcional, até 4 */}
+            <div className="w-full space-y-2">
+              <p className="text-sm font-medium leading-none">
+                Fotos da Ocorrência{" "}
+                <span className="text-stone-400 font-normal">(opcional, até 4)</span>
+              </p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+              <div className="flex flex-wrap gap-3">
+                {imagens.map((src, idx) => (
+                  <div key={idx} className="relative w-20 h-20 rounded-lg overflow-hidden border border-stone-200 group">
+                    <img src={src} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-5 h-5 text-white" />
+                    </button>
+                  </div>
+                ))}
+                {imagens.length < 4 && (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-20 h-20 rounded-lg border-2 border-dashed border-stone-300 flex flex-col items-center justify-center gap-1 text-stone-400 hover:border-sky-400 hover:text-sky-500 transition-colors cursor-pointer"
+                  >
+                    <ImagePlus className="w-5 h-5" />
+                    <span className="text-[10px]">{imagens.length}/4</span>
+                  </button>
+                )}
+              </div>
+              <p className="text-xs text-stone-400">
+                Aceita JPG, PNG e WebP. Clique no preview para remover.
+              </p>
+            </div>
 
             <FormField
               control={form.control}

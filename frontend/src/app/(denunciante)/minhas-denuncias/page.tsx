@@ -57,6 +57,7 @@ export default function MinhasDenunciasPage() {
           dataOcorrencia: d.dataOcorrencia,
           protocolo: d.protocolo,
           situacao: d.situacao,
+          imagens: d.imagens,
         }));
 
       setData(filtered);

@@ -10,7 +10,6 @@ import denunciaRoutes from './routes/denuncia.routes';
 
 const app = express();
 
-
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
@@ -21,14 +20,14 @@ const allowedOrigins = [
 if (process.env.FRONTEND_URL) {
   process.env.FRONTEND_URL.split(',').forEach((url) => {
     allowedOrigins.push(url.trim());
-    
+
     allowedOrigins.push(url.trim().replace(/\/$/, ''));
   });
 }
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    
+
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -45,7 +44,8 @@ const corsOptions: cors.CorsOptions = {
 app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

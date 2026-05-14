@@ -59,6 +59,7 @@ export type DenunciaRow = {
   dataOcorrencia: string;
   protocolo: string;
   situacao: string;
+  imagens?: string[] | null;
 };
 
 const situacaoConfig: Record<string, string> = {

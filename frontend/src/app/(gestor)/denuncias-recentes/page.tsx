@@ -21,6 +21,7 @@ export default function DenunciasRecentesPage() {
         dataOcorrencia: d.dataOcorrencia,
         protocolo: d.protocolo,
         situacao: d.situacao,
+        imagens: d.imagens,
       }));
       setData(converted);
     }

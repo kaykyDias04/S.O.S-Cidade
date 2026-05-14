@@ -90,6 +90,7 @@ export interface Denuncia {
   dataOcorrencia: string;
   protocolo: string;
   situacao: string;
+  imagens?: string[] | null; // URLs/base64, opcional
   createdAt: string;
   updatedAt: string;
 }

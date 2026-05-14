@@ -32,6 +32,7 @@ model Denuncia {
   dataOcorrencia      String
   protocolo           String   @unique
   situacao            String   @default("Em Andamento")
+  imagens             String?  // JSON array de base64 data URLs (opcional, máx 4)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }

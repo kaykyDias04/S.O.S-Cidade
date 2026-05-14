@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   experimental: {
-    turbopack: {},
+    turbopackFileSystemCacheForDev: true,
   },
   webpack: (config, context) => {
     config.watchOptions = {

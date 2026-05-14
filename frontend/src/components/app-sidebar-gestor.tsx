@@ -40,7 +40,7 @@ export function AppSidebarGestor() {
   }, [denuncias]);
 
   return (
-    <Sidebar className="bg-stone-100 p-6 rounded-2xl flex flex-col">
+    <Sidebar className="bg-stone-100 p-6 flex flex-col">
       <SidebarHeader className="flex flex-col items-center bg-stone-100 text-center gap-2">
         <div className="relative w-16 h-16 md:w-20 md:h-20 bg-sky-700 rounded-full flex items-center justify-center shadow-md">
           <img src="/logo.svg" alt="Logo" className="w-10 h-10 md:w-12 md:h-12" />

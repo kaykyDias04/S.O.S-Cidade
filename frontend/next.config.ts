@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  experimental: {
+    turbopack: {},
+  },
   webpack: (config, context) => {
     config.watchOptions = {
       poll: 1000,

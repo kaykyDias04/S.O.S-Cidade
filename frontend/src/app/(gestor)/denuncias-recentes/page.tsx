@@ -11,7 +11,16 @@ export default function DenunciasRecentesPage() {
 
   useEffect(() => {
     if (denuncias) {
-      const converted = denuncias.map((d) => ({
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+      const filtered = denuncias.filter((d) => {
+        const isFinalizada = d.situacao?.toLowerCase() === "finalizada";
+        const isOlderThanOneMonth = new Date(d.createdAt) < oneMonthAgo;
+        return !(isFinalizada && isOlderThanOneMonth);
+      });
+
+      const converted = filtered.map((d) => ({
         id: d.id,
         tipoDenuncia: d.tipoDenuncia,
         identificacao: d.identificacao,

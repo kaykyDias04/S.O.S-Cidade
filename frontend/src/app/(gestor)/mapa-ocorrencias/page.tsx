@@ -33,11 +33,11 @@ export default function MapaOcorrenciasPage() {
     try {
       setLoading(true);
       setError(null);
-      
+
       let allData: Denuncia[] = [];
       let page = 1;
       let hasMore = true;
-      const MAX_PAGES = 10; 
+      const MAX_PAGES = 10;
 
       while (hasMore && page <= MAX_PAGES) {
         const res = await denunciasAPI.list(page, 100);
@@ -45,7 +45,7 @@ export default function MapaOcorrenciasPage() {
           const paginatedData = res.data as any;
           const items = Array.isArray(paginatedData) ? paginatedData : (paginatedData.data || []);
           allData = [...allData, ...items];
-          
+
           if (items.length < 100) {
             hasMore = false;
           } else {
@@ -55,7 +55,7 @@ export default function MapaOcorrenciasPage() {
           throw new Error(res.error || "Erro ao carregar");
         }
       }
-      
+
       setDenuncias(allData);
     } catch (e: any) {
       setError(e.message || "Erro desconhecido");
@@ -88,8 +88,7 @@ export default function MapaOcorrenciasPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">Erro ao carregar denúncias: {error}</p>
           <p className="text-gray-500 text-sm mb-4">
-            Verifique se o servidor está rodando em{" "}
-            <code className="bg-gray-100 px-1 rounded">http://localhost:8000</code>
+            Verifique se o servidor está rodando em {process.env.NEXT_PUBLIC_API_URL}
           </p>
           <button
             onClick={fetchAll}

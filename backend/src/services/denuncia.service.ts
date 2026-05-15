@@ -20,7 +20,11 @@ export class DenunciaService {
     
     const cached = await redisGet(cacheKey);
     if (cached) {
-      return JSON.parse(cached);
+      try {
+        return JSON.parse(cached);
+      } catch (err) {
+        console.error('[DenunciaService] Error parsing cache JSON:', err);
+      }
     }
 
     try {

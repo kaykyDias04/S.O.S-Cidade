@@ -41,7 +41,7 @@ export default function DenunciasRecentesPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">Erro ao carregar denúncias: {error}</p>
           <p className="text-gray-500 text-sm mb-4">
-            Verifique se o servidor está rodando em <code className="bg-gray-100 px-1 rounded">http://localhost:8000</code>
+            Verifique se o servidor está rodando em <code className="bg-gray-100 px-1 rounded">{process.env.NEXT_PUBLIC_API_URL}</code>
           </p>
           <button
             onClick={() => refetch()}

@@ -1,18 +1,27 @@
-import React from "react";
+"use client";
+
+import { usePathname } from "next/navigation";
+import { cn } from "@/src/lib/utils";
 
 export function Footer() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
     <footer className="bg-[#efefef] w-full py-4 mt-auto border-t border-gray-200 relative z-[60]">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className={cn(
+        "mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300",
+        isHome ? "max-w-7xl" : "max-w-none w-full"
+      )}>
         <div className="flex items-center gap-6">
-          <img 
-            src="/homepage-assets/Cesarschool_id48SvLdR4_0.png" 
-            alt="Cesar School" 
+          <img
+            src="/homepage-assets/Cesarschool_id48SvLdR4_0.png"
+            alt="Cesar School"
             className="h-8 object-contain"
           />
-          <img 
-            src="/homepage-assets/icon recife.png" 
-            alt="Prefeitura do Recife" 
+          <img
+            src="/homepage-assets/icon recife.png"
+            alt="Prefeitura do Recife"
             className="h-8 object-contain"
           />
         </div>

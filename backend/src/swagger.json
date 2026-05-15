@@ -52,7 +52,8 @@
           "imagens": {
             "type": "array",
             "items": { "type": "string" },
-            "description": "Lista de URLs ou base64 das imagens (máximo 4)"
+            "description": "Lista de URLs ou base64 das imagens (máximo 4)",
+            "example": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="]
           },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
@@ -137,7 +138,7 @@
                   "email": { "type": "string" },
                   "name": { "type": "string" },
                   "password": { "type": "string" },
-                  "role": { "type": "string" }
+                  "role": { "type": "string", "enum": ["DENUNCIANTE", "GESTOR"] }
                 },
                 "required": ["email", "name", "password"]
               }
@@ -156,9 +157,7 @@
             }
           }
         }
-      }
-    },
-    "/users": {
+      },
       "get": {
         "summary": "Listar usuários por cargo",
         "tags": ["Users"],
@@ -277,7 +276,8 @@
                   "dataOcorrencia": { "type": "string" },
                   "imagens": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": { "type": "string" },
+                    "example": ["data:image/png;base64,..."]
                   }
                 },
                 "required": ["tipoDenuncia", "identificacao", "bairroOcorrencia", "descricaoOcorrencia", "dataOcorrencia"]

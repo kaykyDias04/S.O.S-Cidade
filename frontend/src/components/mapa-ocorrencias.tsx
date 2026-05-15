@@ -12,6 +12,7 @@ import {
   DialogDescription,
 } from "@/src/components/ui/dialog";
 import { type Denuncia } from "@/src/lib/api";
+import { ImageIcon } from "lucide-react";
 
 const BAIRRO_COORDS: Record<string, [number, number]> = {
   "Afogados": [-8.0768, -34.9076],
@@ -186,6 +187,85 @@ function createClusterIcon(count: number) {
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
+}
+
+function DenunciaCard({ d }: { d: Denuncia }) {
+  const sitStyle =
+    situacaoConfig[d.situacao.toLowerCase()] ||
+    "text-gray-600 bg-gray-50 border-gray-300";
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const imagensList: string[] = (() => {
+    if (!d.imagens) return [];
+    if (Array.isArray(d.imagens)) return d.imagens;
+    try { return JSON.parse(d.imagens as unknown as string); } catch { return []; }
+  })();
+
+  return (
+    <div className="border rounded-lg p-4 space-y-2 hover:bg-muted/30 transition-colors">
+      <div className="flex items-center justify-between gap-2">
+        <Badge
+          className={`px-2.5 py-0.5 text-xs font-medium border rounded-full ${getBadgeStyle(d.tipoDenuncia)}`}
+        >
+          {d.tipoDenuncia}
+        </Badge>
+        <Badge
+          className={`px-2.5 py-0.5 text-xs font-medium border rounded-full ${sitStyle}`}
+        >
+          {d.situacao}
+        </Badge>
+      </div>
+      <p className="text-sm text-muted-foreground break-all">
+        {d.descricaoOcorrencia}
+      </p>
+
+      {imagensList.length > 0 && (
+        <div className="space-y-2 border-t pt-3 mt-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+            <ImageIcon className="h-3.5 w-3.5" />
+            Fotos
+          </p>
+          {selectedImage ? (
+            <div className="relative">
+              <img
+                src={selectedImage}
+                alt="Foto ampliada"
+                className="w-full max-h-48 object-contain rounded-lg border border-stone-200 bg-stone-50"
+              />
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded hover:bg-black/80"
+              >
+                Voltar
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {imagensList.map((src, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setSelectedImage(src)}
+                  className="w-16 h-16 rounded-lg overflow-hidden border border-stone-200 hover:border-sky-400 transition-colors cursor-pointer bg-stone-50"
+                >
+                  <img src={src} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
+        <span>Protocolo: <strong>{d.protocolo}</strong></span>
+        <span>{d.dataOcorrencia}</span>
+      </div>
+      <div className="text-xs text-muted-foreground">
+        Denunciante: {d.nomeDenunciante}
+      </div>
+    </div>
+  );
 }
 
 export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] }) {
@@ -407,40 +487,9 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
           </DialogHeader>
 
           <div className="space-y-3 mt-2">
-            {selectedBairro?.denuncias.map((d) => {
-              const sitStyle =
-                situacaoConfig[d.situacao.toLowerCase()] ||
-                "text-gray-600 bg-gray-50 border-gray-300";
-              return (
-                <div
-                  key={d.id}
-                  className="border rounded-lg p-4 space-y-2 hover:bg-muted/30 transition-colors"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <Badge
-                      className={`px-2.5 py-0.5 text-xs font-medium border rounded-full ${getBadgeStyle(d.tipoDenuncia)}`}
-                    >
-                      {d.tipoDenuncia}
-                    </Badge>
-                    <Badge
-                      className={`px-2.5 py-0.5 text-xs font-medium border rounded-full ${sitStyle}`}
-                    >
-                      {d.situacao}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground break-all">
-                    {d.descricaoOcorrencia}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Protocolo: <strong>{d.protocolo}</strong></span>
-                    <span>{d.dataOcorrencia}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    Denunciante: {d.nomeDenunciante}
-                  </div>
-                </div>
-              );
-            })}
+            {selectedBairro?.denuncias.map((d) => (
+              <DenunciaCard key={d.id} d={d} />
+            ))}
           </div>
         </DialogContent>
       </Dialog>

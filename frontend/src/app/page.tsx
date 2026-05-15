@@ -134,7 +134,7 @@ export default function LandingPage() {
                 { title: "Foco de Dengue", icon: "mosquito icon.png" },
                 { title: "Iluminação Pública", icon: "poste-de-iluminacao icon.png" },
                 { title: "Falta D'água", icon: "abastecimento-de-agua icon.png" },
-                { title: "Enchente", icon: "enchente icon.png" },
+                { title: "Alagamento", icon: "enchente icon.png" },
                 { title: "Descarte Irregular de Lixo", icon: "saco-de-lixo icon.png" },
                 { title: "Buraco na Via", icon: "buraco na via icon.png" }
               ].map((item, idx) => (

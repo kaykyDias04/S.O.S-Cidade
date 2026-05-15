@@ -81,7 +81,7 @@ const denunciaSchema = z.object({
     "PODA_ARVORE", "CALCADA_IRREGULAR", "FOCO_DENGUE", "SINALIZACAO_DANIFICADA",
     "LIMPEZA_BUEIRO", "MANUTENCAO_PARQUE", "ANIMAL_SOLTO", "POLUICAO_SONORA",
     "VAZAMENTO_AGUA", "TERRENO_BALDIO", "FALTA_AGUA", "LIXO",
-    "BURACO_VIA", "ILUMINACAO", "ENCHENTE"
+    "BURACO_VIA", "ILUMINACAO"
   ], { message: "Selecione o tipo da denúncia." }),
   isAnonima: z.boolean().default(true),
   bairro: z.string().min(2, { message: "Selecione o bairro da ocorrência." }),
@@ -110,7 +110,6 @@ const tipoLabels: Record<string, string> = {
   LIXO: "Descarte Irregular de Lixo",
   BURACO_VIA: "Buraco na Via",
   ILUMINACAO: "Iluminação Pública",
-  ENCHENTE: "Enchente",
 };
 
 export function FormDenuncias() {
@@ -258,7 +257,6 @@ export function FormDenuncias() {
                       <SelectItem className="text-md" value="BURACO_VIA">Buraco na Via</SelectItem>
                       <SelectItem className="text-md" value="CALCADA_IRREGULAR">Calçada Irregular</SelectItem>
                       <SelectItem className="text-md" value="LIXO">Descarte Irregular de Lixo</SelectItem>
-                      <SelectItem className="text-md" value="ENCHENTE">Enchente</SelectItem>
                       <SelectItem className="text-md" value="FALTA_AGUA">Falta D'Água</SelectItem>
                       <SelectItem className="text-md" value="FOCO_DENGUE">Foco de Dengue / Água Parada</SelectItem>
                       <SelectItem className="text-md" value="ILUMINACAO">Iluminação Pública</SelectItem>

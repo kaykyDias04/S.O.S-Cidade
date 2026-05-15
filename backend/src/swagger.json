@@ -49,6 +49,11 @@
           "dataOcorrencia": { "type": "string" },
           "protocolo": { "type": "string" },
           "situacao": { "type": "string" },
+          "imagens": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Lista de URLs ou base64 das imagens (máximo 4)"
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -153,6 +158,63 @@
         }
       }
     },
+    "/users": {
+      "get": {
+        "summary": "Listar usuários por cargo",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["DENUNCIANTE", "GESTOR"] },
+            "description": "Filtrar por cargo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/User" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "summary": "Deletar um usuário",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/denuncias": {
       "get": {
         "summary": "Listar denúncias com paginação",
@@ -212,7 +274,11 @@
                   "identificacao": { "type": "boolean" },
                   "bairroOcorrencia": { "type": "string" },
                   "descricaoOcorrencia": { "type": "string" },
-                  "dataOcorrencia": { "type": "string" }
+                  "dataOcorrencia": { "type": "string" },
+                  "imagens": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
                 },
                 "required": ["tipoDenuncia", "identificacao", "bairroOcorrencia", "descricaoOcorrencia", "dataOcorrencia"]
               }
@@ -279,7 +345,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "situacao": { "type": "string" }
+                  "situacao": { "type": "string" },
+                  "imagens": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
                 }
               }
             }

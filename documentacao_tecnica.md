@@ -51,8 +51,7 @@ Routes → Controllers → Services → Repositories → Banco
 ## 2. Desenho da Arquitetura 
 
 
-
-
+![alt text](image.png)
 
 
 ---

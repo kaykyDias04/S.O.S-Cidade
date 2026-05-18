@@ -32,7 +32,7 @@ export function AppSidebarGestor() {
   const { denuncias, loading } = useDenuncias(1, 100);
 
   const casosPrioritarios = useMemo(() => {
-    const tiposPrioritarios = ["Animal de Grande Porte Solto", "Foco de Dengue / Água Parada", "Vazamento de Água Potável"];
+    const tiposPrioritarios = ["Animal de Grande Porte Solto", "Foco de Dengue / Água Parada", "Vazamento de Água Potável", "Buraco na Via"];
     return (denuncias || [])
       .filter((d) => tiposPrioritarios.includes(d.tipoDenuncia) && d.situacao !== "Finalizada")
       .sort((a, b) => parseDate(b.dataOcorrencia).getTime() - parseDate(a.dataOcorrencia).getTime())

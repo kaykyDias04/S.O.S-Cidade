@@ -50,7 +50,6 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Rota de Health Check para evitar o Cold Start no Render
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });

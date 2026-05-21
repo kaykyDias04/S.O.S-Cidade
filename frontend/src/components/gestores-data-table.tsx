@@ -133,9 +133,9 @@ export function GestoresDataTable({
 
   return (
     <div className="space-y-2 dark:bg-transparent">
-      <div className="flex items-end justify-between lg:px-6">
-        <div className="py-0.5 ml-[-1.5rem]">
-          <span className="text-xl font-medium text-slate-800">Gestores</span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 lg:px-6">
+        <div className="py-0.5">
+          <span className="text-lg sm:text-xl font-medium text-slate-800">Gestores</span>
           <div className="relative w-full max-w-md mt-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -146,16 +146,16 @@ export function GestoresDataTable({
             />
           </div>
         </div>
-        <div className="mb-[10px]">
+        <div className="mb-0 sm:mb-[10px]">
           <Button
             onClick={() => setIsCreateModalOpen(true)}
-            className="cursor-pointer bg-sky-700 hover:bg-sky-800 text-white"
+            className="cursor-pointer bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm"
           >
             Criar Usuário Gestor
           </Button>
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg border bg-white">
+      <div className="overflow-x-auto rounded-lg border bg-white">
         <Table>
           <TableHeader className="bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (

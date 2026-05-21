@@ -411,26 +411,26 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">Mapa de Ocorrências</h1>
-            <p className="text-slate-500">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Mapa de Ocorrências</h1>
+            <p className="text-sm sm:text-base text-slate-500">
               Clique em um alfinete para ver as denúncias do bairro
             </p>
           </div>
         </div>
 
-        <div className="relative w-full min-h-[600px] h-full rounded-xl border shadow-sm overflow-hidden bg-stone-50">
+        <div className="relative w-full rounded-xl border shadow-sm overflow-hidden bg-stone-50" style={{ height: 'clamp(350px, calc(100vh - 220px), 700px)' }}>
           <div ref={mapRef} className="absolute inset-0 z-0" />
 
           <div
-            className="absolute top-4 right-4 z-[400] bg-white/95 backdrop-blur shadow-xl border border-stone-200 rounded-xl w-64 max-h-[80%] flex flex-col transition-all overflow-hidden"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 z-[400] bg-white/95 backdrop-blur shadow-xl border border-stone-200 rounded-xl w-44 sm:w-64 max-h-[60%] sm:max-h-[80%] flex flex-col transition-all overflow-hidden"
             onPointerDown={(e) => e.stopPropagation()}
             onPointerUp={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
             onWheel={(e) => e.stopPropagation()}
             onDoubleClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-3 border-b border-stone-100 bg-white">
-              <h3 className="text-sm font-bold text-stone-800 flex items-center gap-2">
+            <div className="flex items-center justify-between p-2 sm:p-3 border-b border-stone-100 bg-white">
+              <h3 className="text-xs sm:text-sm font-bold text-stone-800 flex items-center gap-1.5 sm:gap-2">
                 <svg className="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 </svg>
@@ -457,14 +457,14 @@ export function MapaOcorrencias({ denuncias }: { readonly denuncias: Denuncia[] 
                 <p className="text-xs text-stone-500 text-center py-4">Nenhuma denúncia encontrada.</p>
               ) : (
                 availableTipos.map((tipo) => (
-                  <label key={tipo} className="flex items-start gap-2.5 p-2 hover:bg-sky-50 rounded-lg cursor-pointer transition-colors group">
+                  <label key={tipo} className="flex items-start gap-2 sm:gap-2.5 p-1.5 sm:p-2 hover:bg-sky-50 rounded-lg cursor-pointer transition-colors group">
                     <input
                       type="checkbox"
-                      className="mt-0.5 rounded border-stone-300 text-sky-600 focus:ring-sky-500 cursor-pointer shadow-sm"
+                      className="mt-0.5 rounded border-stone-300 text-sky-600 focus:ring-sky-500 cursor-pointer shadow-sm h-3.5 w-3.5 sm:h-4 sm:w-4"
                       checked={!deselectedTipos.has(tipo)}
                       onChange={() => toggleFilter(tipo)}
                     />
-                    <span className="text-sm text-stone-700 leading-tight group-hover:text-stone-900 select-none">
+                    <span className="text-xs sm:text-sm text-stone-700 leading-tight group-hover:text-stone-900 select-none">
                       {tipo}
                     </span>
                   </label>

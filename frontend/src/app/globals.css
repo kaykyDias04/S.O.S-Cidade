@@ -117,13 +117,22 @@
 }
 
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    @apply font-sans bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
+  body {
+    min-height: 0;
+  }
+  img, video {
+    max-width: 100%;
   }
 }

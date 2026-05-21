@@ -215,9 +215,9 @@ export function DenunciasDataTable({ data }: { readonly data: DenunciaRow[] }) {
 
   return (
     <div className="space-y-2 dark:bg-transparent">
-      <div className="flex items-end justify-between lg:px-8">
-        <div className="py-0.5 ml-[-1.5rem]">
-          <span className="text-xl font-medium text-slate-800">Pesquisa</span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 lg:px-8">
+        <div className="py-0.5">
+          <span className="text-lg sm:text-xl font-medium text-slate-800">Pesquisa</span>
           <div className="relative w-full max-w-md mt-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -229,7 +229,7 @@ export function DenunciasDataTable({ data }: { readonly data: DenunciaRow[] }) {
           </div>
         </div>
       </div>
-      <div className="overflow-hidden rounded-lg border">
+      <div className="overflow-x-auto rounded-lg border">
         <Table>
           <TableHeader className="bg-muted/50">
             {table.getHeaderGroups().map((headerGroup) => (

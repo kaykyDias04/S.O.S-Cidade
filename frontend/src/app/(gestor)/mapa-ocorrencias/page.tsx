@@ -18,7 +18,7 @@ const MapaOcorrencias = dynamic(
           <Skeleton className="h-8 w-64 mb-2" />
           <Skeleton className="h-4 w-80" />
         </div>
-        <Skeleton className="w-full h-[500px] rounded-xl" />
+        <Skeleton className="w-full rounded-xl" style={{ height: 'clamp(350px, calc(100vh - 220px), 700px)' }} />
       </div>
     ),
   }
@@ -76,7 +76,7 @@ export default function MapaOcorrenciasPage() {
             <Skeleton className="h-8 w-64 mb-2" />
             <Skeleton className="h-4 w-80" />
           </div>
-          <Skeleton className="w-full h-[500px] rounded-xl" />
+          <Skeleton className="w-full rounded-xl" style={{ height: 'clamp(350px, calc(100vh - 220px), 700px)' }} />
         </div>
       </div>
     );

@@ -56,12 +56,12 @@ export default function GestoresPage() {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-3 sm:space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Gestores do Sistema</h1>
-        <p className="text-slate-500">Gerencie os usuários com permissão de acesso ao painel de gestão</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Gestores do Sistema</h1>
+        <p className="text-sm sm:text-base text-slate-500">Gerencie os usuários com permissão de acesso ao painel de gestão</p>
       </div>
-      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-4">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-2 sm:p-4">
         <GestoresDataTable data={data} onRefresh={fetchGestores} />
       </div>
     </div>

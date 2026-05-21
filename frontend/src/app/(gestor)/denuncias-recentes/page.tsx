@@ -64,12 +64,12 @@ export default function DenunciasRecentesPage() {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-3 sm:space-y-4">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Lista de denúncias recentes</h1>
-        <p className="text-slate-500">Visualize todas as denúncias dos últimos dias</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Lista de denúncias recentes</h1>
+        <p className="text-sm sm:text-base text-slate-500">Visualize todas as denúncias dos últimos dias</p>
       </div>
-      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-4">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-stone-200 p-2 sm:p-4">
         <DenunciasDataTable data={data} />
       </div>
     </div>

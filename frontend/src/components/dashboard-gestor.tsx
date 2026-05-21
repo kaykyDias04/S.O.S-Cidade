@@ -332,7 +332,7 @@ export function DashboardGestor() {
               <h2 className="text-xs font-semibold text-stone-500 mb-4 uppercase tracking-wider">
                 Índice de Reincidência (Top 8 Tipos)
               </h2>
-              <div className="flex-1 min-h-[230px]">
+              <div className="flex-1" style={{ minHeight: 'clamp(160px, 25vh, 260px)' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={dataPorTipo}
@@ -357,7 +357,7 @@ export function DashboardGestor() {
               <h2 className="text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wider w-full text-left">
                 Distribuição de Status
               </h2>
-              <div className="w-full flex-1 min-h-[200px]">
+              <div className="w-full flex-1" style={{ minHeight: 'clamp(160px, 22vh, 240px)' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -397,7 +397,7 @@ export function DashboardGestor() {
                   Top 10 Bairros Críticos (Volume vs Tempo de Espera)
                 </h2>
               </div>
-              <div className="h-54">
+              <div style={{ height: 'clamp(180px, 22vh, 250px)' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <ComposedChart
                     data={dataPorBairro}

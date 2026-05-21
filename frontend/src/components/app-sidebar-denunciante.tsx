@@ -53,12 +53,12 @@ export function AppSidebarDenunciante() {
 
   return (
     <Sidebar className="bg-stone-100 p-6 flex flex-col">
-      <SidebarHeader className="flex flex-col items-center bg-stone-100 text-center gap-2">
-        <div className="relative w-16 h-16 md:w-20 md:h-20 bg-sky-700 rounded-full flex items-center justify-center shadow-md">
-          <img src="/logo.svg" alt="Logo" className="w-10 h-10 md:w-12 md:h-12" />
+      <SidebarHeader className="flex flex-col items-center bg-stone-100 text-center gap-1.5">
+        <div className="relative w-14 h-14 bg-sky-700 rounded-full flex items-center justify-center shadow-md">
+          <img src="/logo.svg" alt="Logo" className="w-9 h-9" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-sky-700">S.O.S Cidade</h1>
+          <h1 className="text-lg font-bold text-sky-700">S.O.S Cidade</h1>
           <p className="text-xs text-stone-600">
             Olá, {user?.name ? user.name.split(' ')[0] : "Cidadão"}
           </p>

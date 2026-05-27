@@ -22,8 +22,8 @@ const items = [
 
 const getStatusColor = (situacao: string) => {
   const s = situacao.toLowerCase();
-  if (s.includes("finalizada")) return "bg-green-500";
-  if (s.includes("andamento")) return "bg-orange-400";
+  if (s.includes("finalizada")) return "bg-orange-400";
+  if (s.includes("andamento")) return "bg-green-500";
   return "bg-blue-400";
 };
 

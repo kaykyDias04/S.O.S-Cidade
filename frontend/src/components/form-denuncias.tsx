@@ -87,7 +87,7 @@ const denunciaSchema = z.object({
   bairro: z.string().min(2, { message: "Selecione o bairro da ocorrência." }),
   descricao: z
     .string()
-    .min(20, { message: "Descreva com no mínimo 20 caracteres." }),
+    .min(21, { message: "Descreva com no mínimo 20 caracteres." }),
   consentimento: z
     .boolean()
     .refine((val) => val === true, { message: "Você precisa autorizar o compartilhamento dos dados." }),

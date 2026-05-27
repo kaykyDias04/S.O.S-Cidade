@@ -45,7 +45,7 @@ export default function HomepageDenunciante() {
               Acompanhe o andamento, status e protocolo das denúncias que você já registrou.
             </p>
             <Link
-              href="/minhas-denuncias"
+              href="/nova-denuncia"
               className="bg-white border-2 border-blue-600 text-blue-600 text-center font-semibold py-2.5 px-6 rounded-xl transition-all hover:bg-blue-50 hover:shadow-sm w-full text-sm"
             >
               Minhas Denúncias

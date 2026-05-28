@@ -1,13 +1,13 @@
 # Relatório de Bugs — S.O.S Cidade
 
-## BUG-01 — Rota `/gestores` acessível pelo perfil Denunciante (omitida no middleware)
+## BUG-01 — Rota `/gestores` acessível pelo perfil Denunciante (TC05)
 
 **Arquivo:** `frontend/src/middleware.ts`, linha 27
 **Severidade:** Alta
-**Status:** Aberto
+**Caso de Teste:** TC05
 
 ### Descrição
-O arquivo `middleware.ts` protege as rotas de Gestor verificando se o perfil é `DENUNCIANTE` e redirecionando para `/homepage-denunciante`. Porém, o array `gestorRoutes` não inclui a rota `/gestores`, tornando-a acessível a qualquer usuário autenticado independente do perfil.
+O array `gestorRoutes` no middleware não inclui `/gestores`, tornando essa rota acessível a qualquer Denunciante autenticado que a acesse diretamente pela barra de endereços.
 
 ### Passos para reproduzir
 1. Fazer login com perfil Denunciante
@@ -15,10 +15,10 @@ O arquivo `middleware.ts` protege as rotas de Gestor verificando se o perfil é 
 3. Observar que a página carrega sem redirecionamento
 
 ### Comportamento esperado
-O middleware deve interceptar o acesso de um Denunciante à rota `/gestores` e redirecioná-lo para `/homepage-denunciante`.
+O middleware deve redirecionar o Denunciante para `/homepage-denunciante`.
 
 ### Comportamento observado
-A página `/gestores` carrega normalmente para um Denunciante autenticado, expondo a listagem de gestores cadastrados.
+A página `/gestores` carrega normalmente, expondo a listagem de gestores cadastrados.
 
 ### Causa
 ```ts
@@ -28,115 +28,124 @@ const gestorRoutes = ['/denuncias-recentes', '/mapa-ocorrencias', '/dashboard'];
 ```
 
 ### Correção sugerida
-Adicionar `/gestores` ao array `gestorRoutes`:
 ```ts
 const gestorRoutes = ['/denuncias-recentes', '/mapa-ocorrencias', '/dashboard', '/gestores'];
 ```
 
 ---
 
-## BUG-02 — Validação da descrição rejeita exatamente 20 caracteres (off-by-one)
+## BUG-02 — Denúncia anônima exibe nome do Denunciante para o Gestor (TC10)
 
-**Arquivo:** `frontend/src/components/form-denuncias.tsx`, linha 90
-**Severidade:** Média
-**Status:** Aberto
+**Arquivo:** `frontend/src/components/form-denuncias.tsx`, linha 176
+**Severidade:** Alta
+**Caso de Teste:** TC10
 
 ### Descrição
-O schema Zod do formulário de nova denúncia define o mínimo da descrição como `21` caracteres, mas a mensagem de erro exibida ao usuário diz _"Descreva com no mínimo 20 caracteres"_. Um usuário que digita exatamente 20 caracteres atende ao critério exibido na tela, mas o formulário continua bloqueado.
+A lógica de anonimização do nome do denunciante está invertida. Quando o toggle "Denúncia Anônima" está **ativo**, o sistema envia o nome real do usuário. Quando está **inativo**, envia "Anônimo". O comportamento é o oposto do esperado.
 
 ### Passos para reproduzir
-1. Acessar `/nova-denuncia` como Denunciante autenticado
-2. Preencher todos os campos corretamente
-3. No campo "Descrição", digitar exatamente 20 caracteres (ex.: `"Buraco na calçada ok"`)
-4. Clicar em "Enviar"
-5. Observar que a mensagem _"Descreva com no mínimo 20 caracteres"_ aparece mesmo com 20 caracteres preenchidos
+1. Fazer login como Denunciante
+2. Acessar `/nova-denuncia`
+3. Ativar o toggle "Denúncia Anônima"
+4. Preencher todos os campos e enviar a denúncia
+5. Fazer login como Gestor e acessar `/denuncias-recentes`
+6. Localizar a denúncia pelo protocolo gerado
+7. Observar a coluna "Denunciante"
 
 ### Comportamento esperado
-Uma descrição com 20 ou mais caracteres deve passar na validação.
+A coluna "Denunciante" deve exibir **"Anônimo"** para denúncias enviadas com o toggle ativo.
 
 ### Comportamento observado
-O formulário exige 21 caracteres para aceitar a descrição, mas exibe mensagem indicando 20 como mínimo.
+A coluna "Denunciante" exibe o **nome real** do cidadão mesmo com o toggle de anonimato ativo.
 
 ### Causa
 ```ts
 // form-denuncias.tsx — (errado)
-descricao: z.string().min(21, { message: "Descreva com no mínimo 20 caracteres." }),
+nomeDenunciante: !dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
 
 // Correto
-descricao: z.string().min(20, { message: "Descreva com no mínimo 20 caracteres." }),
+nomeDenunciante: dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
 ```
 
 ### Correção sugerida
-Alinhar o valor de `min()` com o número exibido na mensagem: mudar `min(21)` para `min(20)`.
+Remover a negação `!` da condição `isAnonima`.
 
 ---
 
-## BUG-03 — Cores de status invertidas no sidebar do Denunciante
+## BUG-03 — Badge de status "Finalizada" exibe cor laranja em vez de verde (TC15)
 
-**Arquivo:** `frontend/src/components/app-sidebar-denunciante.tsx`, linhas 25–26
+**Arquivo:** `frontend/src/components/gestor-data-table.tsx`, linha 68
 **Severidade:** Baixa
-**Status:** Aberto
+**Caso de Teste:** TC15
 
 ### Descrição
-A função `getStatusColor` no sidebar do Denunciante mapeia as cores dos indicadores de status de forma invertida: denúncias com situação **"Finalizada"** exibem indicador **laranja** (cor de alerta), enquanto **"Em andamento"** exibe indicador **verde** (cor de conclusão).
+A configuração de estilo do badge de status na tabela de denúncias do Gestor aplica a classe laranja para o status "Finalizada", quando deveria aplicar verde. O resultado esperado de TC15 menciona explicitamente "badge verde" para o status "Finalizada".
 
 ### Passos para reproduzir
-1. Fazer login como Denunciante com ao menos uma denúncia "Finalizada" e uma "Em andamento"
-2. Observar os indicadores coloridos no bloco "Denúncias Recentes" no sidebar
-3. Verificar que "Finalizada" aparece com bolinha laranja e "Em andamento" com bolinha verde
+1. Fazer login como Gestor
+2. Acessar `/denuncias-recentes`
+3. Localizar uma denúncia com status "Em andamento"
+4. Clicar em "Editar" e selecionar "Finalizada"
+5. Confirmar a atualização
+6. Observar a cor do badge na coluna "Situação"
 
 ### Comportamento esperado
-- "Finalizada" → indicador **verde**
-- "Em andamento" → indicador **laranja**
+Badge com fundo **verde** para o status "Finalizada".
 
 ### Comportamento observado
-- "Finalizada" → indicador **laranja**
-- "Em andamento" → indicador **verde**
+Badge com fundo **laranja** para o status "Finalizada".
 
 ### Causa
 ```ts
-// app-sidebar-denunciante.tsx — (errado)
-if (s.includes("finalizada")) return "bg-orange-400";
-if (s.includes("andamento"))  return "bg-green-500";
+// gestor-data-table.tsx — (errado)
+"finalizada": "text-orange-700 bg-orange-50 border-orange-300 hover:bg-orange-600/20",
 
 // Correto
-if (s.includes("finalizada")) return "bg-green-500";
-if (s.includes("andamento"))  return "bg-orange-400";
+"finalizada": "text-green-700 bg-green-50 border-green-300 hover:bg-green-600/20",
 ```
 
 ### Correção sugerida
-Inverter as classes CSS retornadas para cada condição na função `getStatusColor`.
+Restaurar as classes CSS verdes para o status "Finalizada" em `situacaoConfig`.
 
 ---
 
-## BUG-04 — Botão "Minhas Denúncias" redireciona para página errada
+## BUG-04 — Cancelar modal de confirmação apaga o formulário preenchido (TC11)
 
-**Arquivo:** `frontend/src/app/(denunciante)/homepage-denunciante/page.tsx`, linha 48
+**Arquivo:** `frontend/src/components/form-denuncias.tsx`, linha 222
 **Severidade:** Média
-**Status:** Aberto
+**Caso de Teste:** TC11
 
 ### Descrição
-O card "Minhas Denúncias" na página inicial do Denunciante contém um link com `href="/nova-denuncia"`. Ao clicar no botão, o usuário é levado para o formulário de nova denúncia em vez da listagem de suas denúncias.
+Ao clicar em "Cancelar" no modal de confirmação de envio, a função `handleCloseModal` chama `form.reset()`, limpando todos os campos do formulário. O comportamento esperado em TC11 é que o formulário permaneça intacto após o cancelamento.
 
 ### Passos para reproduzir
-1. Fazer login como Denunciante
-2. Na página inicial (`/homepage-denunciante`), clicar no botão **"Minhas Denúncias"** no card correspondente
-3. Observar que o sistema redireciona para `/nova-denuncia`
+1. Fazer login como Denunciante e acessar `/nova-denuncia`
+2. Preencher todos os campos obrigatórios corretamente
+3. Clicar em "Enviar Denúncia"
+4. No modal "Confirmar Envio da Denúncia", clicar em "Cancelar"
+5. Observar o estado do formulário
 
 ### Comportamento esperado
-O botão deve redirecionar para `/minhas-denuncias`.
+Modal fecha; formulário permanece na tela com todos os dados preenchidos intactos.
 
 ### Comportamento observado
-O botão redireciona para `/nova-denuncia`.
+Modal fecha e todos os campos do formulário são **limpos**, perdendo os dados digitados pelo usuário.
 
 ### Causa
-```tsx
-// homepage-denunciante/page.tsx — (errado)
-<Link href="/nova-denuncia">Minhas Denúncias</Link>
+```ts
+// form-denuncias.tsx — (errado)
+function handleCloseModal() {
+  form.reset();  // ← limpa o formulário indevidamente
+  setIsConfirmModalOpen(false);
+  setDataToSubmit(null);
+}
 
 // Correto
-<Link href="/minhas-denuncias">Minhas Denúncias</Link>
+function handleCloseModal() {
+  setIsConfirmModalOpen(false);
+  setDataToSubmit(null);
+}
 ```
 
 ### Correção sugerida
-Corrigir o `href` de `/nova-denuncia` para `/minhas-denuncias`.
+Remover a chamada `form.reset()` da função `handleCloseModal`.

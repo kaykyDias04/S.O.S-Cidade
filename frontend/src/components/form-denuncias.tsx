@@ -87,7 +87,7 @@ const denunciaSchema = z.object({
   bairro: z.string().min(2, { message: "Selecione o bairro da ocorrência." }),
   descricao: z
     .string()
-    .min(21, { message: "Descreva com no mínimo 20 caracteres." }),
+    .min(20, { message: "Descreva com no mínimo 20 caracteres." }),
   consentimento: z
     .boolean()
     .refine((val) => val === true, { message: "Você precisa autorizar o compartilhamento dos dados." }),
@@ -173,7 +173,7 @@ export function FormDenuncias() {
       const denunciaData = {
         tipoDenuncia: tipoLabels[dataToSubmit.tipoDenuncia] || dataToSubmit.tipoDenuncia,
         identificacao: !dataToSubmit.isAnonima,
-        nomeDenunciante: dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
+        nomeDenunciante: !dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
         userId: user?.id,
         bairroOcorrencia: dataToSubmit.bairro,
         descricaoOcorrencia: dataToSubmit.descricao,
@@ -220,6 +220,7 @@ export function FormDenuncias() {
   }
 
   function handleCloseModal() {
+    form.reset();
     setIsConfirmModalOpen(false);
     setDataToSubmit(null);
   }

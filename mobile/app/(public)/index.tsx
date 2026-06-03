@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -80,8 +81,10 @@ export default function WelcomeScreen() {
                 <View style={styles.stepIcon}>
                   <Ionicons name={step.icon} size={28} color="#6498c9" />
                 </View>
-                <Text style={styles.stepLabel}>{step.label}</Text>
-                <Text style={styles.stepDesc}>{step.desc}</Text>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <Text style={styles.stepLabel}>{step.label}</Text>
+                  <Text style={styles.stepDesc}>{step.desc}</Text>
+                </View>
               </View>
             ))}
           </View>
@@ -131,7 +134,19 @@ export default function WelcomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f0f4f8' },
+  container: {
+    flex: 1,
+    backgroundColor: '#f0f4f8',
+    ...(Platform.OS === 'web' ? {
+      maxWidth: 600,
+      width: '100%',
+      alignSelf: 'center',
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowRadius: 10,
+      elevation: 5,
+    } : {})
+  },
 
   
   header: {

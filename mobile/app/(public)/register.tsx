@@ -14,41 +14,73 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useAuthStore } from '@/store/useAuthStore';
+import { usersAPI } from '@/lib/api';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const router = useRouter();
-  const { login, isLoading } = useAuthStore();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+  }>({});
 
   const validate = () => {
     const newErrors: typeof errors = {};
+    if (!name.trim()) newErrors.name = 'Nome completo é obrigatório';
     if (!email.trim()) newErrors.email = 'E-mail obrigatório';
     else if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'E-mail inválido';
     if (!password.trim()) newErrors.password = 'Senha obrigatória';
     else if (password.length < 6) newErrors.password = 'Mínimo 6 caracteres';
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'As senhas não coincidem';
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     if (!validate()) return;
 
-    const result = await login(email.trim(), password);
+    setIsLoading(true);
+    try {
+      const response = await usersAPI.create({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        password,
+        role: 'DENUNCIANTE',
+      });
 
-    if (result.success) {
-      Toast.show({ type: 'success', text1: 'Login realizado!', text2: `Bem-vindo de volta 👋` });
-      if (result.role === 'GESTOR') {
-        router.replace('/(gestor)/denuncias');
+      if (response.success) {
+        Toast.show({
+          type: 'success',
+          text1: 'Cadastro realizado!',
+          text2: 'Agora você pode entrar na sua conta 🎉',
+        });
+        router.replace('/(public)/login');
       } else {
-        router.replace('/(denunciante)/home');
+        Toast.show({
+          type: 'error',
+          text1: 'Erro ao cadastrar',
+          text2: response.error || 'Tente novamente mais tarde',
+        });
       }
-    } else {
-      Toast.show({ type: 'error', text1: 'Erro ao entrar', text2: result.error || 'Verifique suas credenciais' });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao cadastrar',
+        text2: error instanceof Error ? error.message : 'Erro desconhecido',
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +91,6 @@ export default function LoginScreen() {
         style={{ flex: 1 }}
       >
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-
           
           <TouchableOpacity
             style={styles.backBtn}
@@ -69,17 +100,32 @@ export default function LoginScreen() {
             <Ionicons name="arrow-back" size={22} color="#6498c9" />
           </TouchableOpacity>
 
-          
           <View style={styles.logoArea}>
             <View style={styles.logoBadge}>
               <Ionicons name="shield-checkmark" size={36} color="#fff" />
             </View>
             <Text style={styles.logoTitle}>S.O.S Cidade</Text>
-            <Text style={styles.logoSubtitle}>Entre na sua conta</Text>
+            <Text style={styles.logoSubtitle}>Crie sua conta de Cidadão</Text>
           </View>
 
-          
           <View style={styles.card}>
+            
+            <View style={styles.field}>
+              <Text style={styles.label}>Nome Completo</Text>
+              <View style={[styles.inputWrapper, errors.name ? styles.inputError : null]}>
+                <Ionicons name="person-outline" size={18} color="#9ca3af" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Seu nome"
+                  placeholderTextColor="#9ca3af"
+                  value={name}
+                  onChangeText={(v) => { setName(v); setErrors((e) => ({ ...e, name: undefined })); }}
+                  accessibilityLabel="Campo de nome"
+                />
+              </View>
+              {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+            </View>
+
             
             <View style={styles.field}>
               <Text style={styles.label}>E-mail</Text>
@@ -107,10 +153,9 @@ export default function LoginScreen() {
                 <Ionicons name="lock-closed-outline" size={18} color="#9ca3af" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
-                  placeholder="••••••••"
+                  placeholder="Mínimo 6 caracteres"
                   placeholderTextColor="#9ca3af"
                   secureTextEntry={!showPassword}
-                  autoComplete="password"
                   value={password}
                   onChangeText={(v) => { setPassword(v); setErrors((e) => ({ ...e, password: undefined })); }}
                   accessibilityLabel="Campo de senha"
@@ -123,24 +168,43 @@ export default function LoginScreen() {
             </View>
 
             
+            <View style={styles.field}>
+              <Text style={styles.label}>Confirmar Senha</Text>
+              <View style={[styles.inputWrapper, errors.confirmPassword ? styles.inputError : null]}>
+                <Ionicons name="lock-closed-outline" size={18} color="#9ca3af" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirme sua senha"
+                  placeholderTextColor="#9ca3af"
+                  secureTextEntry={!showConfirmPassword}
+                  value={confirmPassword}
+                  onChangeText={(v) => { setConfirmPassword(v); setErrors((e) => ({ ...e, confirmPassword: undefined })); }}
+                  accessibilityLabel="Confirmar senha"
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeBtn}>
+                  <Ionicons name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'} size={18} color="#9ca3af" />
+                </TouchableOpacity>
+              </View>
+              {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+            </View>
+
             <TouchableOpacity
               style={[styles.submitBtn, isLoading && styles.submitBtnDisabled]}
-              onPress={handleLogin}
+              onPress={handleRegister}
               disabled={isLoading}
-              accessibilityLabel="Entrar"
+              accessibilityLabel="Cadastrar"
             >
               {isLoading
                 ? <ActivityIndicator color="#fff" />
-                : <Text style={styles.submitBtnText}>ENTRAR</Text>
+                : <Text style={styles.submitBtnText}>CADASTRAR</Text>
               }
             </TouchableOpacity>
           </View>
 
-          
           <View style={styles.registerRow}>
-            <Text style={styles.registerText}>Ainda não tem conta? </Text>
-            <TouchableOpacity onPress={() => router.push('/(public)/register')} accessibilityLabel="Cadastrar-se">
-              <Text style={styles.registerLink}>Cadastre-se</Text>
+            <Text style={styles.registerText}>Já tem uma conta? </Text>
+            <TouchableOpacity onPress={() => router.push('/(public)/login')} accessibilityLabel="Entrar">
+              <Text style={styles.registerLink}>Entrar</Text>
             </TouchableOpacity>
           </View>
 
@@ -151,19 +215,7 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f4f8',
-    ...(Platform.OS === 'web' ? {
-      maxWidth: 600,
-      width: '100%',
-      alignSelf: 'center',
-      shadowColor: '#000',
-      shadowOpacity: 0.1,
-      shadowRadius: 10,
-      elevation: 5,
-    } : {})
-  },
+  container: { flex: 1, backgroundColor: '#f0f4f8' },
   scroll: { flexGrow: 1, padding: 24 },
 
   backBtn: {

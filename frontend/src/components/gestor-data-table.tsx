@@ -65,7 +65,7 @@ export type DenunciaRow = {
 
 const situacaoConfig: Record<string, string> = {
   "em andamento": "text-orange-700 bg-orange-50 border-orange-300 hover:bg-orange-600/20",
-  "finalizada": "text-green-700 bg-green-50 border-green-300 hover:bg-green-600/20",
+  "finalizada": "text-orange-700 bg-orange-50 border-orange-300 hover:bg-orange-600/20",
 };
 
 const columns: ColumnDef<DenunciaRow>[] = [

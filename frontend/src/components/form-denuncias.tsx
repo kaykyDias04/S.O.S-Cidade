@@ -173,7 +173,7 @@ export function FormDenuncias() {
       const denunciaData = {
         tipoDenuncia: tipoLabels[dataToSubmit.tipoDenuncia] || dataToSubmit.tipoDenuncia,
         identificacao: !dataToSubmit.isAnonima,
-        nomeDenunciante: dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
+        nomeDenunciante: !dataToSubmit.isAnonima ? "Anônimo" : (user?.name || "Anônimo"),
         userId: user?.id,
         bairroOcorrencia: dataToSubmit.bairro,
         descricaoOcorrencia: dataToSubmit.descricao,
@@ -220,6 +220,7 @@ export function FormDenuncias() {
   }
 
   function handleCloseModal() {
+    form.reset();
     setIsConfirmModalOpen(false);
     setDataToSubmit(null);
   }

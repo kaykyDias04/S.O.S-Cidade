@@ -5,8 +5,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function GestorLayout() {
   const { isAuthenticated, user } = useAuthStore();
 
-  if (!isAuthenticated) return <Redirect href="/(public)/login" />;
-  if (user?.role === 'DENUNCIANTE') return <Redirect href="/(denunciante)/home" />;
+  if (!isAuthenticated) return <Redirect href="/login" />;
+  if (user?.role === 'DENUNCIANTE') return <Redirect href="/home" />;
 
   return (
     <Tabs

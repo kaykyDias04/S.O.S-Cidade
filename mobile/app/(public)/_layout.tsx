@@ -7,9 +7,9 @@ export default function PublicLayout() {
   
   if (isAuthenticated && user) {
     if (user.role === 'GESTOR') {
-      return <Redirect href="/(gestor)/denuncias" />;
+      return <Redirect href="/denuncias" />;
     }
-    return <Redirect href="/(denunciante)/home" />;
+    return <Redirect href="/home" />;
   }
 
   return (

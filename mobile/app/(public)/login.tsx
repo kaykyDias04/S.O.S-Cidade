@@ -43,9 +43,9 @@ export default function LoginScreen() {
     if (result.success) {
       Toast.show({ type: 'success', text1: 'Login realizado!', text2: `Bem-vindo de volta 👋` });
       if (result.role === 'GESTOR') {
-        router.replace('/(gestor)/denuncias');
+        router.replace('/denuncias');
       } else {
-        router.replace('/(denunciante)/home');
+        router.replace('/home');
       }
     } else {
       Toast.show({ type: 'error', text1: 'Erro ao entrar', text2: result.error || 'Verifique suas credenciais' });
@@ -139,7 +139,7 @@ export default function LoginScreen() {
           
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Ainda não tem conta? </Text>
-            <TouchableOpacity onPress={() => router.push('/(public)/register')} accessibilityLabel="Cadastrar-se">
+            <TouchableOpacity onPress={() => router.push('/register')} accessibilityLabel="Cadastrar-se">
               <Text style={styles.registerLink}>Cadastre-se</Text>
             </TouchableOpacity>
           </View>

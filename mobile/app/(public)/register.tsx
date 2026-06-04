@@ -65,7 +65,7 @@ export default function RegisterScreen() {
           text1: 'Cadastro realizado!',
           text2: 'Agora você pode entrar na sua conta 🎉',
         });
-        router.replace('/(public)/login');
+        router.replace('/login');
       } else {
         Toast.show({
           type: 'error',
@@ -203,7 +203,7 @@ export default function RegisterScreen() {
 
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Já tem uma conta? </Text>
-            <TouchableOpacity onPress={() => router.push('/(public)/login')} accessibilityLabel="Entrar">
+            <TouchableOpacity onPress={() => router.push('/login')} accessibilityLabel="Entrar">
               <Text style={styles.registerLink}>Entrar</Text>
             </TouchableOpacity>
           </View>

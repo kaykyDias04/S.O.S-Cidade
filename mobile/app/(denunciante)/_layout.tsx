@@ -5,8 +5,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 export default function DenuncianteLayout() {
   const { isAuthenticated, user } = useAuthStore();
 
-  if (!isAuthenticated) return <Redirect href="/(public)/login" />;
-  if (user?.role === 'GESTOR') return <Redirect href="/(gestor)/denuncias" />;
+  if (!isAuthenticated) return <Redirect href="/login" />;
+  if (user?.role === 'GESTOR') return <Redirect href="/denuncias" />;
 
   return (
     <Tabs

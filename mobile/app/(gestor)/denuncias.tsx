@@ -40,7 +40,7 @@ export default function DenunciasGestorScreen() {
 
   useEffect(() => { fetchDenuncias(); }, []);
 
-  const handleLogout = async () => { await logout(); router.replace('/(public)/index'); };
+  const handleLogout = async () => { await logout(); router.replace('/'); };
 
   const filtered = denuncias.filter((d) => {
     const matchSearch =

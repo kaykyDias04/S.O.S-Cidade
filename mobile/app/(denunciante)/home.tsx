@@ -36,7 +36,7 @@ export default function HomeDenuncianteScreen() {
 
   const handleLogout = async () => {
     await logout();
-    router.replace('/(public)/index');
+    router.replace('/');
   };
 
   const getSituacao = (situacao: string) =>
@@ -63,7 +63,7 @@ export default function HomeDenuncianteScreen() {
         
         <TouchableOpacity
           style={styles.ctaCard}
-          onPress={() => router.push('/(denunciante)/nova-denuncia')}
+          onPress={() => router.push('/nova-denuncia')}
           accessibilityLabel="Fazer nova denúncia"
         >
           <View style={styles.ctaIcon}>
@@ -91,7 +91,7 @@ export default function HomeDenuncianteScreen() {
               <TouchableOpacity
                 key={i}
                 style={styles.chip}
-                onPress={() => router.push('/(denunciante)/nova-denuncia')}
+                onPress={() => router.push('/nova-denuncia')}
                 accessibilityLabel={cat.label}
               >
                 <Ionicons name={cat.icon} size={18} color="#6498c9" />
@@ -105,7 +105,7 @@ export default function HomeDenuncianteScreen() {
         <View style={styles.section}>
           <View style={styles.sectionRow}>
             <Text style={styles.sectionTitle}>Minhas Denúncias Recentes</Text>
-            <TouchableOpacity onPress={() => router.push('/(denunciante)/minhas-denuncias')}>
+            <TouchableOpacity onPress={() => router.push('/minhas-denuncias')}>
               <Text style={styles.seeAll}>Ver todas</Text>
             </TouchableOpacity>
           </View>

@@ -42,7 +42,7 @@ export default function WelcomeScreen() {
           </View>
           <TouchableOpacity
             style={styles.loginBtn}
-            onPress={() => router.push('/(public)/login')}
+            onPress={() => router.push('/login')}
             accessibilityLabel="Entrar"
           >
             <Text style={styles.loginBtnText}>ENTRAR</Text>
@@ -60,7 +60,7 @@ export default function WelcomeScreen() {
             </Text>
             <TouchableOpacity
               style={styles.ctaBtn}
-              onPress={() => router.push('/(public)/login')}
+              onPress={() => router.push('/login')}
               accessibilityLabel="Faça sua denúncia agora"
             >
               <Text style={styles.ctaBtnText}>FAÇA SUA DENÚNCIA AGORA</Text>
@@ -111,7 +111,7 @@ export default function WelcomeScreen() {
               <TouchableOpacity
                 key={idx}
                 style={styles.categoryCard}
-                onPress={() => router.push('/(public)/login')}
+                onPress={() => router.push('/login')}
                 accessibilityLabel={cat.title}
               >
                 <View style={styles.categoryIcon}>

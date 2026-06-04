@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,24 +8,35 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { Marker, Callout } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { useDenunciasStore } from '@/store/useDenunciasStore';
 import { Denuncia } from '@/lib/api';
 
+// Importação condicional: react-native-maps só existe no native
+let MapView: any = null;
+let Marker: any = null;
+let Callout: any = null;
+if (Platform.OS !== 'web') {
+  const maps = require('react-native-maps');
+  MapView = maps.default;
+  Marker = maps.Marker;
+  Callout = maps.Callout;
+}
+
 const BAIRRO_COORDS: Record<string, { latitude: number; longitude: number }> = {
-  'Boa Viagem': { latitude: -8.1192, longitude: -34.9011 },
+  'Boa Viagem':    { latitude: -8.1192, longitude: -34.9011 },
   'Recife Antigo': { latitude: -8.0628, longitude: -34.8711 },
-  'Casa Amarela': { latitude: -8.0242, longitude: -34.9202 },
-  'Aflitos': { latitude: -8.0492, longitude: -34.9002 },
-  'Graças': { latitude: -8.0532, longitude: -34.9042 },
-  'Espinheiro': { latitude: -8.0452, longitude: -34.9022 },
-  'Torre': { latitude: -8.0782, longitude: -34.9102 },
-  'Boa Vista': { latitude: -8.0648, longitude: -34.8831 },
-  'Água Fria': { latitude: -7.9972, longitude: -34.9202 },
-  'Várzea': { latitude: -8.0552, longitude: -34.9502 },
+  'Casa Amarela':  { latitude: -8.0242, longitude: -34.9202 },
+  'Aflitos':       { latitude: -8.0492, longitude: -34.9002 },
+  'Graças':        { latitude: -8.0532, longitude: -34.9042 },
+  'Espinheiro':    { latitude: -8.0452, longitude: -34.9022 },
+  'Torre':         { latitude: -8.0782, longitude: -34.9102 },
+  'Boa Vista':     { latitude: -8.0648, longitude: -34.8831 },
+  'Água Fria':     { latitude: -7.9972, longitude: -34.9202 },
+  'Várzea':        { latitude: -8.0552, longitude: -34.9502 },
 };
 
 const DEFAULT_COORDS = { latitude: -8.0578, longitude: -34.9029 };
@@ -40,11 +51,10 @@ const TIPO_COLORS: Record<string, string> = {
   'Outro': '#6b7280',
 };
 
+// Status reais do backend
 const SITUACAO_CONFIG: Record<string, { label: string; color: string }> = {
-  PENDENTE: { label: 'Pendente', color: '#F59E0B' },
-  EM_ANDAMENTO: { label: 'Em Andamento', color: '#3B82F6' },
-  RESOLVIDO: { label: 'Resolvido', color: '#10B981' },
-  REJEITADO: { label: 'Rejeitado', color: '#EF4444' },
+  'Em Andamento': { label: 'Em Andamento', color: '#3B82F6' },
+  'Resolvido':    { label: 'Resolvido',    color: '#10B981' },
 };
 
 function getCoords(bairro: string) {
@@ -52,13 +62,69 @@ function getCoords(bairro: string) {
     bairro?.toLowerCase().includes(b.toLowerCase())
   );
   if (key) return BAIRRO_COORDS[key];
-  
   return {
     latitude: DEFAULT_COORDS.latitude + (Math.random() - 0.5) * 0.06,
     longitude: DEFAULT_COORDS.longitude + (Math.random() - 0.5) * 0.06,
   };
 }
 
+// ─── Web fallback: grouped card list ───────────────────────────────────────
+function WebMapFallback({ denuncias, onSelect }: { denuncias: Denuncia[]; onSelect: (d: Denuncia) => void }) {
+  // Group by bairro
+  const byBairro: Record<string, Denuncia[]> = {};
+  denuncias.forEach((d) => {
+    const b = d.bairroOcorrencia || 'Sem bairro';
+    if (!byBairro[b]) byBairro[b] = [];
+    byBairro[b].push(d);
+  });
+
+  return (
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16, gap: 16 }}>
+      <View style={webStyles.notice}>
+        <Ionicons name="information-circle-outline" size={18} color="#6498c9" />
+        <Text style={webStyles.noticeText}>Mapa interativo disponível apenas no app mobile. Abaixo, a lista de ocorrências por bairro.</Text>
+      </View>
+
+      {Object.entries(byBairro).map(([bairro, items]) => (
+        <View key={bairro} style={webStyles.bairroBlock}>
+          <View style={webStyles.bairroHeader}>
+            <Ionicons name="location" size={16} color="#6498c9" />
+            <Text style={webStyles.bairroTitle}>{bairro}</Text>
+            <View style={webStyles.countBadge}>
+              <Text style={webStyles.countText}>{items.length}</Text>
+            </View>
+          </View>
+          {items.map((d) => {
+            const color = TIPO_COLORS[d.tipoDenuncia] || '#6b7280';
+            const sit = SITUACAO_CONFIG[d.situacao] || { label: d.situacao, color: '#6b7280' };
+            return (
+              <TouchableOpacity
+                key={d.id}
+                style={webStyles.card}
+                onPress={() => onSelect(d)}
+                accessibilityLabel={`Ver denúncia ${d.tipoDenuncia}`}
+              >
+                <View style={[webStyles.colorBar, { backgroundColor: color }]} />
+                <View style={{ flex: 1 }}>
+                  <Text style={webStyles.cardTipo}>{d.tipoDenuncia}</Text>
+                  <Text style={webStyles.cardDesc} numberOfLines={1}>{d.descricaoOcorrencia}</Text>
+                  <View style={webStyles.cardMeta}>
+                    <View style={[webStyles.sitBadge, { backgroundColor: sit.color + '22' }]}>
+                      <Text style={[webStyles.sitText, { color: sit.color }]}>{sit.label}</Text>
+                    </View>
+                    <Text style={webStyles.protoText}>#{d.protocolo}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
+
+// ─── Main screen ───────────────────────────────────────────────────────────
 export default function MapaScreen() {
   const { denuncias, loading, fetchDenuncias } = useDenunciasStore();
   const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(null);
@@ -74,13 +140,16 @@ export default function MapaScreen() {
 
   const tipos = [...new Set(denuncias.map((d) => d.tipoDenuncia))];
 
+  const handleSelect = (d: Denuncia) => { setSelectedDenuncia(d); setShowDetail(true); };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      
+
+      {/* Header */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>Mapa de Ocorrências</Text>
-          <Text style={styles.headerSub}>{filtered.length} ocorrências no mapa</Text>
+          <Text style={styles.headerSub}>{filtered.length} ocorrências</Text>
         </View>
         <TouchableOpacity
           style={styles.filtroBtn}
@@ -91,7 +160,7 @@ export default function MapaScreen() {
         </TouchableOpacity>
       </View>
 
-      
+      {/* Active filter chip */}
       {filtroTipo && (
         <View style={styles.filtroAtivo}>
           <View style={[styles.filtroChip, { backgroundColor: (TIPO_COLORS[filtroTipo] || '#6498c9') + '22', borderColor: TIPO_COLORS[filtroTipo] || '#6498c9' }]}>
@@ -103,58 +172,62 @@ export default function MapaScreen() {
         </View>
       )}
 
-      
+      {/* Map or fallback */}
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#6498c9" />
           <Text style={styles.loadingText}>Carregando ocorrências...</Text>
         </View>
+      ) : Platform.OS === 'web' ? (
+        <WebMapFallback denuncias={filtered} onSelect={handleSelect} />
       ) : (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: DEFAULT_COORDS.latitude,
-            longitude: DEFAULT_COORDS.longitude,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
-          }}
-        >
-          {filtered.map((d) => {
-            const coords = getCoords(d.bairroOcorrencia);
-            const color = TIPO_COLORS[d.tipoDenuncia] || '#6498c9';
-            return (
-              <Marker
-                key={d.id}
-                coordinate={coords}
-                pinColor={color}
-                onPress={() => { setSelectedDenuncia(d); setShowDetail(true); }}
-              >
-                <Callout>
-                  <View style={styles.callout}>
-                    <Text style={styles.calloutTitle}>{d.tipoDenuncia}</Text>
-                    <Text style={styles.calloutBairro}>{d.bairroOcorrencia}</Text>
-                    <Text style={styles.calloutProto}>#{d.protocolo}</Text>
-                  </View>
-                </Callout>
-              </Marker>
-            );
-          })}
-        </MapView>
+        <>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: DEFAULT_COORDS.latitude,
+              longitude: DEFAULT_COORDS.longitude,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1,
+            }}
+          >
+            {filtered.map((d) => {
+              const coords = getCoords(d.bairroOcorrencia);
+              const color = TIPO_COLORS[d.tipoDenuncia] || '#6498c9';
+              return (
+                <Marker
+                  key={d.id}
+                  coordinate={coords}
+                  pinColor={color}
+                  onPress={() => handleSelect(d)}
+                >
+                  <Callout>
+                    <View style={styles.callout}>
+                      <Text style={styles.calloutTitle}>{d.tipoDenuncia}</Text>
+                      <Text style={styles.calloutBairro}>{d.bairroOcorrencia}</Text>
+                      <Text style={styles.calloutProto}>#{d.protocolo}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              );
+            })}
+          </MapView>
+
+          {/* Legend (native only) */}
+          <View style={styles.legend}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
+              {Object.entries(TIPO_COLORS).map(([tipo, color]) => (
+                <View key={tipo} style={styles.legendItem}>
+                  <View style={[styles.legendDot, { backgroundColor: color }]} />
+                  <Text style={styles.legendText}>{tipo.split(' ').slice(0, 2).join(' ')}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </>
       )}
 
-      
-      <View style={styles.legend}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
-          {Object.entries(TIPO_COLORS).map(([tipo, color]) => (
-            <View key={tipo} style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: color }]} />
-              <Text style={styles.legendText}>{tipo.split(' ').slice(0, 2).join(' ')}</Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-
-      
+      {/* Detail Modal */}
       <Modal visible={showDetail} transparent animationType="slide">
         <TouchableOpacity
           style={styles.sheetOverlay}
@@ -199,7 +272,7 @@ export default function MapaScreen() {
         </TouchableOpacity>
       </Modal>
 
-      
+      {/* Filter Modal */}
       <Modal visible={showFiltros} transparent animationType="slide">
         <TouchableOpacity
           style={styles.sheetOverlay}
@@ -306,4 +379,42 @@ const styles = StyleSheet.create({
   filtroOptionText: { flex: 1, fontSize: 15, color: '#374151' },
   filtroOptionTextActive: { color: '#6498c9', fontWeight: '700' },
   typeDot: { width: 10, height: 10, borderRadius: 5 },
+});
+
+const webStyles = StyleSheet.create({
+  notice: {
+    flexDirection: 'row', alignItems: 'flex-start', gap: 8,
+    backgroundColor: '#EFF6FF', borderRadius: 12, padding: 12,
+    borderWidth: 1, borderColor: '#bfdbfe',
+  },
+  noticeText: { flex: 1, fontSize: 13, color: '#1e3a5f', lineHeight: 19 },
+
+  bairroBlock: {
+    backgroundColor: '#fff', borderRadius: 16,
+    shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, elevation: 2,
+    overflow: 'hidden',
+  },
+  bairroHeader: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    backgroundColor: '#f8fafc', padding: 14,
+    borderBottomWidth: 1, borderBottomColor: '#f0f4f8',
+  },
+  bairroTitle: { flex: 1, fontSize: 15, fontWeight: '800', color: '#1e3a5f' },
+  countBadge: {
+    backgroundColor: '#6498c9', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 2,
+  },
+  countText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+
+  card: {
+    flexDirection: 'row', alignItems: 'stretch',
+    borderBottomWidth: 1, borderBottomColor: '#f0f4f8',
+    overflow: 'hidden',
+  },
+  colorBar: { width: 4 },
+  cardTipo: { fontSize: 14, fontWeight: '700', color: '#1e3a5f', padding: 12, paddingBottom: 2 },
+  cardDesc: { fontSize: 13, color: '#6b7280', paddingHorizontal: 12 },
+  cardMeta: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, paddingTop: 6 },
+  sitBadge: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 2 },
+  sitText: { fontSize: 11, fontWeight: '700' },
+  protoText: { fontSize: 11, color: '#6498c9', fontWeight: '700', marginLeft: 'auto' },
 });

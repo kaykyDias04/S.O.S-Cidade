@@ -9,6 +9,9 @@ import {
   TextInput,
   Modal,
   ActivityIndicator,
+  ScrollView,
+  Image,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,14 +21,23 @@ import { useDenunciasStore } from '@/store/useDenunciasStore';
 import { denunciasAPI, Denuncia } from '@/lib/api';
 import { useRouter } from 'expo-router';
 
-const SITUACOES = ['PENDENTE', 'EM_ANDAMENTO', 'RESOLVIDO', 'REJEITADO'];
+// Status reais do backend (Prisma default: "Em Andamento")
+const SITUACOES = ['Em Andamento', 'Resolvido'];
 
 const SITUACAO_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  PENDENTE: { bg: '#FEF3C7', text: '#92400E', label: 'Pendente' },
-  EM_ANDAMENTO: { bg: '#DBEAFE', text: '#1E40AF', label: 'Em Andamento' },
-  RESOLVIDO: { bg: '#D1FAE5', text: '#065F46', label: 'Resolvido' },
-  REJEITADO: { bg: '#FEE2E2', text: '#991B1B', label: 'Rejeitado' },
+  'Em Andamento': { bg: '#DBEAFE', text: '#1E40AF', label: 'Em Andamento' },
+  'Resolvido':    { bg: '#D1FAE5', text: '#065F46', label: 'Resolvido' },
 };
+
+function getSit(s: string) {
+  return SITUACAO_CONFIG[s] || { bg: '#F3F4F6', text: '#374151', label: s };
+}
+
+function parseImagens(imagens: any): string[] {
+  if (!imagens) return [];
+  if (Array.isArray(imagens)) return imagens;
+  try { return JSON.parse(imagens); } catch { return []; }
+}
 
 export default function DenunciasGestorScreen() {
   const router = useRouter();
@@ -47,7 +59,7 @@ export default function DenunciasGestorScreen() {
       !search ||
       d.tipoDenuncia.toLowerCase().includes(search.toLowerCase()) ||
       d.bairroOcorrencia.toLowerCase().includes(search.toLowerCase()) ||
-      d.protocolo.includes(search) ||
+      d.protocolo.toLowerCase().includes(search.toLowerCase()) ||
       d.nomeDenunciante.toLowerCase().includes(search.toLowerCase());
     const matchFiltro = !filtroSituacao || d.situacao === filtroSituacao;
     return matchSearch && matchFiltro;
@@ -61,7 +73,7 @@ export default function DenunciasGestorScreen() {
       if (res.success) {
         updateDenunciaLocalmente(selectedDenuncia.protocolo, novaSituacao);
         setSelectedDenuncia((d) => d ? { ...d, situacao: novaSituacao } : d);
-        Toast.show({ type: 'success', text1: 'Status atualizado!', text2: `Denúncia marcada como ${SITUACAO_CONFIG[novaSituacao]?.label}` });
+        Toast.show({ type: 'success', text1: 'Status atualizado!', text2: `Denúncia marcada como ${SITUACAO_CONFIG[novaSituacao]?.label ?? novaSituacao}` });
       } else {
         Toast.show({ type: 'error', text1: 'Erro', text2: res.error || 'Falha ao atualizar status' });
       }
@@ -69,8 +81,6 @@ export default function DenunciasGestorScreen() {
       setUpdatingStatus(false);
     }
   };
-
-  const getSit = (s: string) => SITUACAO_CONFIG[s] || { bg: '#F3F4F6', text: '#374151', label: s };
 
   const renderItem = ({ item }: { item: Denuncia }) => {
     const sit = getSit(item.situacao);
@@ -104,7 +114,8 @@ export default function DenunciasGestorScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
+      {/* Header */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>Denúncias Recentes</Text>
@@ -115,7 +126,7 @@ export default function DenunciasGestorScreen() {
         </TouchableOpacity>
       </View>
 
-      
+      {/* Search */}
       <View style={styles.searchWrapper}>
         <Ionicons name="search-outline" size={18} color="#9ca3af" />
         <TextInput
@@ -133,18 +144,19 @@ export default function DenunciasGestorScreen() {
         )}
       </View>
 
-      
-      <FlatList
+      {/* Filter chips — ScrollView horizontal para web compatibility */}
+      <ScrollView
         horizontal
-        data={[null, ...SITUACOES]}
-        keyExtractor={(item) => String(item)}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filtros}
-        renderItem={({ item: s }) => {
+        style={{ flexGrow: 0, flexShrink: 0, height: 40, marginBottom: 8 }}
+      >
+        {[null, ...SITUACOES].map((s) => {
           const active = filtroSituacao === s;
           const label = s ? getSit(s).label : 'Todas';
           return (
             <TouchableOpacity
+              key={String(s)}
               style={[styles.filtroChip, active && styles.filtroChipActive]}
               onPress={() => setFiltroSituacao(s)}
               accessibilityLabel={`Filtrar ${label}`}
@@ -152,10 +164,10 @@ export default function DenunciasGestorScreen() {
               <Text style={[styles.filtroText, active && styles.filtroTextActive]}>{label}</Text>
             </TouchableOpacity>
           );
-        }}
-      />
+        })}
+      </ScrollView>
 
-      
+      {/* List */}
       <FlatList
         data={filtered}
         keyExtractor={(item) => String(item.id)}
@@ -171,68 +183,91 @@ export default function DenunciasGestorScreen() {
         showsVerticalScrollIndicator={false}
       />
 
-      
+      {/* Detail Modal */}
       <Modal visible={showDetail} animationType="slide" presentationStyle="pageSheet">
-        {selectedDenuncia && (
-          <SafeAreaView style={{ flex: 1, backgroundColor: '#f0f4f8' }}>
-            <View style={styles.detailHeader}>
-              <TouchableOpacity onPress={() => setShowDetail(false)} accessibilityLabel="Fechar">
-                <Ionicons name="close" size={24} color="#374151" />
-              </TouchableOpacity>
-              <Text style={styles.detailTitle}>Detalhes da Denúncia</Text>
-              <View style={{ width: 24 }} />
-            </View>
-
-            <View style={{ padding: 20, gap: 16 }}>
-              <View style={styles.detailCard}>
-                <Text style={styles.detailLabel}>Protocolo</Text>
-                <Text style={styles.detailProtocolo}>#{selectedDenuncia.protocolo}</Text>
-              </View>
-              <View style={styles.detailCard}>
-                <Text style={styles.detailLabel}>Tipo</Text>
-                <Text style={styles.detailValue}>{selectedDenuncia.tipoDenuncia}</Text>
-              </View>
-              <View style={styles.detailCard}>
-                <Text style={styles.detailLabel}>Denunciante</Text>
-                <Text style={styles.detailValue}>
-                  {selectedDenuncia.identificacao ? selectedDenuncia.nomeDenunciante : 'Anônimo'}
-                </Text>
-              </View>
-              <View style={styles.detailCard}>
-                <Text style={styles.detailLabel}>Bairro</Text>
-                <Text style={styles.detailValue}>{selectedDenuncia.bairroOcorrencia}</Text>
-              </View>
-              <View style={styles.detailCard}>
-                <Text style={styles.detailLabel}>Descrição</Text>
-                <Text style={styles.detailValue}>{selectedDenuncia.descricaoOcorrencia}</Text>
+        {selectedDenuncia && (() => {
+          const imgs = parseImagens(selectedDenuncia.imagens);
+          return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#f0f4f8' }}>
+              <View style={styles.detailHeader}>
+                <TouchableOpacity onPress={() => setShowDetail(false)} accessibilityLabel="Fechar">
+                  <Ionicons name="close" size={24} color="#374151" />
+                </TouchableOpacity>
+                <Text style={styles.detailTitle}>Detalhes da Denúncia</Text>
+                <View style={{ width: 24 }} />
               </View>
 
-              <Text style={styles.detailLabel}>Alterar Status</Text>
-              <View style={{ gap: 8 }}>
-                {SITUACOES.map((s) => {
-                  const cfg = getSit(s);
-                  const current = selectedDenuncia.situacao === s;
-                  return (
-                    <TouchableOpacity
-                      key={s}
-                      style={[styles.statusBtn, current && styles.statusBtnActive, { borderColor: cfg.text }]}
-                      onPress={() => handleUpdateStatus(s)}
-                      disabled={current || updatingStatus}
-                      accessibilityLabel={`Marcar como ${cfg.label}`}
-                    >
-                      {updatingStatus && current
-                        ? <ActivityIndicator size="small" color={cfg.text} />
-                        : <Text style={[styles.statusBtnText, { color: current ? '#fff' : cfg.text }]}>
-                            {cfg.label} {current ? '✓' : ''}
-                          </Text>
-                      }
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-          </SafeAreaView>
-        )}
+              <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+                <View style={styles.detailCard}>
+                  <Text style={styles.detailLabel}>Protocolo</Text>
+                  <Text style={styles.detailProtocolo}>#{selectedDenuncia.protocolo}</Text>
+                </View>
+                <View style={styles.detailCard}>
+                  <Text style={styles.detailLabel}>Tipo</Text>
+                  <Text style={styles.detailValue}>{selectedDenuncia.tipoDenuncia}</Text>
+                </View>
+                <View style={styles.detailCard}>
+                  <Text style={styles.detailLabel}>Denunciante</Text>
+                  <Text style={styles.detailValue}>
+                    {selectedDenuncia.identificacao ? selectedDenuncia.nomeDenunciante : 'Anônimo'}
+                  </Text>
+                </View>
+                <View style={styles.detailCard}>
+                  <Text style={styles.detailLabel}>Bairro</Text>
+                  <Text style={styles.detailValue}>{selectedDenuncia.bairroOcorrencia}</Text>
+                </View>
+                <View style={styles.detailCard}>
+                  <Text style={styles.detailLabel}>Descrição</Text>
+                  <Text style={styles.detailValue}>{selectedDenuncia.descricaoOcorrencia}</Text>
+                </View>
+
+                {/* Imagens */}
+                {imgs.length > 0 && (
+                  <View style={styles.detailCard}>
+                    <Text style={styles.detailLabel}>Imagens</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+                      <View style={{ flexDirection: 'row', gap: 10 }}>
+                        {imgs.map((uri, idx) => (
+                          <Image
+                            key={idx}
+                            source={{ uri }}
+                            style={styles.detailImage}
+                            resizeMode="cover"
+                          />
+                        ))}
+                      </View>
+                    </ScrollView>
+                  </View>
+                )}
+
+                {/* Alterar Status */}
+                <Text style={styles.detailLabel}>Alterar Status</Text>
+                <View style={{ gap: 8 }}>
+                  {SITUACOES.map((s) => {
+                    const cfg = getSit(s);
+                    const current = selectedDenuncia.situacao === s;
+                    return (
+                      <TouchableOpacity
+                        key={s}
+                        style={[styles.statusBtn, current && styles.statusBtnActive, { borderColor: cfg.text }]}
+                        onPress={() => handleUpdateStatus(s)}
+                        disabled={current || updatingStatus}
+                        accessibilityLabel={`Marcar como ${cfg.label}`}
+                      >
+                        {updatingStatus && current
+                          ? <ActivityIndicator size="small" color={cfg.text} />
+                          : <Text style={[styles.statusBtnText, { color: current ? '#fff' : cfg.text }]}>
+                              {cfg.label} {current ? '✓' : ''}
+                            </Text>
+                        }
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </SafeAreaView>
+          );
+        })()}
       </Modal>
     </SafeAreaView>
   );
@@ -257,7 +292,7 @@ const styles = StyleSheet.create({
   },
   searchInput: { flex: 1, fontSize: 14, color: '#111827' },
 
-  filtros: { paddingHorizontal: 16, paddingBottom: 8, gap: 8 },
+  filtros: { paddingHorizontal: 16, gap: 8, alignItems: 'center' },
   filtroChip: {
     paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20,
     backgroundColor: '#fff', borderWidth: 1.5, borderColor: '#e5e7eb',
@@ -283,7 +318,6 @@ const styles = StyleSheet.create({
   emptyState: { alignItems: 'center', paddingVertical: 60, gap: 10 },
   emptyTitle: { fontSize: 17, fontWeight: '700', color: '#6b7280' },
 
-  
   detailHeader: {
     flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
     padding: 20, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f0f4f8',
@@ -296,6 +330,7 @@ const styles = StyleSheet.create({
   detailLabel: { fontSize: 12, fontWeight: '700', color: '#9ca3af', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 },
   detailValue: { fontSize: 15, color: '#1e3a5f' },
   detailProtocolo: { fontSize: 20, fontWeight: '800', color: '#6498c9' },
+  detailImage: { width: 140, height: 140, borderRadius: 12 },
 
   statusBtn: {
     borderRadius: 12, paddingVertical: 12, paddingHorizontal: 16,

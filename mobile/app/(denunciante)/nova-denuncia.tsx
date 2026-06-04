@@ -16,7 +16,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useDenunciasStore } from '@/store/useDenunciasStore';
@@ -31,7 +30,48 @@ const TIPOS_DENUNCIA = [
   'Outro',
 ];
 
-const SITUACAO_INICIAL = 'PENDENTE';
+const BAIRROS_RECIFE = [
+  'Afogados',
+  'Água Fria',
+  'Arruda',
+  'Beberibe',
+  'Boa Viagem',
+  'Boa Vista',
+  'Brasília Teimosa',
+  'Campo Grande',
+  'Casa Amarela',
+  'Caxangá',
+  'Coelhos',
+  'Cordeiro',
+  'Derby',
+  'Dois Irmãos',
+  'Encruzilhada',
+  'Espinheiro',
+  'Graças',
+  'Ibura',
+  'Imbiribeira',
+  'IPSEP',
+  'Iputinga',
+  'Jaqueira',
+  'Jardim São Paulo',
+  'Madalena',
+  'Mustardinha',
+  'Parnamirim',
+  'Pina',
+  'Prado',
+  'Recife (Centro)',
+  'Rosarinho',
+  'San Martin',
+  'Santo Amaro',
+  'São José',
+  'Tamarineira',
+  'Tejipió',
+  'Torre',
+  'Torreão',
+  'Várzea',
+];
+
+const SITUACAO_INICIAL = 'Em Andamento';
 
 export default function NovaDenunciaScreen() {
   const { user } = useAuthStore();
@@ -40,11 +80,11 @@ export default function NovaDenunciaScreen() {
   const [tipoDenuncia, setTipoDenuncia] = useState('');
   const [showTipoModal, setShowTipoModal] = useState(false);
   const [bairro, setBairro] = useState('');
+  const [showBairroModal, setShowBairroModal] = useState(false);
   const [descricao, setDescricao] = useState('');
   const [data, setData] = useState(new Date().toISOString().split('T')[0]);
   const [identificacao, setIdentificacao] = useState(true);
   const [imagens, setImagens] = useState<string[]>([]);
-  const [loadingLocation, setLoadingLocation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [protocolo, setProtocolo] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -53,33 +93,10 @@ export default function NovaDenunciaScreen() {
   const validate = () => {
     const e: Record<string, string> = {};
     if (!tipoDenuncia) e.tipo = 'Selecione um tipo';
-    if (!bairro.trim()) e.bairro = 'Informe o bairro';
+    if (!bairro.trim()) e.bairro = 'Selecione o bairro';
     if (!descricao.trim() || descricao.length < 10) e.descricao = 'Descreva com ao menos 10 caracteres';
     setErrors(e);
     return Object.keys(e).length === 0;
-  };
-
-  const getLocation = async () => {
-    setLoadingLocation(true);
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permissão negada', 'Permita o acesso à localização nas configurações.');
-        return;
-      }
-      const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-      const [address] = await Location.reverseGeocodeAsync(loc.coords);
-      if (address?.district || address?.subregion) {
-        setBairro(address.district || address.subregion || '');
-        setErrors((e) => ({ ...e, bairro: '' }));
-      } else {
-        Alert.alert('Localização', 'Não foi possível obter o bairro automaticamente.');
-      }
-    } catch {
-      Alert.alert('Erro', 'Falha ao obter localização.');
-    } finally {
-      setLoadingLocation(false);
-    }
   };
 
   const pickImage = async () => {
@@ -166,30 +183,26 @@ export default function NovaDenunciaScreen() {
               </Text>
               <Ionicons name="chevron-down" size={18} color="#9ca3af" />
             </TouchableOpacity>
-            {errors.tipo && <Text style={styles.errorText}>{errors.tipo}</Text>}
+            {!!errors.tipo && <Text style={styles.errorText}>{errors.tipo}</Text>}
           </View>
 
           
           <View style={styles.field}>
             <Text style={styles.label}>Bairro da Ocorrência *</Text>
-            <View style={[styles.inputRow, errors.bairro ? styles.inputError : null]}>
-              <Ionicons name="location-outline" size={18} color="#9ca3af" />
-              <TextInput
-                style={styles.input}
-                placeholder="Ex: Boa Viagem"
-                placeholderTextColor="#9ca3af"
-                value={bairro}
-                onChangeText={(v) => { setBairro(v); setErrors((e) => ({ ...e, bairro: '' })); }}
-                accessibilityLabel="Campo bairro"
-              />
-              <TouchableOpacity onPress={getLocation} disabled={loadingLocation} accessibilityLabel="Usar localização atual">
-                {loadingLocation
-                  ? <ActivityIndicator size="small" color="#6498c9" />
-                  : <Ionicons name="navigate-outline" size={20} color="#6498c9" />
-                }
-              </TouchableOpacity>
-            </View>
-            {errors.bairro && <Text style={styles.errorText}>{errors.bairro}</Text>}
+            <TouchableOpacity
+              style={[styles.select, errors.bairro ? styles.inputError : null]}
+              onPress={() => setShowBairroModal(true)}
+              accessibilityLabel="Selecionar bairro da ocorrência"
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Ionicons name="location-outline" size={18} color="#9ca3af" />
+                <Text style={bairro ? styles.selectText : styles.placeholder}>
+                  {bairro || 'Selecione o bairro...'}
+                </Text>
+              </View>
+              <Ionicons name="chevron-down" size={18} color="#9ca3af" />
+            </TouchableOpacity>
+            {!!errors.bairro && <Text style={styles.errorText}>{errors.bairro}</Text>}
           </View>
 
           
@@ -207,7 +220,7 @@ export default function NovaDenunciaScreen() {
               accessibilityLabel="Campo descrição"
             />
             <Text style={styles.charCount}>{descricao.length} caracteres</Text>
-            {errors.descricao && <Text style={styles.errorText}>{errors.descricao}</Text>}
+            {!!errors.descricao && <Text style={styles.errorText}>{errors.descricao}</Text>}
           </View>
 
           
@@ -307,6 +320,35 @@ export default function NovaDenunciaScreen() {
                 {tipo === tipoDenuncia && <Ionicons name="checkmark" size={18} color="#6498c9" />}
               </TouchableOpacity>
             ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Bairro Selection Modal */}
+      <Modal visible={showBairroModal} transparent animationType="slide">
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowBairroModal(false)}
+        >
+          <View style={styles.modalSheet}>
+            <View style={styles.modalHandle} />
+            <Text style={styles.modalTitle}>Selecione o Bairro</Text>
+            <ScrollView style={{ maxHeight: 300 }} showsVerticalScrollIndicator={true}>
+              {BAIRROS_RECIFE.map((b) => (
+                <TouchableOpacity
+                  key={b}
+                  style={[styles.modalOption, b === bairro && styles.modalOptionSelected]}
+                  onPress={() => { setBairro(b); setShowBairroModal(false); setErrors((e) => ({ ...e, bairro: '' })); }}
+                  accessibilityLabel={b}
+                >
+                  <Text style={[styles.modalOptionText, b === bairro && styles.modalOptionTextSelected]}>
+                    {b}
+                  </Text>
+                  {b === bairro && <Ionicons name="checkmark" size={18} color="#6498c9" />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
         </TouchableOpacity>
       </Modal>

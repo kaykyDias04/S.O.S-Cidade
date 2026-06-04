@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Logo from '@/components/Logo';
 
 const { width } = Dimensions.get('window');
 
@@ -32,12 +33,10 @@ export default function WelcomeScreen() {
       <StatusBar style="light" />
       <ScrollView showsVerticalScrollIndicator={false}>
 
-        
+
         <View style={styles.header}>
           <View style={styles.logoContainer}>
-            <View style={styles.logoBadge}>
-              <Ionicons name="shield-checkmark" size={20} color="#fff" />
-            </View>
+            <Logo size={36} />
             <Text style={styles.logoText}>S.O.S Cidade</Text>
           </View>
           <TouchableOpacity
@@ -49,7 +48,7 @@ export default function WelcomeScreen() {
           </TouchableOpacity>
         </View>
 
-        
+
         <View style={styles.hero}>
           <View style={styles.heroOverlay}>
             <Text style={styles.heroTitle}>
@@ -68,7 +67,7 @@ export default function WelcomeScreen() {
           </View>
         </View>
 
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Como Funciona</Text>
           <View style={styles.stepsRow}>
@@ -90,7 +89,7 @@ export default function WelcomeScreen() {
           </View>
         </View>
 
-        
+
         <View style={styles.privacyCard}>
           <View style={styles.privacyIcon}>
             <Ionicons name="lock-closed" size={36} color="#6498c9" />
@@ -103,7 +102,7 @@ export default function WelcomeScreen() {
           </View>
         </View>
 
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>O que você pode denunciar</Text>
           <View style={styles.grid}>
@@ -123,7 +122,7 @@ export default function WelcomeScreen() {
           </View>
         </View>
 
-        
+
         <View style={styles.footer}>
           <Text style={styles.footerText}>© 2025 S.O.S Cidade. Todos os direitos reservados.</Text>
         </View>
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     } : {})
   },
 
-  
+
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 20, paddingVertical: 14, backgroundColor: '#fff',
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
   },
   loginBtnText: { color: '#6498c9', fontWeight: '700', fontSize: 12 },
 
-  
+
   hero: {
     height: 220, backgroundColor: '#6498c9',
     justifyContent: 'center', alignItems: 'center',
@@ -189,14 +188,14 @@ const styles = StyleSheet.create({
   },
   ctaBtnText: { color: '#fff', fontWeight: '800', fontSize: 13, letterSpacing: 0.5 },
 
-  
+
   section: { paddingHorizontal: 20, paddingVertical: 24 },
   sectionTitle: {
     fontSize: 18, fontWeight: '800', color: '#6498c9',
     marginBottom: 16, textAlign: 'center',
   },
 
-  
+
   stepsRow: { flexDirection: 'column', gap: 16 },
   stepItem: { flexDirection: 'row', alignItems: 'flex-start', gap: 14 },
   stepIcon: {
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
   stepLabel: { fontWeight: '800', color: '#1e3a5f', fontSize: 13, marginBottom: 3 },
   stepDesc: { color: '#4b5563', fontSize: 13, lineHeight: 19, flex: 1 },
 
-  
+
   privacyCard: {
     marginHorizontal: 20, backgroundColor: '#fff', borderRadius: 20,
     padding: 20, flexDirection: 'row', alignItems: 'center', gap: 16,
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
   privacyTitle: { fontSize: 15, fontWeight: '800', color: '#6498c9', marginBottom: 6 },
   privacyDesc: { fontSize: 13, color: '#4b5563', lineHeight: 19 },
 
-  
+
   grid: {
     flexDirection: 'row', flexWrap: 'wrap', gap: 12,
     justifyContent: 'space-between',
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
   },
   categoryTitle: { fontSize: 12, fontWeight: '700', color: '#1e3a5f', textAlign: 'center' },
 
-  
+
   footer: { padding: 24, alignItems: 'center' },
   footerText: { color: '#9ca3af', fontSize: 12 },
 });

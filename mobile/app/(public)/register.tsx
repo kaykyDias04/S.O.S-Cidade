@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { usersAPI } from '@/lib/api';
+import Logo from '@/components/Logo';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -101,10 +102,8 @@ export default function RegisterScreen() {
           </TouchableOpacity>
 
           <View style={styles.logoArea}>
-            <View style={styles.logoBadge}>
-              <Ionicons name="shield-checkmark" size={36} color="#fff" />
-            </View>
-            <Text style={styles.logoTitle}>S.O.S Cidade</Text>
+            <Logo size={80} />
+            <Text style={[styles.logoTitle, { marginTop: 14 }]}>S.O.S Cidade</Text>
             <Text style={styles.logoSubtitle}>Crie sua conta de Cidadão</Text>
           </View>
 
@@ -226,11 +225,6 @@ const styles = StyleSheet.create({
   },
 
   logoArea: { alignItems: 'center', marginBottom: 32 },
-  logoBadge: {
-    width: 80, height: 80, borderRadius: 40, backgroundColor: '#6498c9',
-    alignItems: 'center', justifyContent: 'center', marginBottom: 14,
-    shadowColor: '#6498c9', shadowOpacity: 0.35, shadowRadius: 16, elevation: 8,
-  },
   logoTitle: { fontSize: 28, fontWeight: '800', color: '#1e3a5f', marginBottom: 4 },
   logoSubtitle: { fontSize: 15, color: '#6b7280' },
 

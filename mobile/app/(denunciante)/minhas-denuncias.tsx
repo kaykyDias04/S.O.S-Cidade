@@ -7,6 +7,7 @@ import {
   StyleSheet,
   RefreshControl,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,10 +16,8 @@ import { useDenunciasStore } from '@/store/useDenunciasStore';
 import { Denuncia } from '@/lib/api';
 
 const SITUACAO_CONFIG: Record<string, { bg: string; text: string; label: string; icon: string }> = {
-  PENDENTE: { bg: '#FEF3C7', text: '#92400E', label: 'Pendente', icon: 'time-outline' },
-  EM_ANDAMENTO: { bg: '#DBEAFE', text: '#1E40AF', label: 'Em Andamento', icon: 'refresh-outline' },
-  RESOLVIDO: { bg: '#D1FAE5', text: '#065F46', label: 'Resolvido', icon: 'checkmark-circle-outline' },
-  REJEITADO: { bg: '#FEE2E2', text: '#991B1B', label: 'Rejeitado', icon: 'close-circle-outline' },
+  'Em Andamento': { bg: '#DBEAFE', text: '#1E40AF', label: 'Em Andamento', icon: 'refresh-outline' },
+  'Resolvido':    { bg: '#D1FAE5', text: '#065F46', label: 'Resolvido',    icon: 'checkmark-circle-outline' },
 };
 
 export default function MinhasDenunciasScreen() {
@@ -38,7 +37,7 @@ export default function MinhasDenunciasScreen() {
       !search ||
       d.tipoDenuncia.toLowerCase().includes(search.toLowerCase()) ||
       d.bairroOcorrencia.toLowerCase().includes(search.toLowerCase()) ||
-      d.protocolo.includes(search);
+      d.protocolo.toLowerCase().includes(search.toLowerCase());
     const matchFiltro = !filtroSituacao || d.situacao === filtroSituacao;
     return matchSearch && matchFiltro;
   });
@@ -104,9 +103,14 @@ export default function MinhasDenunciasScreen() {
         )}
       </View>
 
-      
-      <View style={styles.filtros}>
-        {[null, 'PENDENTE', 'EM_ANDAMENTO', 'RESOLVIDO', 'REJEITADO'].map((s) => {
+      {/* Filter chips */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filtros}
+        style={{ flexGrow: 0, flexShrink: 0, height: 40, marginBottom: 8 }}
+      >
+        {([null, 'Em Andamento', 'Resolvido'] as (string | null)[]).map((s) => {
           const active = filtroSituacao === s;
           const label = s ? getSituacao(s).label : 'Todas';
           return (
@@ -120,7 +124,7 @@ export default function MinhasDenunciasScreen() {
             </TouchableOpacity>
           );
         })}
-      </View>
+      </ScrollView>
 
       
       <FlatList
@@ -163,8 +167,8 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, fontSize: 14, color: '#111827' },
 
   filtros: {
-    flexDirection: 'row', paddingHorizontal: 16, paddingBottom: 8, gap: 8,
-    flexWrap: 'nowrap',
+    flexDirection: 'row', paddingHorizontal: 16, gap: 8,
+    flexWrap: 'nowrap', alignItems: 'center',
   },
   filtroChip: {
     paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20,

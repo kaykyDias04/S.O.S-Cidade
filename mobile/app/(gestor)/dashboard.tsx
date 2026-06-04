@@ -89,10 +89,22 @@ export default function DashboardScreen() {
 
   const stats = useMemo(() => {
     const total = denuncias.length;
-    const pendentes = denuncias.filter((d) => d.situacao === 'PENDENTE').length;
-    const emAndamento = denuncias.filter((d) => d.situacao === 'EM_ANDAMENTO').length;
-    const resolvidos = denuncias.filter((d) => d.situacao === 'RESOLVIDO').length;
-    const rejeitados = denuncias.filter((d) => d.situacao === 'REJEITADO').length;
+    const pendentes = denuncias.filter((d) => {
+      const s = d.situacao?.toLowerCase();
+      return s === 'pendente';
+    }).length;
+    const emAndamento = denuncias.filter((d) => {
+      const s = d.situacao?.toLowerCase();
+      return s === 'em andamento' || s === 'em_andamento';
+    }).length;
+    const resolvidos = denuncias.filter((d) => {
+      const s = d.situacao?.toLowerCase();
+      return s === 'resolvido';
+    }).length;
+    const rejeitados = denuncias.filter((d) => {
+      const s = d.situacao?.toLowerCase();
+      return s === 'rejeitado';
+    }).length;
 
     const porTipo = denuncias.reduce<Record<string, number>>((acc, d) => {
       acc[d.tipoDenuncia] = (acc[d.tipoDenuncia] || 0) + 1;

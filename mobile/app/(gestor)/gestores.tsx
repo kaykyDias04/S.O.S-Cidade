@@ -166,7 +166,7 @@ export default function GestoresScreen() {
                   accessibilityLabel="Campo nome"
                 />
               </View>
-              {errors.nome && <Text style={styles.errorText}>{errors.nome}</Text>}
+              {!!errors.nome && <Text style={styles.errorText}>{errors.nome}</Text>}
             </View>
 
             <View style={styles.field}>
@@ -184,7 +184,7 @@ export default function GestoresScreen() {
                   accessibilityLabel="Campo email"
                 />
               </View>
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+              {!!errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             </View>
 
             <View style={styles.field}>
@@ -204,7 +204,7 @@ export default function GestoresScreen() {
                   <Ionicons name={showSenha ? 'eye-off-outline' : 'eye-outline'} size={18} color="#9ca3af" />
                 </TouchableOpacity>
               </View>
-              {errors.senha && <Text style={styles.errorText}>{errors.senha}</Text>}
+              {!!errors.senha && <Text style={styles.errorText}>{errors.senha}</Text>}
             </View>
 
             <TouchableOpacity

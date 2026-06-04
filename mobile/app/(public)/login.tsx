@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '@/store/useAuthStore';
+import Logo from '@/components/Logo';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function LoginScreen() {
     const result = await login(email.trim(), password);
 
     if (result.success) {
-      Toast.show({ type: 'success', text1: 'Login realizado!', text2: `Bem-vindo de volta 👋` });
+      Toast.show({ type: 'success', text1: 'Login realizado!', text2: `Bem-vindo de volta` });
       if (result.role === 'GESTOR') {
         router.replace('/denuncias');
       } else {
@@ -60,27 +61,25 @@ export default function LoginScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
 
-          
+
           <TouchableOpacity
             style={styles.backBtn}
-            onPress={() => router.back()}
+            onPress={() => router.canGoBack() ? router.back() : router.replace('/')}
             accessibilityLabel="Voltar"
           >
             <Ionicons name="arrow-back" size={22} color="#6498c9" />
           </TouchableOpacity>
 
-          
+
           <View style={styles.logoArea}>
-            <View style={styles.logoBadge}>
-              <Ionicons name="shield-checkmark" size={36} color="#fff" />
-            </View>
-            <Text style={styles.logoTitle}>S.O.S Cidade</Text>
+            <Logo size={80} />
+            <Text style={[styles.logoTitle, { marginTop: 14 }]}>S.O.S Cidade</Text>
             <Text style={styles.logoSubtitle}>Entre na sua conta</Text>
           </View>
 
-          
+
           <View style={styles.card}>
-            
+
             <View style={styles.field}>
               <Text style={styles.label}>E-mail</Text>
               <View style={[styles.inputWrapper, errors.email ? styles.inputError : null]}>
@@ -100,7 +99,7 @@ export default function LoginScreen() {
               {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
             </View>
 
-            
+
             <View style={styles.field}>
               <Text style={styles.label}>Senha</Text>
               <View style={[styles.inputWrapper, errors.password ? styles.inputError : null]}>
@@ -122,7 +121,7 @@ export default function LoginScreen() {
               {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
             </View>
 
-            
+
             <TouchableOpacity
               style={[styles.submitBtn, isLoading && styles.submitBtnDisabled]}
               onPress={handleLogin}
@@ -136,7 +135,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
-          
+
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Ainda não tem conta? </Text>
             <TouchableOpacity onPress={() => router.push('/register')} accessibilityLabel="Cadastrar-se">
@@ -174,11 +173,6 @@ const styles = StyleSheet.create({
   },
 
   logoArea: { alignItems: 'center', marginBottom: 32 },
-  logoBadge: {
-    width: 80, height: 80, borderRadius: 40, backgroundColor: '#6498c9',
-    alignItems: 'center', justifyContent: 'center', marginBottom: 14,
-    shadowColor: '#6498c9', shadowOpacity: 0.35, shadowRadius: 16, elevation: 8,
-  },
   logoTitle: { fontSize: 28, fontWeight: '800', color: '#1e3a5f', marginBottom: 4 },
   logoSubtitle: { fontSize: 15, color: '#6b7280' },
 

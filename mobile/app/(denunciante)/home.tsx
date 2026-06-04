@@ -29,7 +29,7 @@ export default function HomeDenuncianteScreen() {
     fetchDenuncias();
   }, []);
 
-  
+
   const minhasDenuncias = denuncias
     .filter((d) => d.userId === user?.id)
     .slice(0, 3);
@@ -49,10 +49,10 @@ export default function HomeDenuncianteScreen() {
         showsVerticalScrollIndicator={false}
       >
 
-        
+
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>Olá, {user?.name?.split(' ')[0]} 👋</Text>
+            <Text style={styles.greeting}>Olá, {user?.name?.split(' ')[0]}</Text>
             <Text style={styles.headerSub}>Como podemos ajudar sua cidade hoje?</Text>
           </View>
           <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn} accessibilityLabel="Sair">
@@ -60,7 +60,7 @@ export default function HomeDenuncianteScreen() {
           </TouchableOpacity>
         </View>
 
-        
+
         <TouchableOpacity
           style={styles.ctaCard}
           onPress={() => router.push('/nova-denuncia')}
@@ -76,7 +76,7 @@ export default function HomeDenuncianteScreen() {
           <Ionicons name="chevron-forward" size={22} color="#fff" />
         </TouchableOpacity>
 
-        
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Categorias</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipRow}>
@@ -101,7 +101,7 @@ export default function HomeDenuncianteScreen() {
           </ScrollView>
         </View>
 
-        
+
         <View style={styles.section}>
           <View style={styles.sectionRow}>
             <Text style={styles.sectionTitle}>Minhas Denúncias Recentes</Text>

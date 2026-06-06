@@ -56,7 +56,7 @@ export default function GestoresScreen() {
       setNome(''); setEmail(''); setSenha('');
       fetchGestores();
     } else {
-      Toast.show({ type: 'error', text1: 'Erro', text2: res.error || 'Falha ao criar gestor' });
+      Toast.show({ type: 'error', text1: 'Erro', text2: 'Falha ao criar gestor' });
     }
   };
 

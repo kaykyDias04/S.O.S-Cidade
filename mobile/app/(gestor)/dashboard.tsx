@@ -14,10 +14,8 @@ import { useDenunciasStore } from '@/store/useDenunciasStore';
 const { width } = Dimensions.get('window');
 
 const SITUACAO_COLORS: Record<string, string> = {
-  PENDENTE: '#F59E0B',
   EM_ANDAMENTO: '#3B82F6',
   RESOLVIDO: '#10B981',
-  REJEITADO: '#EF4444',
 };
 
 const TIPO_ICONS: Record<string, string> = {
@@ -89,10 +87,6 @@ export default function DashboardScreen() {
 
   const stats = useMemo(() => {
     const total = denuncias.length;
-    const pendentes = denuncias.filter((d) => {
-      const s = d.situacao?.toLowerCase();
-      return s === 'pendente';
-    }).length;
     const emAndamento = denuncias.filter((d) => {
       const s = d.situacao?.toLowerCase();
       return s === 'em andamento' || s === 'em_andamento';
@@ -100,10 +94,6 @@ export default function DashboardScreen() {
     const resolvidos = denuncias.filter((d) => {
       const s = d.situacao?.toLowerCase();
       return s === 'resolvido';
-    }).length;
-    const rejeitados = denuncias.filter((d) => {
-      const s = d.situacao?.toLowerCase();
-      return s === 'rejeitado';
     }).length;
 
     const porTipo = denuncias.reduce<Record<string, number>>((acc, d) => {
@@ -121,13 +111,11 @@ export default function DashboardScreen() {
       }));
 
     const situacaoData = [
-      { label: 'Pendente', value: pendentes, color: SITUACAO_COLORS.PENDENTE },
       { label: 'Em Andamento', value: emAndamento, color: SITUACAO_COLORS.EM_ANDAMENTO },
       { label: 'Resolvido', value: resolvidos, color: SITUACAO_COLORS.RESOLVIDO },
-      { label: 'Rejeitado', value: rejeitados, color: SITUACAO_COLORS.REJEITADO },
     ];
 
-    return { total, pendentes, emAndamento, resolvidos, rejeitados, tipoData, situacaoData };
+    return { total, emAndamento, resolvidos, tipoData, situacaoData };
   }, [denuncias]);
 
   return (
@@ -145,7 +133,6 @@ export default function DashboardScreen() {
         
         <View style={styles.statsGrid}>
           <StatCard title="Total" value={stats.total} icon="document-text-outline" color="#6498c9" />
-          <StatCard title="Pendentes" value={stats.pendentes} icon="time-outline" color="#F59E0B" />
           <StatCard title="Em Andamento" value={stats.emAndamento} icon="refresh-outline" color="#3B82F6" />
           <StatCard title="Resolvidos" value={stats.resolvidos} icon="checkmark-circle-outline" color="#10B981" />
         </View>

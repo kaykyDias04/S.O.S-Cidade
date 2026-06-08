@@ -49,7 +49,7 @@ export default function LoginScreen() {
         router.replace('/home');
       }
     } else {
-      Toast.show({ type: 'error', text1: 'Erro ao entrar', text2: result.error || 'Verifique suas credenciais' });
+      Toast.show({ type: 'error', text1: 'Erro ao entrar', text2: 'Verifique suas credenciais' });
     }
   };
 

@@ -75,7 +75,7 @@ export default function DenunciasGestorScreen() {
         setSelectedDenuncia((d) => d ? { ...d, situacao: novaSituacao } : d);
         Toast.show({ type: 'success', text1: 'Status atualizado!', text2: `Denúncia marcada como ${SITUACAO_CONFIG[novaSituacao]?.label ?? novaSituacao}` });
       } else {
-        Toast.show({ type: 'error', text1: 'Erro', text2: res.error || 'Falha ao atualizar status' });
+        Toast.show({ type: 'error', text1: 'Erro', text2: 'Falha ao atualizar status' });
       }
     } finally {
       setUpdatingStatus(false);

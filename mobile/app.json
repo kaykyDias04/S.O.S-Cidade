@@ -8,6 +8,9 @@
     "userInterfaceStyle": "light",
     "scheme": "soscidade",
     "newArchEnabled": false,
+    "updates": {
+      "enabled": false
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.soscidade.mobile"
@@ -58,11 +61,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "114df36c-08b7-4bc9-8bc1-f954ef5f52c4"
-      }
-    },
-    "owner": "kayky.oliveira"
+      "router": {}
+    }
   }
 }

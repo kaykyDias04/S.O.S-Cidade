@@ -28,7 +28,9 @@ O backend segue uma arquitetura interna em três camadas lógicas para organizar
 
 O diagrama a seguir ilustra a arquitetura do sistema S.O.S Cidade, detalhando os componentes, tecnologias e protocolos de comunicação:
 
-![Diagrama de Arquitetura S.O.S Cidade]()
+![Diagrama de Arquitetura S.O.S Cidade]
+
+(<img width="3045" height="1102" alt="Prog Paral   Dist - Diagrama" src="https://github.com/user-attachments/assets/63213982-c720-47fe-ab63-8c2f79d3cbbe" />)
 
 **Componentes e Tecnologias:**
 

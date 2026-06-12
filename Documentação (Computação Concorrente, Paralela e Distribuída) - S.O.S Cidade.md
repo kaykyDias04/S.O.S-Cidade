@@ -1,5 +1,13 @@
 # Documentação Técnica — S.O.S Cidade
 
+
+## 0. Equipe
+
+Enzo Antuna
+Kayky Dias
+Levi Moraes
+Rhaldney Robert
+
 ## 1. Arquitetura Distribuída
 
 ### Modelo Escolhido: **Cliente-Servidor em Camadas (N-Tier)**

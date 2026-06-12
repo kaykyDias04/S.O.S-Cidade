@@ -3,10 +3,10 @@
 
 ## 0. Equipe
 
-Enzo Antuna
-Kayky Dias
-Levi Moraes
-Rhaldney Robert
+- Enzo Antuna
+- Kayky Dias
+- Levi Moraes
+- Rhaldney Robert
 
 ## 1. Arquitetura Distribuída
 
